@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="level_aql_bahan_view_tree" model="ir.ui.view">
+            <field name="name">level.aql.view.tree</field>
+            <field name="model">level.aql</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name" />
+                    <field name="type"/>
+                    <field name="multi"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="level_aql_view_form" model="ir.ui.view">
+            <field name="name">level.aql.view.form</field>
+            <field name="model">level.aql</field>
+            <field name="arch" type="xml">
+                <form string="Data Level AQL">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="type"/>
+                            <field name="multi"/>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="level_aql_action" model="ir.actions.act_window">
+            <field name="name">Level AQL</field>
+            <field name="res_model">level.aql</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="level_aql_menu" name="Level AQL" action="level_aql_action" parent="qa_qc.menu_qc_configuration"/>
+
+    </data>
+
+
+</odoo>

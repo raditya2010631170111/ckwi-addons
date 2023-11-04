@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_lapkeu_wizard_view_form" model="ir.ui.view">
+        <field name="name">lapkeu.wizard.view.form</field>
+        <field name="model">lapkeu.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="start_date"  required="1"/>
+                        <field name="end_date"  required="1"/>
+                        <field name="type"  required="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_print_report_lapkeu" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="report_lapkeu_wizard_action" model="ir.actions.act_window">
+        <field name="name">LapKeu Report</field>
+        <field name="res_model">lapkeu.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="report_lapkeu_wizard_view_form"/>
+    </record>   
+
+    <menuitem id="menu_report_lapkeu"
+              name="LapKeu Report"
+              sequence="8"
+              action="report_lapkeu_wizard_action"
+              parent="account.menu_finance_reports"
+              groups="account.group_account_manager,account.group_account_user"/>
+		
+	<record id="report_lapkeu_xlsx" model="ir.actions.report">
+        <field name="name">LapKeu (XLS)</field>
+        <field name="model">lapkeu.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">base_accounting_kit.report_lapkeu</field>
+        <field name="report_file">base_accounting_kit.report_lapkeu</field>
+        <field name="print_report_name">'LapKeu (%s - %s %s)' % (object.start_date,object.end_date,object.type)</field>
+    </record>
+</odoo>

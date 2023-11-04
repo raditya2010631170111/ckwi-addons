@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="tes_rebus_view_tree" model="ir.ui.view">
+            <field name="name">tes.rebus.view.tree</field>
+            <field name="model">tes.rebus</field>
+            <field name="arch" type="xml">
+                <tree string="Tes Rebus">
+                    <field name="name" />
+                    <field name="partner_id"/>
+                    <field name="ujike_id" string="Pengujian Ke-"/>
+                    <field name="user_id"/>
+                    <field name="state" widget="badge" 
+                        decoration-success="state == 'confirm'" 
+                        decoration-danger="state == 'repeat'"/>
+                </tree>
+            </field>
+        </record>
+
+
+       <record id="tes_rebus_view_form" model="ir.ui.view">
+            <field name="name">tes.rebus.view.form</field>
+            <field name="model">tes.rebus</field>
+            <field name="arch" type="xml">
+                <form string="Tes Rebus">
+                    <header>
+                        <!-- <button name="button_draft" string="Draft" type="object" class="oe_highlight" states='draft'/> -->
+                        <button name="button_confirm" string="Confirmed" class="oe_highlight" type="object" states='draft'/>
+                        <button name="button_repeat" string="Repeat" class='btn-danger' type="object"  states='confirm'/>
+                        <!-- <field name="state" widget="statusbar" statusbar_visible="draft,repeat,confirm"/> -->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" placeholder="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="date" />    
+                            <field name="partner_id"/>
+                            <field name="user_id"/>
+                            <field name="product_id"/>
+                            <field name="no_mo_id" domain="[('state','=','sale')]"/>
+                            <label for="quantity_sample_id" string="Qty Sample"/>
+                                <div class="o_row" name="quantity_sample_id">
+                                    <field name="quantity_sample_id"/>    
+                                    <field name="quantity_def_id" widget="many2one_list"/> 
+                                </div>                             
+                            <field name="woodkind_id"/>
+                            <field name="mesin_id"/>
+                            <!-- <field name="laminating" widget="radio" options="{'horizontal' : true}"/> -->
+                            <field name="laminating_ids" widget="many2many_checkboxes" options="{'horizontal' : true}"/>                         
+                            <!-- <field name="is_inhouse_checked" invisible="1"/>
+                            <field name="is_subcont_checked" invisible="1"/>
+                            <field name="is_material_checked" invisible="1"/>
+                            <field name="is_komponen_checked" invisible="1"/> -->
+                            <!-- <field name="jenis_pengujian" widget="radio" options="{'horizontal' : true}"/> -->
+                            <field name="jenis_pengujian_ids" widget="many2many_checkboxes" options="{'horizontal' : true}"/>
+                            <field name="ujike_id"/>
+                            <field name="hasil_uji" widget="radio" options="{'horizontal' : true}"/>
+                        </group>
+                        <notebook>
+                            <page name="sample_method" string="Sample">
+                                <field name="sample_pengujian_line_ids">                                                
+                                        <tree editable="bottom">                                       
+                                            <field name="instruksi_sample"/>
+                                            <field name="checksatu"/>
+                                            <field name="checkdua"/>
+                                            <field name="checktiga"/>
+                                            <field name="checkempat"/>
+                                            <field name="checklima"/>
+                                            <field name="note"/>
+                                            <!-- <button name="action_show_details" type="object" icon="fa-list" width="0.1" title="Details"/> -->
+                                        </tree>
+                                </field>
+                            </page>
+                            <page name="tahap_method" string="Tahapan Pengujian">
+                                <field name="tahapan_pengujian_line_ids">                                 
+                                    <tree editable="bottom">
+                                        <field name="instruksi_pengujian"/>
+                                        <field name="checksatu"/>
+                                        <field name="checkdua"/>
+                                        <field name="checktiga"/>
+                                        <field name="checkempat"/>
+                                        <field name="checklima"/>
+                                        <field name="note"/>                      
+                                    </tree>                                                                                              
+                                </field>
+                            </page>
+                            <page name="hasil_method" string="Hasil Pengujian">
+                                <field name="hasil_pengujian_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="instruksi_hasil"/>
+                                        <field name="checksatu"/>
+                                        <field name="checkdua"/>
+                                        <field name="checktiga"/>
+                                        <field name="checkempat"/>
+                                        <field name="checklima"/>
+                                        <field name="note"/>
+                                    </tree>                          
+                                </field>
+                            </page>               
+                            <!-- <page name="catatan" string="Catatan/Gambar">                                 -->
+                            <page name="catatan" string="Rincian Kayu">                                
+                                <field name="result_pict_ids" string="Foto sesudah direbus" widget="one2many_list">
+                                    <tree editable="bottom">
+                                        <field name="rincian_kayu"/>
+                                        <field name="attachment_img1" widget="image" width="150px" />
+                                        <field name="attachment_img2" widget="image" width="150px" />
+                                    </tree>
+                                </field>                            
+                            </page>
+                            <page name="signature" string="Signature">
+                                <group>
+                                    <group class="oe_row">
+                                        <field name="dibuat"/>
+                                        <field name="ttd_dibuat" widget="image" class="oe_avatar" />
+
+                                        <field name="penguji"/>
+                                        <field name="ttd_penguji" widget="image" class="oe_avatar"/>
+                                    </group>
+                                    <group class="oe_row">
+                                        <field name="diketahui"/>
+                                        <field name="ttd_diketahui" widget="image" class="oe_avatar"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                        <group string="Internal Notes">   
+                            <field name="internal_notes" />
+                            <field name="notes_attachment" widget="image" width="150px"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="tes_rebus_view_form_action" model="ir.actions.act_window">
+            <field name="name">Tes Rebus</field>
+            <field name="res_model">tes.rebus</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="tes_rebus_menu"
+            name="Tes Rebus"
+            action="tes_rebus_view_form_action"
+            parent="tes_pengujian_qc_menu"
+            sequence="20"/>
+     </data>
+</odoo>
+    

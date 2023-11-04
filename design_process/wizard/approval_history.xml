@@ -1,0 +1,81 @@
+<odoo>
+
+
+
+	    <record id="views_approve_with_commitment_crm" model="ir.ui.view">
+		        <field name="name">Approve</field>
+		        <field name="model">approval.history.crm.wizard</field>
+		        <field name="arch" type="xml">
+		            <form string="Asign">
+		            	<group>
+			                <group>
+			                    <field name="reason" />
+			                    <field name="attachment" />
+			                </group>
+			            </group>
+		                <footer>
+		                    <button
+		                        name="action_confirm"
+		                        string="Confirm"
+		                        type="object"
+		                        class="oe_highlight"
+		                    />
+		                    or
+		                    <button string="Cancel" class="oe_link" special="cancel" />
+		                </footer>
+		            </form>
+		        </field>
+		    </record>
+
+	<record id="views_reject_with_commitment_crm" model="ir.ui.view">
+		        <field name="name">Reject</field>
+		        <field name="model">approval.history.crm.wizard.reject</field>
+		        <field name="arch" type="xml">
+		            <form string="Asign">
+		            	<group>
+			                <group>
+			                    <field name="reason" required="1"/>
+			                    <field name="attachment" />
+			                </group>
+			            </group>
+		                <footer>
+		                    <button
+		                        name="action_confirm"
+		                        string="Confirm"
+		                        type="object"
+		                        class="oe_highlight"
+		                    />
+		                    or
+		                    <button string="Cancel" class="oe_link" special="cancel" />
+		                </footer>
+		            </form>
+		        </field>
+		    </record>
+
+
+    	    <record id="views_approve_with_commitment_rnd" model="ir.ui.view">
+		        <field name="name">Approve</field>
+		        <field name="model">approval.history.rnd.wizard</field>
+		        <field name="arch" type="xml">
+		            <form string="Asign">
+		            	<group>
+			                <group>
+			                    <field name="reason" />
+			                    <field name="attachment" />
+			                </group>
+			            </group>
+		                <footer>
+		                    <button
+		                        name="action_confirm"
+		                        string="Confirm"
+		                        type="object"
+		                        class="oe_highlight"
+		                    />
+		                    or
+		                    <button string="Cancel" class="oe_link" special="cancel" />
+		                </footer>
+		            </form>
+		        </field>
+		    </record>
+
+</odoo>

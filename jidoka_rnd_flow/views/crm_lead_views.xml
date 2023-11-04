@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="crm_lead_view_form_inherit_jidoka_rnd_flow" model="ir.ui.view">
+			<field name="name">crm.lead.view.form.inherit</field>
+			<field name="model">crm.lead</field>
+			<field name="inherit_id" ref="crm.crm_lead_view_form"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//header" position="inside">
+					<field name="is_r_mar" invisible="1" />
+					<field name="is_show_button_revised" invisible="1"/>
+					<button name="create_revisi1" type="object" string="Revisi From Marketing" attrs="{'invisible': [('is_r_mar', '=', False)]}" />
+					<button string="Revisi From RnD " name="create_revisi" type="object" attrs="{'invisible': [('is_show_button_revised', '!=', True)]}" />
+					<button string="Assign Buyer" name="create_assign_buyer" type="object" attrs="{'invisible': [('is_show_button_revised', '!=', True)]}" class="oe_highlight"/>
+					<button string="Confirm Buyer" name="confirm_buyer" type="object" attrs="{'invisible': [('is_show_button_revised', '!=', True)]}"/>
+					<!-- <button string="Send Sample Request" name="send_data" type="object" class="oe_highlight" attrs="{'invisible': [('is_show_send', '=', False)]}"/> -->
+					<button string="Send Sample Request" name="send_data" type="object" class="oe_highlight" attrs="{'invisible': [('state_design_detail', '!=', 'confirm')]}" />
+					<button name="o_source" type="object" string="Source Doc" invisible="1" />
+
+				</xpath>
+				<xpath expr="//field[@name='partner_shipping_id']" position="after">
+					<field name="state_design_detail" invisible="1" />
+					<field name="state_designdetail" invisible="1" />
+					<field name="is_show_send" invisible="1"/>
+				</xpath>
+
+
+				<!-- <xpath expr="//header" position="after">
+                     <div class="alert alert-warning" role="alert" style="height: 40px; margin-bottom:0px;" attrs="{'invisible': ['|',('is_asigned', '=', False),('state_design_detail', 'not in', ('draft', 'processing'))]}">
+                        <strong>Waiting Process Team R &#38; D</strong>
+                    </div>
+                </xpath> -->
+
+				<xpath expr="//notebook/page" position="after">
+					<page name="design_detail" string="Design Detail">
+						<field name="design_detail_ids" readonly="1">
+							<tree decoration-success="state == 'confirmed'" decoration-warning="state == 'processing'" decoration-info="state == 'to_review'" decoration-danger="state == 'need_revised'" decoration-primary="state == 'revised'">
+								<field name="product_id" />
+								<field name="design_detail_date" />
+								<field name="name" />
+								<field name="state" decoration-success="state == 'confirmed'" decoration-warning="state == 'processing'" decoration-info="state == 'to_review'" decoration-danger="state == 'need_revised'" decoration-primary="state == 'revised'" widget="badge"/>
+							</tree>
+							<form string="Design Detail">
+								<header>
+									<button string="Create revise Document" name="create_revise_document" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'need_revised')]}"/>
+									<!--<button string="Create BOM" name="create_bom_document" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'confirm')]}"/>
+									<button string="Start Draw" name="start_draw" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+									<button string="Finish Draw" name="end_draw" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'processing')]}"/> -->
+									<!-- <button string="Approve" name="approve" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'in_review')]}"/> -->
+									<field name="state" widget="statusbar" statusbar_visible="draft,processing,to_review,in_review,confirm"/>
+								</header>
+								<sheet>
+									<widget name="web_ribbon" title="Revised" bg_color="bg-danger" attrs="{'invisible': [('state', '!=', 'need_revised')]}"/>
+									<label for="name"/>
+									<div class="oe_title" width="50%">
+										<h1>
+											<field name="name"/>
+										</h1>
+									</div>
+									<group>
+										<group>
+											<field name="product_id" />
+											<field name="design_detail_date" />
+											<field name="bom_id" attrs="{'invisible': [('bom_id', '=', False)]}"/>
+											<field name="origin_id" attrs="{'invisible': [('origin_id', '=', False)]}"/>
+										</group>
+										<group>
+											<div style="float:right;">
+												<label for="design_done_attach" class="oe_avatar"/>
+												<br></br>
+												<field name="design_done_attach" widget="image" class="oe_avatar" options="{'preview_image': 'design_done_attach'}"/>
+											</div>
+											<div>
+												<label for="design_buyer_attach" class="oe_avatar"/>
+												<br></br>
+												<field name="design_buyer_attach" widget="image" class="oe_avatar" options="{'preview_image': 'design_buyer_attach'}"/>
+											</div>
+										</group>
+									</group>
+									<group name="revised" string="Revised" attrs="{'invisible': [('state', '!=', 'need_revised')]}">
+										<field name="feedback_date" />
+										<field name="feedback_notes" />
+									</group>
+									<group string="Design" attrs="{'invisible': [('state', '=', 'need_revised')]}">
+										<group string="Sket Warna">
+											<field name="sket_warna" nolabel="1" attrs="{'readonly': [('state', 'in', ['confirmed'])]}">
+												<kanban>
+													<field name="id"/>
+													<field name="name"/>
+													<field name="attachment"/>
+													<field name="attachment1"/>
+													<field name="attachment2"/>
+													<field name="attachment3"/>
+													<field name="attachment4"/>
+													<field name="attachment5"/>
+													<field name="attachment6"/>
+													<field name="attachment7"/>
+													<templates>
+														<t t-name="kanban-box">
+															<t t-set="attachment" t-value="kanban_color(record.attachment.raw_value)"/>
+															<t t-set="attachment1" t-value="kanban_color(record.attachment1.raw_value)"/>
+																<div t-att-class="attachment + (record.name.raw_value == 1 ? ' oe_kanban_color_alert' : '') + ' oe_kanban_global_click'">
+																<div class="o_kanban_image" style="width:100%;">
+																	<div class="o_kanban_header">
+																	<!--<div t-if="record.name.raw_value">Note : <t t-esc="record.name.value"/></div>-->
+																	<div>
+																		<strong t-if="record.name.raw_value">Attachment</strong>
+																	</div>
+																	</div>
+																	<!--<img alt="Logo" t-if="record.attachment.raw_value" t-att-src="kanban_image('sket.warna', 'attachment', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment1.raw_value" t-att-src="kanban_image('sket.warna', 'attachment1', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment2.raw_value" t-att-src="kanban_image('sket.warna', 'attachment2', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment3.raw_value" t-att-src="kanban_image('sket.warna', 'attachment3', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<field name="attachment4" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment5" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment6" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment7" widget="pdf_viewer" width="10px" height="8px"/>-->
+																</div>
+															</div>
+														</t>
+													</templates>
+												</kanban>
+												<form>
+													<sheet>
+														<group>
+															<group style="width:100%;">
+																<field name="name" required="1"/>
+															</group>
+															<group name="Attachment Image" string="Attachment Image" style="width:100%;">
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment"/><br></br>
+																	<field name="attachment" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment1"/><br></br>
+																	<field name="attachment1" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment2"/><br></br>
+																	<field name="attachment2" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment3"/><br></br>
+																	<field name="attachment3" widget="image" width="300px"/>
+																</div>
+															</group>
+															<group name="Attachment PDF" string="Attachment PDF" style="width:100%;">
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment4"/><br></br>
+																	<field name="attachment4" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment5"/><br></br>
+																	<field name="attachment5" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment6"/><br></br>
+																	<field name="attachment6" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment7"/><br></br>
+																	<field name="attachment7" widget="pdf_viewer" width="30%"/>
+																</div>
+																<!-- <button string="TES Tombol" name="tes_sket"  type="object" class="oe_highlight"/> -->
+															</group>
+														</group>
+													</sheet>
+												</form>
+											</field>
+										</group>
+										<group string="Explode Diagram">
+											<field name="explode_diagram" nolabel="1" attrs="{'readonly': [('state', 'in', ['confirmed'])]}">
+												<kanban>
+													<field name="id"/>
+													<field name="name"/>
+													<field name="attachment"/>
+													<field name="attachment1"/>
+													<field name="attachment2"/>
+													<field name="attachment3"/>
+													<field name="attachment4"/>
+													<field name="attachment5"/>
+													<field name="attachment6"/>
+													<field name="attachment7"/>
+													<templates>
+														<t t-name="kanban-box">
+															<t t-set="attachment" t-value="kanban_color(record.attachment.raw_value)"/>
+																<div t-att-class="attachment + (record.name.raw_value == 1 ? ' oe_kanban_color_alert' : '') + ' oe_kanban_global_click'">
+																<div class="o_kanban_image" style="width:100%;">
+																	<!-- <div class="o_kanban_header">
+																		<div t-if="record.name.raw_value">Note : <t t-esc="record.name.value"/>
+																		</div>
+																	</div>-->
+																	<div class="o_kanban_header">
+																		<strong t-if="record.name.raw_value">Attachment</strong>
+																	</div>
+																	<!-- <img alt="Logo" t-if="record.attachment.raw_value" t-att-src="kanban_image('explode.diagram', 'attachment', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment1.raw_value" t-att-src="kanban_image('explode.diagram', 'attachment1', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment2.raw_value" t-att-src="kanban_image('explode.diagram', 'attachment2', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment3.raw_value" t-att-src="kanban_image('explode.diagram', 'attachment3', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<field name="attachment4" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment5" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment6" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment7" widget="pdf_viewer" width="10px" height="8px"/>-->
+																</div>
+															</div>
+														</t>
+													</templates>
+												</kanban>
+												<form>
+													<sheet>
+														<group>
+															<group style="width:100%;">
+																<field name="name" required="1"/>
+															</group>
+<group name="Attachment Image" string="Attachment Image" style="width:100%;">
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment"/><br></br>
+																	<field name="attachment" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment1"/><br></br>
+																	<field name="attachment1" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment2"/><br></br>
+																	<field name="attachment2" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment3"/><br></br>
+																	<field name="attachment3" widget="image" width="300px"/>
+																</div>
+															</group>
+															<group name="Attachment PDF" string="Attachment PDF" style="width:100%;">
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment4"/><br></br>
+																	<field name="attachment4" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment5"/><br></br>
+																	<field name="attachment5" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment6"/><br></br>
+																	<field name="attachment6" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment7"/><br></br>
+																	<field name="attachment7" widget="pdf_viewer" width="30%"/>
+																</div>
+															</group>
+														</group>
+													</sheet>
+												</form>
+											</field>
+										</group>
+										<group string="Sket Detail">
+											<field name="sket_detail" nolabel="1" attrs="{'readonly': [('state', 'in', ['confirmed'])]}">
+												<kanban>
+													<field name="id"/>
+													<field name="name"/>
+													<field name="attachment"/>
+													<field name="attachment1"/>
+													<field name="attachment2"/>
+													<field name="attachment3"/>
+													<field name="attachment4"/>
+													<field name="attachment5"/>
+													<field name="attachment6"/>
+													<field name="attachment7"/>
+													<templates>
+														<t t-name="kanban-box">
+															<t t-set="attachment" t-value="kanban_color(record.attachment.raw_value)"/>
+															<div t-att-class="attachment + (record.name.raw_value == 1 ? ' oe_kanban_color_alert' : '') + ' oe_kanban_global_click'">
+																<!--<div class="o_kanban_header">
+																	<div t-if="record.name.raw_value">Note : <t t-esc="record.name.value"/>
+																	</div>
+																</div>-->
+																<div class="o_kanban_image" style="width:100%;">
+																<div class="o_kanban_header">
+																	<strong t-if="record.name.raw_value">Attachment</strong>
+																</div>
+																	<!--<img alt="Logo" t-if="record.attachment.raw_value" t-att-src="kanban_image('sket.detail', 'attachment', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment1.raw_value" t-att-src="kanban_image('sket.detail', 'attachment1', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment2.raw_value" t-att-src="kanban_image('sket.detail', 'attachment2', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment3.raw_value" t-att-src="kanban_image('sket.detail', 'attachment3', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<field name="attachment4" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment5" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment6" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment7" widget="pdf_viewer" width="10px" height="8px"/>-->
+
+																</div>
+															</div>
+														</t>
+													</templates>
+												</kanban>
+												<form>
+													<sheet>
+														<group>
+															<group style="width:100%;">
+																<field name="name" required="1"/>
+															</group>
+												<group name="Attachment Image" string="Attachment Image" style="width:100%;">
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment"/><br></br>
+																	<field name="attachment" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment1"/><br></br>
+																	<field name="attachment1" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment2"/><br></br>
+																	<field name="attachment2" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment3"/><br></br>
+																	<field name="attachment3" widget="image" width="300px"/>
+																</div>
+															</group>
+															<group name="Attachment PDF" string="Attachment PDF" style="width:100%;">
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment4"/><br></br>
+																	<field name="attachment4" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment5"/><br></br>
+																	<field name="attachment5" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment6"/><br></br>
+																	<field name="attachment6" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment7"/><br></br>
+																	<field name="attachment7" widget="pdf_viewer" width="30%"/>
+																</div>
+															</group>
+														</group>
+													</sheet>
+												</form>
+											</field>
+										</group>
+										<group string="Verifikasi Design">
+											<field name="verifikasi_design" nolabel="1" attrs="{'readonly': [('state', 'in', ['confirmed'])]}">
+												<kanban>
+													<field name="id"/>
+													<field name="name"/>
+													<field name="attachment"/>
+													<field name="attachment1"/>
+													<field name="attachment2"/>
+													<field name="attachment3"/>
+													<field name="attachment4"/>
+													<field name="attachment5"/>
+													<field name="attachment6"/>
+													<field name="attachment7"/>
+													<templates>
+														<t t-name="kanban-box">
+															<t t-set="attachment" t-value="kanban_color(record.attachment.raw_value)"/>
+																<div t-att-class="attachment + (record.name.raw_value == 1 ? ' oe_kanban_color_alert' : '') + ' oe_kanban_global_click'">
+																<div class="o_kanban_image" style="width:100%;">
+																	<div class="o_kanban_header">
+																		<strong t-if="record.name.raw_value">Attachment</strong>
+																	</div>
+																	<!-- <div class="o_kanban_header">
+																		<div t-if="record.name.raw_value">Note : <t t-esc="record.name.value"/>
+																		</div>
+																	</div>
+																	<img alt="Logo" t-if="record.attachment.raw_value" t-att-src="kanban_image('verifikasi.design', 'attachment', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment1.raw_value" t-att-src="kanban_image('verifikasi.design', 'attachment1', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment2.raw_value" t-att-src="kanban_image('verifikasi.design', 'attachment2', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<img alt="Logo" t-if="record.attachment3.raw_value" t-att-src="kanban_image('verifikasi.design', 'attachment3', record.id.raw_value)" width="64px" height="64px" style="float:left;"/>
+																	<field name="attachment4" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment5" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment6" widget="pdf_viewer" width="10px" height="8px"/>
+																	<field name="attachment7" widget="pdf_viewer" width="10px" height="8px"/>-->
+																</div>
+															</div>
+														</t>
+													</templates>
+												</kanban>
+												<form>
+													<sheet>
+														<group>
+															<group style="width:100%;">
+																<field name="name" required="1"/>
+															</group>
+<group name="Attachment Image" string="Attachment Image" style="width:100%;">
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment"/><br></br>
+																	<field name="attachment" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment1"/><br></br>
+																	<field name="attachment1" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment2"/><br></br>
+																	<field name="attachment2" widget="image" width="300px"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment3"/><br></br>
+																	<field name="attachment3" widget="image" width="300px"/>
+																</div>
+															</group>
+															<group name="Attachment PDF" string="Attachment PDF" style="width:100%;">
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment4"/><br></br>
+																	<field name="attachment4" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment5"/><br></br>
+																	<field name="attachment5" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment6"/><br></br>
+																	<field name="attachment6" widget="pdf_viewer" width="30%"/>
+																</div>
+																<div style="float:left; max-width: fit-content;">
+																	<label for="attachment7"/><br></br>
+																	<field name="attachment7" widget="pdf_viewer" width="30%"/>
+																</div>
+															</group>
+														</group>
+													</sheet>
+												</form>
+											</field>
+										</group>
+									</group>
+									<notebook>
+										<page string="Components" name="components">
+											<group name="component_line_ids" string="Components">
+												<field name="component_line_ids" widget="one2many" context="{'default_design_detail_id': id}" nolabel="1">
+													<tree string="Components" editable="bottom">
+														<field name="product_code" required="1"/>
+														<field name="component" required="1"/>
+														<field name="type"/>
+														<field name="categ_id"/>
+														<field name="size_tebal"/>
+														<field name="size_lebar"/>
+														<field name="size_panjang"/>
+														<field name="product_qty"/>
+														<field name="total_meter_cubic" sum="Meter Cubic"/>
+														<field name="total_meter_persegi" sum="Meter Persegi"/>
+
+														<field name="standard_price"/>
+														<field name="description"/>
+														<field name="product_uom_id"/>
+														<field name="product_tmpl_id" optional="hide"/>
+														<field name="product_id" optional="hide"/>
+													</tree>
+												</field>
+											</group>
+
+											<group name="hardware_line_ids" string="Hardware">
+												<newline />
+												<field name="hardware_line_ids" widget="one2many" context="{'default_design_detail_id': id}" nolabel="1">
+													<tree string="Hardware" editable="bottom">
+														<field name="product_id"/>
+														<field name="description"/>
+														<field name="product_qty" sum="Quantity"/>
+														<field name="product_uom_category_id" invisible="1"/>
+														<field name="product_uom" force_save="1"/>
+													</tree>
+												</field>
+											</group>
+
+											<group name="special_material_line_ids" string="Special Materials">
+												<newline/>
+												<field name="special_material_line_ids" widget="one2many" context="{'default_design_detail_id': id}" nolabel="1">
+													<tree string="Special Materials" editable="bottom">
+														<field name="product_id"/>
+														<field name="description"/>
+														<field name="product_qty" sum="Quantity"/>
+														<field name="product_uom_category_id" invisible="1"/>
+														<field name="product_uom" force_save="1"/>
+													</tree>
+												</field>
+											</group>
+
+										</page>
+										<page string="Operations" name="operations" groups="mrp.group_mrp_routings">
+											<field name="operation_ids" groups="mrp.group_mrp_routings" context="{'bom_id_invisible': True}"/>
+										</page>
+									</notebook>
+								</sheet>
+							</form>
+						</field>
+					</page>
+				</xpath>
+			</field>
+		</record>
+		<record id="create_revisi1_view_form" model="ir.ui.view">
+			<field name="name">Create Revisi 1 Form</field>
+			<field name="model">create.revisi1.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Create Revisi 1">
+					<group>
+						<field name="notes"/>
+					</group>
+					<footer>
+						<button name="create_revisi1" string="Confirm" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-secondary" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+	</data>
+</odoo>

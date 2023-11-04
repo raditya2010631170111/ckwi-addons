@@ -1,0 +1,181 @@
+<odoo>
+
+		<template id="report_contract_docs">
+		     <t t-foreach="docs.sale_id" t-as="o">
+	            <t t-call="jidoka_marketing.report_contract_reviews"/>
+        	  </t>
+        </template>
+
+
+		<template id="report_contract_reviews">
+            <t t-call="web.html_container">
+	  	        <t t-call="web.basic_layout">
+	  	        	<div class="header">
+		  	        	<div style="text-align:right; font-size:20px;">
+	    					<table width="100%">
+	    						<tr>
+				            		<td style="text-align: center;">
+				            			<span style="border-bottom: 2px solid black "><b>CONTRACT REVIEWS</b></span>
+				            		</td>
+				            	</tr>
+				            	<tr>
+				            		<td style="text-align: center;">
+				            			<span><b>CIPTA</b></span>
+				            		</td>
+				            	</tr>
+	    					</table>
+	    					<table width="100%" style="font-size:16px;">
+	    						<tr>
+				                	<td width="10%" style="text-align:left;">No. Requested</td>
+			                		<td width="3%"  style="text-align:left;">:</td>
+			                		<td width="20%" style="text-align:left; padding-left: 5px;">
+			                			<span t-esc="o.name"/>
+			                		</td>
+			                		<td width="30%"></td>
+			                		<td width="10%" style="text-align:left;">Date Meeting</td>
+			                		<td width="5%"  style="text-align:left;">:</td>
+			                		<td width="20%" style="text-align:left; padding-left: 5px;">
+			                			<span t-esc="o.date_order"/>
+			                		</td>
+				                </tr>
+				                <tr>
+				                	<td style="text-align:left;">From</td>
+			                		<td style="text-align:left;">:</td>
+			                		<td style="text-align:left; padding-left: 5px;">
+			                			<span t-esc="o.department_id.display_name"/>
+			                		</td>
+			                		<td ></td>
+			                		<td style="text-align:left;">Person in Charger</td>
+			                		<td style="text-align:left;">:</td>
+			                		<td style="text-align:left; padding-left: 5px;">
+			                			<span t-esc="o.env.user.display_name"/>
+			                		</td>
+				                </tr>
+				                <tr>
+				                	<td style="text-align:left;">Buyer Name</td>
+			                		<td style="text-align:left;">:</td>
+			                		<td colspan="4" style="text-align:left; padding-left: 5px;">
+			                			<span t-esc="o.partner_id.display_name"/>
+			                		</td>
+				                </tr>
+				                <tr>
+			                		<td style="text-align:left;">Order Details</td>
+			                		<td style="text-align:left;">:</td>
+			                		<td colspan="4" style="text-align:left; padding-left: 5px;">
+			                			<span t-esc="o.origin"/>
+			                		</td>
+				                </tr>
+				                <tr>
+				                	<td style="text-align: center; padding: 15px; font-size:16px;" colspan="7">
+				                		<div style="bottom: 40px; height: 100%;">
+					                		<span style="vertical-align: top; border: 2px solid black; padding: 5px 50px;">
+					                			NON FSC
+					                		</span>
+					                	</div>
+				                	</td>
+				                </tr>
+				                <tr>
+				                	<tr>
+					            		<td style="text-align: right; font-size: 14px; padding-top:15px;" colspan="7">
+					            			Page <span class="page"/> of <span class="topage"/>
+					            		</td>
+					            	</tr>
+				                </tr>
+	    					</table>
+				         </div>
+			         </div>
+        		    <div>
+						<t t-call="jidoka_marketing.body_reviews_report"/>
+					</div>
+					<div class="footer">
+					    <div style="text-align:left; font-size:16px;">
+				            Confirmed By : _____________________________
+				         </div>
+					</div>
+	            </t>
+            </t>
+        </template>
+
+
+        <template id='body_reviews_report'>
+				<div style="text-align:right; font-size:16px;">
+					<table width="100%">
+						<thead>
+							<tr>
+								<!-- <td width="10%" style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>Item No.</b></td> -->
+								<td width="10%" style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>Product</b></td>
+								<!-- <td style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>PO No</b></td> -->
+								<td style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>Cust. Ref.</b></td>
+								<td width="10%" style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>SKU No</b></td>
+								<td width="30%" style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>Description</b></td>
+								<!-- <td width="10%" style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>MO No</b></td> -->
+								<td width="10%" style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>No. MO</b></td>
+								<td style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>Quantity</b></td>
+								<td style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>Cont. Load</b></td>
+								<td style="border: 1px solid black; vertical-align : middle;text-align:center;" rowspan="3"><b>Req Ship Date</b></td>
+								<td style="border: 1px solid black; vertical-align : middle;text-align:center;" ><b>Comments</b></td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid black; text-align: center;"><b>Sub-Con</b></td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid black; text-align: center;"><b style="padding-right: 10px">1/2 Jadi</b> - <b>Jadi</b></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr t-foreach="docs.get_contact_reviews()" t-as="line">
+								<td style="border: 1px solid black; text-align: left; padding: 5px;">
+									<span t-esc="line['product_id']"/>
+								</td>
+								<td style="border: 1px solid black; text-align: left; padding: 5px;">
+									<!-- <span t-esc="line['no_po']"/> -->
+									<span t-esc="line['no_po_cust']"/>
+								</td>
+								<td style="border: 1px solid black; text-align: left; padding: 5px;">
+									<!-- <span t-esc="line['sku_id']"/> -->
+									<span t-esc="line['sku']"/>
+								</td>
+								<td style="border: 1px solid black; text-align: left;">
+									<div style="padding-left: 5px;">
+										<!-- <span t-esc="line['name']"/> -->
+										<span t-esc="line['product_id']"/> <br/><br/>
+										<span t-esc="line['fabric_colour_id']"/>
+										<!-- <span t-esc="line['material_finishing']"/><br/> -->
+										<span t-esc="line['material_finish_id']"/><br/>
+										<!-- <span t-esc="line['finish_id']"/> -->
+									</div>
+
+								</td>
+								<td style="border: 1px solid black; text-align: left; padding: 5px;">
+									<span t-esc="line['no_mo']"/>
+								</td>
+								<td style="border: 1px solid black; text-align: left; padding: 5px;">
+									<span t-esc="line['product_uom_qty']"/>
+								</td>
+								<td style="border: 1px solid black; text-align: left; padding: 5px;">
+									<span t-esc="line['cont_load']"/>
+								</td>
+								<td style="border: 1px solid black; text-align: left; padding: 5px;">
+									<span t-esc="line['request_date']"/>
+								</td>
+								<td style="border: 1px solid black; text-align: left;"></td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr style="padding-bottom: 50px;">
+								<td style="border-left: 1px solid black; border-top: 1px solid black; border-bottom: 1px solid black; text-align: center; padding-top: 10px;" >
+									Note :
+								</td>
+								<td style="border-right: 1px solid black; border-top: 1px solid black; border-bottom: 1px solid black; text-align: left; padding-top: 15px;" colspan="8">
+									<span t-field="docs.note"/>
+									<br/><br/><br/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+        </template>
+
+
+
+</odoo>

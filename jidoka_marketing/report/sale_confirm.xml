@@ -1,0 +1,310 @@
+<odoo>
+	<data>
+		<template id="report_sale_confirm">
+              <t t-call="web.html_container">
+  	        	<t t-call="web.basic_layout">
+        		     <t t-foreach="docs.get_order_list()" t-as="o">
+		                <t t-call="jidoka_marketing.report_sale_body"/>
+		              </t>
+	              </t>
+              </t>
+        </template>
+        <template id='report_sale_body'>
+    				<div class="header">
+    					<t t-set="company" t-value="docs.env.user.company_id" />
+	    				<div style="text-align:right;">
+	    					<table width="100%">
+	    							<tr>
+				            		<td style="text-align: center; font-size:18px; font-weight:bold;">
+				            			<span t-esc="company.name"/>
+				            		</td>
+				            	</tr>
+				            	<tr>
+				            		<td style="text-align: center; font-size:14px;">
+				            			<span t-esc="company.street"/>
+				            		</td>
+				            	</tr>
+				            	<tr>
+				            		<td style="text-align: center; font-size:14px;">
+				            			<span t-esc='company.state_id.name'/> 
+				            			<span t-esc='company.zip'/> -
+				            			<span t-esc='company.country_id.name'/> 
+				            		</td>
+				            	</tr>
+					            <tr>
+									<td style="text-align: center; font-size:14px;">
+										<!-- Telp. : <span t-esc='company.phone'/> Fax. : <span t-esc='company.vat'/> -->
+										Telp. : <span t-esc='company.phone'/> Fax. : <span t-esc='company.fax'/>
+									</td>
+				            	</tr>
+				            	<tr>
+				            		<td style="text-align: right; font-size: 14px;">
+				            			Page <span class="page"/> of <span class="topage"/>
+				            		</td>
+				            	</tr>
+	    					</table>
+	    					<table width="100%">
+	    						<tr>
+			                		<td style="width:65%; text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; font-size:22px;">
+				                		<b>
+				                			<span>SALES CONFIRMATON</span>
+				                		</b>
+				                	</td>
+				                	<td style="text-align: center; border-bottom: 1px solid black; border-top: 1px solid black; font-size:20px;">
+						                <span style="font-size: 14px; width:35%;">
+					                		No : <span t-esc="o.no_mo"/>
+					                	</span>
+			                		</td>
+				                </tr>
+	    					</table>
+			         </div>
+			       </div>
+	       
+					<div>
+						<t t-call="jidoka_marketing.report_sale_confirm_doc"/>
+					</div>
+					<div class="footer">
+	            		<table width="100%" style="margin-top: 10px;">
+	            			<tr>
+	            				<td colspan="3" style="text-align:center; padding-top:10px; border-bottom: 2px solid black;"></td>
+	            			</tr>
+	            			<tr>
+	            				<td colspan="3" style="text-align:center;">
+	            					BANK MAS, GRAHA BANK MAS Jl. Setiabudi Selatan Kav. 7-8 Kuningan, Jakarta Selatan 12920
+	            				</td>
+	            			</tr>
+	            			<tr>
+	            				<td colspan="3" style="text-align:center;">
+	            					ACC Name : PT. Cipta Kreasi Wood Industry, ACC No. 1000202068 Swift Ccde : BMSEIDJA
+	            				</td>
+	            			</tr>
+	            		</table>
+					</div>
+        </template>
+
+
+
+		<template id="report_sale_confirm_doc">
+				<t t-set="total_qty" t-value="0"/>
+        		<t t-set="total_price" t-value="0"/>
+        		<t t-set="total_sub" t-value="0"/>
+                <div class="page">
+                	<div>
+                		<div style="font-size:14px;">
+                		<table width="100%">
+                			<tr>
+		                		<td width="15%"><b>Messers</b></td>
+		                		<td width="10px">:</td>
+	                			<td width="40%" style="padding-left: 5px">
+	                				<span t-esc="o.order_id.partner_id.display_name"/>
+	                			</td>
+		                		<td width="5%"></td>
+		                		<td width="15%"><b>Date</b></td>
+		                		<td width="10px">:</td>
+		                		<td width="40%" style="padding-left: 5px">
+		                			<span t-esc="o.order_id.date_order.strftime('%d %B %Y')"/>
+		                		</td>
+		                	</tr>
+		                	<tr>
+		                		<td width="15%"><b>Address</b></td>
+		                		<td width="10px">:</td>
+	                			<td width="40%" style="padding-left: 5px">
+	                				<span t-esc="o.order_id.partner_id.street"/>
+	                			</td>
+		                		<td width="5%"></td>
+		                		<td width="15%"><b>Buyer PO</b></td>
+		                		<td width="10px">:</td>
+		                		<td width="40%" style="padding-left: 5px">
+		                			<span t-esc="o.order_id.buyer_po"/>
+		                		</td>
+		                	</tr>
+		                	<tr>
+		                		<td><b>Country</b></td>
+		                		<td>:</td>
+		                		<td colspan="5" style="padding-left: 5px">
+		                			<span t-esc="o.order_id.partner_id.country_id.name"/>
+		                		</td>
+		                	</tr>
+		                	<tr>
+		                		<td><b>Port Of Delivery</b></td>
+		                		<td>:</td>
+		                		<td colspan="5" style="padding-left: 5px">
+		                			<span t-esc="o.order_id.city_of_deliver.display_name" />
+		                			<span t-esc="o.order_id.country_of_deliver.display_name" />
+		                		</td>
+		                	</tr>
+		                	<tr>
+		                		<td><b>Shipping Date</b></td>
+		                		<td>:</td>
+		                		<td colspan="5" style="padding-left: 5px">
+		                			<span t-esc="o.request_date.strftime('%d %B %Y')" />
+		                		</td>
+		                	</tr>
+		                	<tr>
+		                		<td><b>Term</b></td>
+		                		<td>:</td>
+		                		<td colspan="5" style="padding: 5px">
+		                			<span t-esc="o.order_id.payment_term_id.display_name" />
+		                		</td>
+		               
+		                	</tr>
+		                	<tr>
+		                		<td><b>Payment</b></td>
+		                		<td>:</td>
+		                		<td colspan="5" style="padding: 5px">
+		                			<span t-esc="o.order_id.payment"/>
+		                		</td>
+		               
+		                	</tr>
+		                	<tr>
+		                		<td><b>Cust. Ref</b></td>
+		                		<td>:</td>
+		                		<td colspan="5" style="padding: 5px">
+		                			<span t-esc="o.order_id.origin" />
+		                		</td>
+		               
+		                	</tr>
+		                	<tr>
+		                		<td colspan="4"></td>
+		                		<td><b>Dastination</b></td>
+		                		<td>:</td>
+		                		<td style="padding: 5px">
+		                			<span t-esc="o.order_id.destination"/>
+		                		</td>
+		               
+		                	</tr>
+	                	</table>
+                	</div>
+                	<div style="margin-top: 20px; font-size: 14px;">
+                		<table width="100%" style="border-bottom: 1px solid black;">
+						<tr style="border: 1px solid black;">
+							<td width="12%" style="padding :5px; border: 1px solid black; padding-left: 10px; font-weight: bold;">Item No</td>
+							<td width="40%" colspan="2" style="padding :5px; border: 1px solid black; padding-left: 10px; font-weight: bold;">
+								Description
+							</td>
+							<td width="8%" style="padding :5px; border: 1px solid black; text-align:center; font-weight: bold;">Qty</td>
+							<td width="8%" style="padding :5px; border: 1px solid black; text-align:center; font-weight: bold;">
+								Unit Price <br/>
+								<span t-esc="o.order_id.pricelist_id.name"/>
+
+							</td>
+							<td width="9%" style="padding :5px; border: 1px solid black; text-align:center; font-weight: bold;">
+								Amount <br/>
+								<span t-esc="o.order_id.pricelist_id.name"/>
+							</td>
+							<td width="23%" style="padding :5px; border: 1px solid black; padding-left: 10px; font-weight: bold;">Packaging</td>
+						</tr>
+						<tr t-foreach="docs.get_list_line()" t-as="line" style="border: 1px solid black;">
+							<td style="padding: 5px; border: 1px solid black;">
+								<span t-esc="line['product_id']"/>
+								<br/>
+								<br/>
+							</td>
+							<td width="30%" style="padding: 5px; border-top: 1px solid black; border-bottom: 1px solid black;">
+								<div>
+									<span t-esc="line['name']"/>
+								</div>
+									<br/>
+	            					<br/>
+            					<div style="font-size:12px;">
+	            					<!-- SKU No : <span t-esc="line['sku_id']" /> -->
+	            					SKU No : <span t-esc="line['sku']" />
+        						</div>
+							</td>
+
+							<td width="15%" style="font-size:12px; border-top: 1px solid black; border-bottom: 1px solid black; position: relative;">
+								<div style="position: absolute; bottom: 0; display: table; height: 100%;">
+									<span style="padding-left: 10px; vertical-align: bottom; display: table-cell; display: block;">
+										<!-- Cust. Ref#<span t-esc="line['no_po']" /> -->
+										Cust. Ref#<span t-esc="line['no_po_cust']" />
+	        						</span>
+        						</div>
+							</td>
+							<td style="border: 1px solid black;">
+								<span style="padding: 5px;" t-esc="line['product_uom_qty']"/><span t-esc="line['product_uom']"/>
+							</td>
+							<td style="border: 1px solid black;">
+								<span style="padding: 5px;" t-esc="'{0:,.2f}'.format(int(line['price_unit']))" />
+<!--								<span style="padding: 5px;" t-esc="line['price_unit']"/>-->
+							</td>
+							<td style="border: 1px solid black;">
+								<span style="padding: 5px;" t-esc="'{0:,.2f}'.format(int(line['price_subtotal']))" />
+<!--								<span style="padding: 5px;" t-esc="line['price_subtotal']"/>-->
+							</td>
+							<td style="border: 1px solid black;">
+								<div style="padding: 5px;">
+									<span t-esc="line['product_packaging']"/>
+								</div>
+							</td>
+							<t t-set="total_qty" t-value="total_qty + line['product_uom_qty']"/>
+							<t t-set="total_price" t-value="total_price + line['price_unit']"/>
+							<t t-set="total_sub" t-value="total_sub + line['price_subtotal']"/>
+						</tr>
+						<tr>
+							<td width="52%" colspan="3" style="font-size:16px; padding-right:5px; text-align:right; font-weight:bold; border: 1px solid black; padding-top:5px; padding-bottom:20px;">Total</td>
+							<td width="25%" colspan="2" style="font-size:16px; padding-left:5px; font-weight:bold; border:1px solid black;" >
+								<!-- <span style="padding-left: 5px;" t-esc="total_qty"/> -->
+								COMBINE CONT
+							</td>
+							<td colspan="2" width="23%" style="font-size:16px; padding-left:5px; font-weight:bold; border:1px solid black;">
+<!--								<span t-esc="total_sub"/>-->
+								<span style="padding: 5px;" t-esc="'{0:,.2f}'.format(int(total_sub))" />
+							</td>
+						</tr>
+					</table>
+					<table width="100%" style="border-top: 1px solid black;">
+
+					</table>
+                		
+                	</div>
+                	<div style="margin-top: 10px; font-size:12px">
+                		<table width="100%">
+                			<thead>
+	                			<tr>
+	                				<td width="8%"><b>REMARK :</b></td>
+	                				<td width="92%">
+	                					1. PAYMENT SHOULD BE WIRED AT ONCE AFTER RECEIVED COPIES OF SHIPPING DOCUMENT
+	                				</td>
+	                			</tr>
+	                			<tr>
+	                				<td></td>
+	                				<td>
+	                					2. BENEFICIARY MUST RECEIVED FULL AMOUNT AS STATED ON INVOICE
+	                				</td>
+	                			</tr>
+	                			<tr>
+	                				<td></td>
+	                				<td>
+	                					3. BANK CHARGES OUTSIDE OF BENEFICIARY BANK MUST BE BORNE BY APPLICANT
+	                				</td>
+	                			</tr>
+	                		</thead>
+	                	</table>
+	                </div>
+	                <div style="margin-top: 100px; font-size:14px">
+		                <table width="100%">
+	            			<tr>
+	            				<td style="text-align:center; width: 100px;">CONFIRMED BY (BUYER)</td>
+	            				<td width="150px"></td>
+	            				<td style="text-align:center; width: 150px;">AUTHORIZED SIGNATURE</td>
+	            			</tr>
+	            			<tr>
+	            				<td style="text-align:center; padding-top:90px; border-bottom: 2px solid black;">
+	            					<span t-esc="o.order_id.partner_id.display_name" />
+	            				</td>
+	            				<td></td>
+	            				<td style="text-align:center; padding-top:90px; border-bottom: 2px solid black;">
+	            					<span t-esc="docs.env.user.name" />
+	            				</td>
+	            			</tr>
+	            		</table>
+            		</div>
+                </div>
+            </div>
+    </template>
+
+
+
+
+	</data>
+</odoo>

@@ -1,0 +1,371 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="report_packing_list">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div class="header" style="text-align:center;">
+                            <span style="font-weight: bold;">
+                                <t t-esc="o.shipper_id.name"/>
+                            </span>
+                        </div>
+                        <div style="text-align:center; top:25px; position: relative;">
+                            <td>
+                                <span style="font-weight: bold;" t-esc="o.shipper_id.street"/>
+                            </td>
+                        </div>
+                        <div style="text-align:center; top:25px; position: relative; ">
+                            <td>
+                                <span style="font-weight: bold;" t-esc="o.shipper_id.street2"/>
+                                <span style="font-weight: bold;" t-esc="o.shipper_id.zip"/>
+                                <span style="font-weight: bold;" t-esc="o.shipper_id.state_id.name"/>
+                                <span style="font-weight: bold;" t-esc="o.shipper_id.country_id.name"/>
+                                <br/>
+                                <br/>
+                            </td>
+                        </div>
+                        <div style="margin-top:10px;text-align:center; font-weight: bold;border-top: 1px solid black;border-bottom: 1px solid black;">
+                            <td>&gt;&gt;&gt;&gt;&gt;   PACKING LIST    &lt;&lt;&lt;&lt;&lt; </td>
+                            <br/>
+                        </div>
+                        <!-- <div style="margin-top:10;font-size:12px"> -->
+                        <div style="margin-top:10;">
+                            <table width="100%" style="border-collapse: collapse; font-size:14px">
+                                <tr style="vertical-align: top;">
+                                    <td style="padding: 5px;">INVOICE NO</td>
+                                    <td style="padding: 5px;">:</td>
+                                    <td style="padding: 5px;">
+                                        <span t-esc="o.name" />
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <div style="padding-left: 250;">SALES CONFIRMATION NO</div>
+                                    </td>
+                                    <td>:</td>
+                                    <td>
+                                        <!-- <span t-esc="o.many_source_document_ids.name" /> -->
+                                        <!-- <span t-esc="o.no_sc_ids.name" /> -->
+                                        <t t-foreach="o.no_sc_ids" t-as="so"><span t-esc="so.name"/><br/> </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px; border-bottom: 1px solid black">INVOICE DATE </td>
+                                    <td style="padding: 5px; border-bottom: 1px solid black">:</td>
+                                    <td colspan="8" style="padding: 5px; border-bottom: 1px solid black;">
+                                        <t t-if="o.invoice_date">
+                                            <span t-esc="o.invoice_date.strftime('%d/%m/%Y')" />
+                                            <br/>
+                                        </t>
+                                        <!-- <span t-esc="o.invoice_date.strftime('%d/%m/%Y')" /> -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px; border-bottom: 1px solid black; vertical-align: top;">MESSR.</td>
+                                    <td style="padding: 5px; border-bottom: 1px solid black; vertical-align: top;">:</td>
+                                    <td colspan="8" style="padding: 5px; border-bottom: 1px solid black; vertical-align: top;">
+                                        <t t-if="o.to_partner_id.name">
+                                            <span t-esc="o.to_partner_id.name" />
+                                            <br/>
+                                        </t>
+                                        <t t-if="o.to_partner_id.street">
+                                            <span t-esc="o.to_partner_id.street" />
+                                            <br/>
+                                        </t>
+                                        <span t-esc="o.to_partner_id.street2" />
+                                        <span t-esc="o.to_partner_id.city" />
+                                        <t t-if="o.to_partner_id.zip">
+                                            <span t-esc="o.to_partner_id.zip" />
+                                            <br/>
+                                            <t t-if="o.to_partner_id.state_id.name">
+                                                <span t-esc="o.to_partner_id.state_id.name" />,
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="o.to_partner_id.zip" />,                                                <br/>
+                                            </t>
+                                        </t>
+                                        <span t-esc="o.to_partner_id.country_id.name" />
+                                    </td>
+                                </tr>
+                                <table style="width:100%; border-bottom:1px solid black; font-size:14px">
+                                    <tr>
+                                        <td style="padding: 5px; vertical-align: top;">VESSEL</td>
+                                        <td style="padding: 5px; vertical-align: top;">:</td>
+                                        <td style="padding: 5px; vertical-align: top;">
+                                            <span t-esc="o.vessel" />
+                                        </td>
+                                        <td></td>
+                                        <td style="text-align:right; padding-left: 50;vertical-align:top;">
+                                            <div style="padding-left: 350;vertical-align:top;">FROM</div>
+                                        </td>
+                                        <td  style="text-align:right; padding-left: 50;vertical-align:top;">:</td>
+                                        <td>
+                                            <t t-esc="o.from_packing_city"/>, <t t-esc="o.from_packing_country_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px; vertical-align: top;">ON BOARD</td>
+                                        <td style="padding: 5px; vertical-align: top;">:</td>
+                                        <td style="padding: 5px; vertical-align: top;">
+                                            <t t-if="o.onboard_date">
+                                                <span t-esc="o.onboard_date.strftime('%d/%m/%Y')" />
+                                                <br/>
+                                            </t>
+                                            <!-- <span t-esc="o.onboard_date.strftime('%d/%m/%Y')" /> -->
+                                        </td>
+                                        <td></td>
+                                        <td  style="text-align:right; padding-left: 50;vertical-align:top;">
+                                            <div style="padding-left: 350;vertical-align:top;">TO</div>
+                                        </td>
+                                        <td style="text-align:right; padding-left: 50;vertical-align:top;">:</td>
+                                        <td>
+                                            <!-- <span t-esc="o.delivery_address_id.city" /> -->
+                                            <t t-esc="o.to_packing_city"/>, 
+                                            <t t-if="o.to_packing_country_state_id">
+                                                <t t-esc="o.to_packing_country_state_id.name"/>, <br/>
+                                            </t>
+                                            <t t-esc="o.to_packing_country_id.name"/>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                                <table style="width:100%;border-bottom:1px solid black;border-collapse:collapse; font-size:14px">
+                                    <tr>
+                                        <td style="text-align: center; border-bottom:1px solid black; font-weight: bold;">ITEM NO</td>
+                                        <td style="text-align: center; border-bottom:1px solid black; font-weight: bold;">SKU</td>
+                                        <td style="text-align: center; border-bottom:1px solid black; font-weight: bold;">DESCRIPTION</td>
+                                        <td style="text-align: center; border-bottom:1px solid black; font-weight: bold;">QTY</td>
+                                        <td style="text-align: center; border-bottom:1px solid black; font-weight: bold;">PACK <br/>(CTN)</td>
+                                        <td style="text-align: center; border-bottom:1px solid black; font-weight: bold;">N.W <br/>(KGS)</td>
+                                        <td style="text-align: center; border-bottom:1px solid black; font-weight: bold;">G.W <br/>(KGS)</td>
+                                        <td style="text-align: center; border-bottom:1px solid black; font-weight: bold;">MEANS <br/>(CBM)</td>
+                                    </tr>
+                                    <tr style="height: 10px;">
+                                        <td colspan="6"></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="4" style="text-align: left; position: relative; padding:10px 0px; font-weight: bold;">
+                                            <t t-if="o.fob_term_id">
+                                                <span t-esc="o.fob_term_id.name" />, 
+                                            </t>
+
+                                            <t t-if="o.from_packing_city">
+                                                <span t-esc="o.from_packing_city" />, 
+                                            </t>
+                                            <span t-esc="o.from_packing_country_id.name" />
+                                            <!-- <span t-esc="o.fob_term_id.name" /> -->
+                                        <!-- <t t-if="o.from_packing_city">
+                                                <span t-esc="o.from_packing_city" />,
+                                            </t>
+                                            <span t-esc="o.from_packing_country_id.name" /> -->
+                                    </td>
+                                </tr>
+                                <!-- <t t-foreach="o.product_line_ids" t-as="line"> -->
+                                <t t-foreach="o.container_operation_ids" t-as="line">
+                                    <tr style="line-height: 0;">
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="4" style="text-align: left; position: relative; padding:10px 0px; font-weight: bold;">CONTAINER NO.# <span t-esc="line.container_no" />
+                                        </td>
+                                    </tr>
+                                    <tr style="line-height: 0;">
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="4" style="text-align: left; position: relative; padding:10px  0px; font-weight: bold;">SEAL NO.# <span t-esc="line.seal_no" />
+                                        </td>
+                                        <br/>
+                                    </tr>
+                                    <tr style="height: 10px;">
+                                        <td colspan="6"></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="4" style="text-align: left; position: relative; padding:10px  0px; font-weight: bold;">PO.NO: <span t-esc="line.buyer_po" />
+                                        </td>
+                                    </tr>
+                                    <tr style="line-height: 0;">
+                                        <td></td>
+                                        <td></td>
+                                        <!-- <td colspan="4" style="text-align: left; position: relative; padding:10px  0px; font-weight: bold;">MO.NO: <span t-esc="o.many_source_document_ids.name" /> -->
+                                        <td colspan="4" style="text-align: left; position: relative; padding:10px  0px; font-weight: bold;">SJ.NO: 
+                                        <!-- <span t-esc="line.picking_ids.name" /> -->
+                                        <t t-foreach="line.picking_ids" t-as="picking"><span t-esc="picking.name"/> </t>
+                                        </td>
+                                    </tr>
+                                    <!-- te -->
+                                    <t t-foreach="line.container_operation_line_ids" t-as="cont">
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td style="text-align: left; position: relative; padding:10px  0px; font-weight: bold;">
+                                                <t t-if="cont.cust_ref">
+                                                    PO # <span t-esc="cont.cust_ref" />
+                                                </t>
+
+                                                <!-- <t t-esc="cont.cust_ref" /> -->
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left; position: relative; padding:10px  0px; ">
+                                                <br/>
+                                                <t t-esc="cont.product_id.name" />
+                                            </td>
+                                            <td style="text-align: center; position: relative; padding:10px  0px;">
+                                                <br/>
+                                                <t t-esc="cont.sku" />
+                                            </td>
+                                            <td style="text-align: center; position: relative; padding:10px  0px;">
+                                                <br/>
+                                                <!-- <t t-esc="cont.name" /> -->
+                                            </td>
+                                            <td style="text-align: center; position: relative; padding:10px  0px;">
+                                                <br/>
+                                                <!-- <span t-esc="cont.quantity_done" />&#160; -->
+                                                <span t-esc="int(cont.product_container_qty)" />&#160;
+                                                <span t-esc="cont.product_uom.name" />
+                                            </td>
+                                            <!-- <td style="text-align: center; position: relative; padding:10px  0px;">
+                                            <t t-esc="cont.uom_id.name"/>
+                                            </td> -->
+                                            <td style="text-align: center; position: relative; padding:10px  0px;">
+                                                <br/>
+                                                <t t-esc="int(cont.pack)" />
+                                            </td>
+                                            <td style="text-align: center; position: relative; padding:10px  0px;">
+                                                <br/>
+                                                <t t-esc="'%.2f' % cont.net_weight" />
+                                            </td>
+                                            <td style="text-align: center; position: relative; padding:10px  0px;">
+                                                <br/>
+                                                <t t-esc="'%.2f' % cont.gross_weight" />
+                                            </td>
+                                            <td style="text-align: center; position: relative; padding:10px  0px;">
+                                                <br/>
+                                                <t t-esc="'%.2f' % cont.means" />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <!-- <t t-foreach="docs.container_operation_ids" t-as="line"> -->
+                                    <tr>
+                                        <td colspan="3" style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; font-weight: bold;">TOTAL CONTAINER <span t-esc="line_index+1" /></td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="int(line.total_qty_pcs)" />&#160; Pcs<br/>
+                                            <span t-esc="int(line.total_qty_set)" />&#160; Set
+                                            <span t-esc="line.uom_name_line" style="margin-left: 5px;" />
+                                        </td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="int(line.total_pack)" />&#160; CTN</td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="'%.2f' % line.total_net_wght" style="margin-left: 5px;" />
+                                        </td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="'%.2f' % line.total_gross_wght" style="margin-left: 5px;" />
+                                        </td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="'%.2f' % line.total_means" style="margin-left: 5px;" />
+                                        </td>
+                                    </tr>
+                                    <!-- </t> -->
+
+                                </t>
+                                <tr>
+                                        <td colspan="3" style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; font-weight: bold;">*****GRAND TOTAL*****</td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="int(docs.total_qty_pcs)" />&#160; Pcs<br/>
+                                            <span t-esc="int(docs.total_qty_set)" />&#160; Set
+                                            <!-- <span t-esc="line.uom_name_line" style="margin-left: 5px;" /> -->
+                                        </td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="int(docs.total_pack)" />&#160; CTN</td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="'%.2f' % docs.total_net_wght" style="margin-left: 5px;" />
+                                        </td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="'%.2f' % docs.total_gross_wght" style="margin-left: 5px;" />
+                                        </td>
+                                        <td style="text-align: center; position: relative; border-top:2px solid black; border-bottom:2px solid black; padding:10px  0px; ">
+                                            <span t-esc="'%.2f' % docs.total_means" style="margin-left: 5px;" />
+                                        </td>
+                                    </tr>
+
+                            </table>
+                            <!-- <table style="width:100%; border:1px solid black; "> 
+            <tr>
+                <td style="text-align: center; position: relative; padding:10px  0px; font-weight: bold;">TOTAL CONTAINER 1</td>
+                <td style="text-align: center; position: relative; padding:10px  0px; "><span t-esc="o.total_qty"/><span t-esc="o.uom_name_line" style="margin-left: 5px;"/></td>
+                <td style="text-align: center; position: relative; padding:10px  0px; "><span t-esc="o.total_pack"/>CTN</td>
+                <td style="text-align: center; position: relative; padding:10px  0px; "><span t-esc="o.total_net_wght" style="margin-left: 5px;"/></td>
+                <td style="text-align: center; position: relative; padding:10px  0px; "><span t-esc="o.total_gross_wght" style="margin-left: 5px;"/></td>
+                <td style="text-align: center; position: relative; padding:10px  0px; "><span t-esc="o.total_means" style="margin-left: 5px;"/></td>
+            </tr>
+        </table> -->
+							<table width="100%">
+								<tr>
+									<td width="65%"></td>
+									<td width="35%" style="padding-top:30px;text-align:center;"><span t-field="o.shipper_id.name"></span></td>
+								</tr>
+								<tr>
+									<td style="padding-top:100px;"></td>
+									<td style="padding-top:100px;text-align:center;">( &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; )</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td style="text-align:center;">AUTHORIZED SIGNATURE</td>
+								</tr>
+							</table>
+                        </table>
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_report_jidoka_export_pli_a4" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_packing_list_pdf" model="ir.actions.report">
+            <field name="name">Packing List (PDF)</field>
+            <field name="model">packing.list</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">jidoka_export.report_packing_list</field>
+            <field name="binding_model_id" ref="model_packing_list"/>
+            <field name="paperformat_id" ref="paperformat_report_jidoka_export_pli_a4"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="report_packing_list_xlsx" model="ir.actions.report">
+            <field name="name">Packing List (XLSX)</field>
+            <field name="model">packing.list</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">jidoka_export.report_packing_list_xlsx</field>
+            <field name="binding_model_id" ref="model_packing_list"/>
+            <!-- <field name="paperformat_id" ref="paperformat_report_jidoka_export_pli_a4"/> -->
+            <field name="binding_type">report</field>
+        </record>
+
+
+</data>
+</odoo>

@@ -1,0 +1,169 @@
+<odoo>
+
+    <template
+        id="assets_backend"
+        name="jidoka_manufacturing_report assets"
+        inherit_id="web.assets_backend"
+    >
+        <xpath expr="." position="inside">
+            <link
+                href="/jidoka_manufacturing_report/static/src/css/report.css"
+                rel="stylesheet"
+            />
+            <script
+                type="text/javascript"
+                src="/jidoka_manufacturing_report/static/src/js/manufacturing_rekap_order_backend.js"
+            />
+        </xpath>
+    </template>
+
+    <template id="jidoka_manufacturing_report.internal_layout">
+        <div class="article">
+            <link
+                href="/jidoka_manufacturing_report/static/src/css/report.css"
+                rel="stylesheet"
+            />
+            <t t-raw="0" />
+        </div>
+        <div class="footer">
+            <div class="row">
+                <div class="col-6 custom_footer">
+                    <span
+                        t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"
+                    />
+                </div>
+                <div class="col-6 text-right custom_footer">
+                    <span class="page" />/<span class="topage" />
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_buttons_summary">
+        <div class="button_row">
+            <button class="o_manufacturing_reports_print btn btn-sm oe_button"><span
+                    class="fa fa-print"
+                />Print</button>
+            <button class="o_manufacturing_reports_export btn btn-sm oe_button"><span
+                    class="fa fa-download"
+                />Export</button>
+        </div>
+    </template>
+
+    <template id="manufacturing_summary_html">
+        <div class="o_manufacturing_reports_page">
+            <t t-call="jidoka_manufacturing_report.report_buttons_summary" />
+            <t t-call="jidoka_manufacturing_report.report_manufacturing_report_summary_base" />
+        </div>
+    </template>
+
+    <template id="jidoka_manufacturing_report.report_manufacturing_report_summary_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="jidoka_manufacturing_report.internal_layout">
+                    <t t-call="jidoka_manufacturing_report.report_manufacturing_report_summary_base" />
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="jidoka_manufacturing_report.report_manufacturing_report_summary_base">
+        <div class="page">
+            <div class="col-12">
+                <div style="text-align:center;font-size:18px;">
+                    <b>LAPORAN STOCK BARANG DEPT. PROCESSING (WIP ASSEMBLING SETENGAH JADI)</b><br/>
+                    <b>Periode <span t-esc="o.date_from.strftime('%d %B %Y')"/> - <span t-esc="o.date_to.strftime('%d %B %Y')"/></b>
+                </div>
+            </div>
+            <br/>
+            <table class="table" name="invoice_line_table" style="width: 100%; border: 1px solid; font-size:10px;border-collapse:collapse;">
+                <thead>
+                    <tr style="border: 1px solid; background-color: #92d050; height:10px;">
+                        <th class="text-center" style="border: 1px solid; "><span>ITEM</span></th>
+                        <th class="text-center" style="border: 1px solid;"><span>BALANCE AWAL BULAN (PCS)</span></th>
+                        <th class="text-center" style="border: 1px solid;"><span>BALANCE AWAL BULAN (M3)</span></th>
+                        <th class="text-center" style="border: 1px solid;"><span>HASIL (PCS)</span></th>
+                        <th class="text-center" style="border: 1px solid;"><span>HASIL (M3)</span></th>
+                        <th class="text-center" style="border: 1px solid;"><span>KIRIM (PCS)</span></th>
+                        <th class="text-center" style="border: 1px solid;"><span>KIRIM (M3)</span></th>
+                        <th class="text-center" style="border: 1px solid;"><span>SISA BARANG (PCS)</span></th>
+                        <th class="text-center" style="border: 1px solid;"><span>SISA BARANG (M3)</span></th>
+                    </tr>
+                </thead>
+                <tbody class="invoice_tbody" style="border: 1px solid;">
+                    <tr t-foreach="o.results.filtered(lambda l: not l.is_initial)" t-as="line" style="border: 1px solid; height:10px;">
+                        <t t-set="initial" t-value="o._get_initial(o.results.filtered(lambda l: l.product_id == line.product_id and l.is_initial))"/>
+                        <t t-set="product_balance" t-value="initial"/>
+                        <t t-set="product_balance" t-value="product_balance + line.product_in - line.product_out"/>
+                        <td class="text-center" style="border: 1px solid;"><span t-field="line.product_id.name"/></td>
+                        <td class="text-center" style="border: 1px solid;">
+                            <t t-if="line.product_id.uom_id.name == 'pcs'">
+                                <span t-field="line.initial_balance"/>
+                            </t>
+                            <t t-else="">
+                                0.0
+                            </t>
+                        </td>
+                        <td class="text-center" style="border: 1px solid;">
+                            <t t-if="line.product_id.uom_id.name == 'm³'">
+                                <span t-field="line.initial_balance"/>
+                            </t>
+                            <t t-else="">
+                                0.0
+                            </t>
+                        </td>
+                        <td class="text-center" style="border: 1px solid;">
+                            <t t-if="line.product_id.uom_id.name == 'pcs'">
+                                <span t-field="line.product_in"/>
+                            </t>
+                            <t t-else="">
+                                0.0
+                            </t>
+                        </td>
+                        <td class="text-center" style="border: 1px solid;">
+                            <t t-if="line.product_id.uom_id.name == 'm³'">
+                                <span t-field="line.product_in"/>
+                            </t>
+                            <t t-else="">
+                                0.0
+                            </t>
+                        </td>
+                       <td class="text-center" style="border: 1px solid;">
+                            <t t-if="line.product_id.uom_id.name == 'pcs'">
+                                <span t-field="line.product_out"/>
+                            </t>
+                            <t t-else="">
+                                0.0
+                            </t>
+                        </td>
+                        <td class="text-center" style="border: 1px solid;">
+                            <t t-if="line.product_id.uom_id.name == 'm³'">
+                                <span t-field="line.product_out"/>
+                            </t>
+                            <t t-else="">
+                                0.0
+                            </t>
+                        </td>
+                        <td class="text-center" style="border: 1px solid;">
+                            <t t-if="line.product_id.uom_id.name == 'pcs'">
+                                <t t-esc="'{0:,.1f}'.format(product_balance)"/>
+                            </t>
+                            <t t-else="">
+                                0.0
+                            </t>
+                        </td>
+                        <td class="text-center" style="border: 1px solid;">
+                            <t t-if="line.product_id.uom_id.name == 'm³'">
+                                <t t-esc="'{0:,.1f}'.format(product_balance)"/>
+                            </t>
+                            <t t-else="">
+                                0.0
+                            </t>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="page-break-before:always;" />
+        </div>
+    </template>
+</odoo>

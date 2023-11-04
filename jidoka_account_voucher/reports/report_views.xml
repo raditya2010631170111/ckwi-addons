@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="paperformat_report_voucher_multi_invoice" model="report.paperformat">
+        <field name="default" eval="True"/>
+        <field name="name">Print Voucher PDF Paperformat</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">2</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <!--<field name="header_spacing">100</field>-->
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="report_voucher_multi_invoice_action" model="ir.actions.report">
+        <field name="name">Print Voucher PDF</field>
+        <field name="model">voucher.multi.invoice</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">jidoka_account_voucher.report_voucher_multi_invoice_template</field>
+        <field name="report_file">jidoka_account_voucher.report_voucher_multi_invoice_template</field>
+        <field name="binding_model_id" ref="model_voucher_multi_invoice"/>
+        <field name="paperformat_id" ref="paperformat_report_voucher_multi_invoice"/>
+        <field name="binding_type">report</field>
+    </record>
+    
+    
+    <record id="report_voucher_in_invoice_action" model="ir.actions.report">
+        <field name="name">Voucher Report</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">jidoka_account_voucher.report_voucher_in_invoice_template</field>
+        <field name="report_file">jidoka_account_voucher.report_voucher_in_invoice_template</field>
+        <field name="paperformat_id" ref="paperformat_report_voucher_multi_invoice"/>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

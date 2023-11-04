@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_supplier_code,res_supplier_code,model_res_supplier_code,base.group_user,1,1,1,1
+access_res_size_log,res_size_log,model_res_size_log,base.group_user,1,1,1,1
+access_res_wood_class,res_wood_class,model_res_wood_class,base.group_user,1,1,1,1
+access_res_master_hasil,res_master_hasil,model_res_master_hasil,base.group_user,1,1,1,1
+access_jidoka_woodkind_user,jidoka_inventory.jidoka.woodkind,model_jidoka_woodkind,base.group_user,1,1,1,1
+access_res_certification,res_certification,model_res_certification,base.group_user,1,1,1,1
+access_jidoka_ketmasalah_user,jidoka_inventory.jidoka.ketmasalah,model_jidoka_ketmasalah,base.group_user,1,1,1,1
+access_jidoka_species_user,jidoka_inventory.jidoka.species,model_jidoka_species,base.group_user,1,1,1,1
+access_jidoka_isi_defect_user,jidoka_inventory.jidoka.isi.defect,model_jidoka_isi_defect,base.group_user,1,1,1,1
+access_jidoka_category_defect_user,jidoka_inventory.jidoka.category.defect,model_jidoka_category_defect,base.group_user,1,1,1,1
+access_jidoka_woodshape_user,jidoka_inventory.jidoka.woodshape,model_jidoka_woodshape,base.group_user,1,1,1,1
+access_wood_grade,jidoka_inventory.wood.grade,model_wood_grade,base.group_user,1,1,1,1
+
+

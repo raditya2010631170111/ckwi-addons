@@ -1,0 +1,432 @@
+<odoo>
+    <data>
+        <template id="report_tes_kontruksi">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <style>
+                        .radio-label input[type="radio"] {
+                        -webkit-appearance:none;
+                        -moz-appearance:none;
+                        appearance:none;
+                        border:1px solid #000;
+                        width:18px;
+                        height:14px;
+                        margin: 0 5px 0 0;
+                        border-radius: 1px;
+                        }
+                        .radio-label input[type="radio"]:checked {
+                        background-color: #000;
+                        }
+                         .column {
+                            width: 50%;
+                            float: left;
+                        }
+                         .column2 {
+                            width: 100%;
+                            float: left;
+                        }
+						.table-container {
+							display: flex;
+							flex-wrap: wrap;
+						}
+
+						.table-row {
+							display: flex;
+						}
+
+						.table-cell {
+							border: 1px solid black;
+							height:14px;
+							display: flex;
+							flex-wrap: wrap; 
+							padding: 4px;
+
+							
+						}
+						.table-container {
+							column-count: 2; /* Maksimal dua kolom ke samping */
+						}
+						.table-container table {
+							break-inside: avoid; /* Mencegah tabel terpisah di tengah perulangan */
+						}
+
+					</style>
+                    <div class="page">
+						<!-- <div class="header"> -->
+							<table width="100%">
+								<tr>
+									<td width="20%"></td>
+									<td width="80%" rowspan="4">
+										<t t-if="o and 'company_id' in o"><t t-set="company" t-value="o.company_id"></t></t>
+										<t t-if="not o or not 'company_id' in o"><t t-set="company" t-value="res_company"></t></t>
+										<span style="font-size:14px;text-align:center;" t-field="company.name"/><br/>
+										<span style="font-size:20px;font-weight:bold;text-align:center;">Internal Testing Laboratories</span><br/>
+										<span style="text-align:center;">Departemen Quality Assurance</span><br/>
+										<span style="text-align:center;">Lembar Pemeriksaan dan pengujian</span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="logo-container">
+											<img t-if="company.partner_id.logo_report_qc" t-att-src="image_data_uri(company.partner_id.logo_report_qc)" style="height:2cm;width:4cm;" class="logo" alt="Logo" />
+										</div>
+									</td>
+									<td></td>
+								</tr>
+							</table>
+							<div style="border-top: 5px solid gray;"></div>	
+						<!-- </div>	 -->
+						<div style="border-top: 5px solid gray;"></div>	
+						<table width="100%" style="font-size:12px;">
+							<tr>
+								<td>No.</td>
+								<td>
+									<span><t t-esc="o.name"/></span>
+									<div style="border-top: 1px solid black;"></div>
+								</td>
+								<td colspan="2" style="font-weight:bold;">
+									<label class="radio-label"><input type="radio" name="metode" value="setengah">BARANG 1/2 JADI</input></label>
+								</td>
+								<td colspan="2" style="font-weight:bold;">
+									<label class="radio-label"><input type="radio" name="metode" value="jadi">BARANG JADI</input></label>
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Tanggal</td>
+								<td>
+									<span><t t-if="o.date"><t t-esc="o.date.strftime('%d-%b-%y')"/></t></span>
+									<div style="border-top: 1px solid black;"></div>
+								</td>
+								<td colspan="2" rowspan="2">
+									<t t-set="barang_setengah" t-value="request.env['tes.cat.master'].search([])"/>
+									<t t-if="barang_setengah">
+										<div class="column">
+											<t t-foreach="barang_setengah.filtered(lambda r: r.id % 2 != 0)" t-as="barang_setengah_id">
+												<div>
+													<input type="checkbox" t-att-checked="barang_setengah_id.id in o.barang_setengah_ids.mapped('id')" t-att-value="barang_setengah_id.id"/>
+													<span t-field="barang_setengah_id.name"/>
+												</div>
+											</t>
+										</div>
+										<div class="column">
+											<t t-foreach="barang_setengah.filtered(lambda r: r.id % 2 == 0)" t-as="barang_setengah_id">
+												<div>
+													<input type="checkbox" t-att-checked="barang_setengah_id.id in o.barang_setengah_ids.mapped('id')" t-att-value="barang_setengah_id.id"/>
+													<span t-field="barang_setengah_id.name"/>
+												</div>
+											</t>
+										</div>
+									</t>
+								</td>
+								<td width="15%" rowspan="2">
+									<t t-set="barang_jadi" t-value="request.env['barang.jadi'].search([])"/>
+									<t t-if="barang_jadi">
+										<div class="column2">
+											<t t-foreach="barang_jadi.filtered(lambda r: r.id % 2 != 0)" t-as="barang_jadi_id">
+												<div>
+													<input type="checkbox" t-att-checked="barang_jadi_id.id in o.barang_jadi_ids.mapped('id')" t-att-value="barang_jadi_id.id"/>
+													<span t-field="barang_jadi_id.name"/>
+												</div>
+											</t>
+										</div>
+										<div class="column2">
+											<t t-foreach="barang_jadi.filtered(lambda r: r.id % 2 == 0)" t-as="barang_jadi_id">
+												<div>
+													<input type="checkbox" t-att-checked="barang_jadi_id.id in o.barang_jadi_ids.mapped('id')" t-att-value="barang_jadi_id.id"/>
+													<span t-field="barang_jadi_id.name"/>
+												</div>
+											</t>
+										</div>
+									</t>
+								</td>
+								<td width="15%"></td>
+							</tr> 
+							<tr>
+								<td>Supplier</td>
+								<td>
+									<span><t t-esc="o.partner_id.name"/></span>
+									<div style="border-bottom: 1px solid black;"></div>
+								</td>		
+								<td rowspan="2" style="border: 1px solid black;background-color:gray;">&#160;V Sesuai<br/>&#160;X Tidak Sesuai<br/>&#160;- Not applicable</td>
+							</tr>
+							<tr>
+								<td width="10%">Buyer</td>
+								<td width="25%">
+									<span><t t-esc="o.buyer_id.name"/></span>
+									<div style="border-bottom: 1px solid black;"></div>
+								</td>
+								<td width="20%">
+									<div>Pengujian ke :            
+										<label style="background-color:black;color:white;text-align:center;" class="radio-label"><input type="radio" name="metode" value="4"><t t-esc="o.pengujian"/></input></label>
+									</div>
+								</td> 
+								<td width="15%">&#160;</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>No. Item</td>
+								<td>
+									<span><t t-esc="o.product_pembahanan_id.default_code"/></span>
+									<div style="border-bottom: 1px solid black;"></div>
+								</td>
+								<td>Sumber acuan</td>
+								<td colspan="2"></td>
+								<!-- <td style="text-align:center">applicable</td> -->
+							</tr>
+							<tr>
+								<td>Nama Item</td>
+								<td>
+									<span><t t-esc="o.product_id_domain_ids.name"/></span>
+									<div style="border-bottom: 1px solid black;"></div>
+								</td>
+								<td colspan="2" rowspan="4">
+									<t t-set="sumber" t-value="request.env['sumber.acuan'].search([])"/>
+									<t t-if="sumber">
+										<div class="column2">
+											<t t-foreach="sumber.filtered(lambda r: r.id % 2 != 0)" t-as="sumber_id">
+												<div>
+													<input type="checkbox" t-att-checked="sumber_id.id in o.sumber_ids.mapped('id')" t-att-value="sumber_id.id"/>
+													<span t-field="sumber_id.name"/>
+												</div>
+											</t>
+										</div>
+										<div class="column2">
+											<t t-foreach="sumber.filtered(lambda r: r.id % 2 == 0)" t-as="sumber_id">
+												<div>
+													<input type="checkbox" t-att-checked="sumber_id.id in o.sumber_ids.mapped('id')" t-att-value="sumber_id.id"/>
+													<span t-field="sumber_id.name"/>
+												</div>
+											</t>
+										</div>
+									</t>
+								</td>
+								<!-- <td colspan="2">&#160;Rev.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Date.</td> -->
+							</tr>
+							<tr>
+								<td>No. PI/MO</td>
+								<td>
+									<span><t t-esc="o.no_mo_id.name"/></span>
+									<div style="border-bottom: 1px solid black;"></div>
+								</td>
+								<!-- <td colspan="2">&#160;Rev.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Date.</td> -->
+							</tr>
+							<tr>
+								<td>Material</td>
+								<td>
+									<span><t t-esc="o.woodkind_id.name"/></span>
+									<div style="border-bottom: 1px solid black;"></div>
+								</td>
+								<!-- <td colspan="2">&#160;Rev.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Date.</td> -->
+							</tr>
+							<tr>
+								<td>Color</td>
+								<td>
+									<span><t t-esc="o.fabric_colour_id.name"/></span>
+									<div style="border-bottom: 1px solid black;"></div>
+								</td>
+								<!-- <td colspan="2">&#160;Rev.&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Date.</td> -->
+							</tr>
+						</table>
+
+						<div class="table-container">
+							<t t-set="jenis" t-value="sorted(list(set([x.id for x in o.line_ids.mapped('cek_point_line_id')])))" />
+							<t t-set="alphabet" t-value="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+							<t t-set="alphabet_index" t-value="0" />
+							<t t-foreach="jenis" t-as="j">
+								<t t-set="last_req_name" t-value="" />
+								<t t-set="counter" t-value="1" />
+								<table class="column" width="50%" style="border-collapse: collapse; font-size: 12px;">
+									<t t-foreach="o.line_ids.filtered(lambda m: m.cek_point_line_id.id == j)" t-as="move">
+										<t t-set="name_change" t-value="last_req_name != move.cek_point_line_id.name" />
+										<t t-set="last_req_name" t-value="move.cek_point_line_id.name" />
+										<t t-if="name_change">
+											<t t-set="counter" t-value="1" />
+											<thead class="thead-dark" style="font-weight: bold; text-align: center;">
+												<tr>
+													<td width="5%" class="table-cell" style="background-color: gray;">&#160;<t t-esc="alphabet[alphabet_index]" />&#160;</td>
+													<td width="75%" class="table-cell" style="background-color: gray;">&#160;<t t-esc="move.cek_point_line_id.name" />&#160;</td>
+													<td width="20%" colspan="2" class="table-cell" style="background-color: gray;">KETERANGAN</td>
+												</tr>
+											</thead>
+											<t t-set="alphabet_index" t-value="alphabet_index + 1" />
+										</t>
+										<t t-set="status" t-value="{'sesuai': 'V', 'tidak_sesuai': '-', 'n/a': '', False: ''}" />
+										<tr>
+											<td class="table-cell" style="text-align: center; border: 1px solid black;">
+												<t t-esc="counter" />
+											</td>
+											<td class="table-cell" style="border: 1px solid black;">
+												<t t-esc="move.name" />
+											</td>
+											<td width="1%" class="table-cell" style="text-align: center; border: 1px solid black;">
+												<t t-esc="status[move.status]" />
+											</td>
+											<td  class="table-cell" style="border: 1px solid black;">
+												<t t-esc="move.keterangan" />
+											</td>
+											<t t-set="counter" t-value="counter + 1" />
+										</tr>
+									</t>
+									<t t-if="counter &lt;= o.max_line">
+										<tr t-foreach="range(o.max_line - (counter - 1))" t-as="c">
+											<td  class="table-cell" style="text-align: center; border: 1px solid black;">
+												<t t-esc="counter" />
+											</td>
+											<td class="table-cell" style="border: 1px solid black;">
+												
+											</td>
+											<td width="2%" class="table-cell" style="text-align: center; border: 1px solid black;">
+												
+											</td>
+											<td class="table-cell" style="border: 1px solid black;">
+												
+											</td>
+											<t t-set="counter" t-value="counter + 1" />
+										</tr>
+									</t>
+								</table>
+							</t>
+						</div>
+
+
+						<table width="100%" style="border-collapse:collapse;font-size:12px;">
+							<!-- <t t-set="type" t-value="dict([('pass', 'Size'),('pass2', 'Assembly'),('fail', 'function'),(False, '')])"/> -->
+							<tr>
+								<td colspan="3" style="padding-top:5px;"></td>
+							</tr>
+							<tr>
+								<td colspan="3" style="font-weight:bold;">HASIL PEMERIKSAAN / PENGUJIAN  *</td>
+							</tr>
+							<tr>
+								<td width="2%" style="border: 1px solid black;font-weight:bold;text-align:center;">
+									<span t-if="o.result_of_test == 'pass'">V</span>
+								</td>
+								<td width="38%" style="border-top: 1px solid black;font-weight:bold;">SESUAI</td>
+								<td width="60%" style="border-top: 1px solid black;border-right: 1px solid black;">Ukuran / Perakitan / Fungsi / Konstruksi / Dll, telah sesuai acuan kerja yang ada</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid black;font-weight:bold;text-align:center;">
+									<span t-if="o.result_of_test == 'pass2'">V</span>
+								</td>
+								<td style="border-top: 1px solid black;"><strong>SESUAI</strong> (DENGAN CATATAN PERBAIKAN)</td>
+								<td style="border-top: 1px solid black;border-right: 1px solid black;">Uk./Perakitan/Fungsi/Konstruksi/Dll, terdpt ketidaksesuaian ttp tdk berpengaruh ke konstruksi</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid black;font-weight:bold;text-align:center;">
+									<span t-if="o.result_of_test == 'fail'">V</span>
+								</td>
+								<td style="border-top: 1px solid black;border-bottom: 1px solid black;font-weight:bold;">PEMERIKSAAN / UJI ULANG</td>
+								<td style="border-top: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">Uk./Perakitan/Fungsi/Konstruksi/Dll, terdpt ketidaksesuaian dan atau berpengaruh ke konstruksi.</td>
+							</tr>
+						</table>
+						<table width="100%" style="border-collapse:collapse;font-size:12px;">
+							<tr>
+								<td style="padding-top:5px;"></td>
+							</tr>
+							<tr style="font-weight:bold;">
+								<td>CATATAN</td>
+							</tr>
+							<tr>
+								<td style="border: 1px solid black;font-size:16px;">
+									<t t-if="o.note"><t t-foreach="o.note.split('\n')" t-as="info_line"><span t-esc="info_line"/><br/></t></t>
+								</td>
+							</tr>
+						</table>
+						<table width="100%" style="border-collapse:collapse;font-size:12px;">
+							<tr>
+								<td colspan="4" style="padding-top:20px;"></td>
+							</tr>
+							<tr>
+								<td width="10%"></td>
+								<td width="17%" style="border: 1px solid black;text-align:center;">Dibuat</td>
+								<td width="17%" style="border: 1px solid black;text-align:center;">Petugas Pengujian</td>
+								<td width="17%" style="border: 1px solid black;text-align:center;">Disetujui</td>
+								<td width="39%"></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td style="border: 1px solid black;text-align:center;height:50px;">
+									<span t-if="o.ttd_dibuat"><img t-att-src="image_data_uri(o.ttd_dibuat)" style="max-height:2cm;max-width:4cm;"/></span><br/>
+								</td>
+								<td style="border: 1px solid black;text-align:center;height:50px;">
+									<span t-if="o.ttd_diperiksa"><img t-att-src="image_data_uri(o.ttd_diperiksa)" style="max-height:2cm;max-width:4cm;"/></span><br/>
+								</td>
+								<td style="border: 1px solid black;text-align:center;height:50px;">
+									<span t-if="o.ttd_disetujui"><img t-att-src="image_data_uri(o.ttd_disetujui)" style="max-height:2cm;max-width:4cm;"/></span><br/>
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td style="border: 1px solid black;text-align:center;"><t t-esc="o.dibuat"/></td>
+								<td style="border: 1px solid black;text-align:center;"><t t-esc="o.diperiksa"/></td>
+								<td style="border: 1px solid black;text-align:center;"><t t-esc="o.disetujui"/></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td style="border: 1px solid black;text-align:center;font-style:italic;">Staff QA</td>
+								<td style="border: 1px solid black;text-align:center;font-style:italic;">QC</td>
+								<td style="border: 1px solid black;text-align:center;font-style:italic;">Kabag./Mgr QA</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td colspan="4" style="padding-top:10px;"></td>
+							</tr>
+							<tr>
+								<td colspan="5" style="border:1px solid black;font-size:10px;text-align:center;">*  HASIL PENGUJIAN BERSIFAT OBJEKTIF.  HASIL PENGUJIAN SELANJUTNYA DAPAT SAJA BERBEDA, DIMANA DISESUAIKAN DENGAN KONDISI PRODUK SAAT PENGUJIAN DILAKUKAN.</td>
+							</tr>
+						</table>
+						<table width="100%" style="border-collapse:collapse;font-size:12px; page-break-inside: avoid;">
+							<t t-foreach="o.design_image" t-as="line">
+								<tr>
+									<t t-foreach="line.attachment_img" t-as="attachment">
+										<td width="33%" style="border:1px solid black;">
+											<div style="height:100px;width:100px;overflow:hidden;;">
+												<img alt="Logo" t-if="attachment.datas" t-att-src="'data:image/png;base64,'+attachment.datas.decode('utf-8')" width="100%"/>
+											</div>
+										</td>
+									</t>
+									<t t-if="len(line.attachment_img) &lt; 3">
+										<td width="33%" style="border:1px solid black;" colspan="{{3 - len(line.attachment_img)}}"></td>
+									</t>
+								</tr>
+								<tr>
+									<td colspan="3" style="text-align:center;border:1px solid black;"><t t-esc="line.note"/></td>
+								</tr>
+								<t t-if="len(line.attachment_img) &gt; 3">
+									<tr>
+										<t t-foreach="line.attachment_img[3:]" t-as="attachment">
+											<td width="33%" style="border:1px solid black;">
+												<div style="height:100px;width:100px;overflow:hidden;">
+													<img alt="Logo" t-if="attachment.datas" t-att-src="'data:image/png;base64,'+attachment.datas.decode('utf-8')" width="100%"/>
+												</div>
+											</td>
+										</t>
+										<t t-if="len(line.attachment_img) &lt; 6">
+											<td width="33%" style="border:1px solid black;" colspan="{{6 - len(line.attachment_img)}}"></td>
+										</t>
+									</tr>
+									<tr>
+										<td colspan="3" style="text-align:center;border:1px solid black;"><t t-esc="line.note"/></td>
+									</tr>
+								</t>
+							</t>
+						</table>
+					</div>
+                </t>
+            </t>
+		</template>			
+        <record id="report_tes_kontruksi_action" model="ir.actions.report">
+            <field name="name">Tes Kontruksi (PDF)</field>
+            <field name="model">tes.kontruksi</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">qa_qc.report_tes_kontruksi</field>
+            <field name="print_report_name">'Tes Kontruksi - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_tes_kontruksi"/>
+            <field name="paperformat_id" ref="jidoka_export.paperformat_report_jidoka_export_pli_a4"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

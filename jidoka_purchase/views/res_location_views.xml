@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_location_view_form" model="ir.ui.view">
+            <field name="name">res.location.view.form</field>
+            <field name="model">res.location</field>
+            <field name="arch" type="xml">
+                <form string="Res Location">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="ongkir" />
+                            <field name="fee" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_location_view_tree" model="ir.ui.view">
+            <field name="name">res.location.view.tree</field>
+            <field name="model">res.location</field>
+            <field name="arch" type="xml">
+                <tree string="Res Location">
+                    <field name="name" />
+                    <field name="ongkir" />
+                    <field name="fee" />    
+                </tree>
+            </field>
+        </record>
+        
+        <record id="res_location_action" model="ir.actions.act_window">
+            <field name="name">Fee Location</field>
+            <field name="res_model">res.location</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Location
+                    </p>
+            </field>
+        </record>
+        <menuitem id="res_location_sub_menu"
+        parent="purchase.menu_purchase_config"
+        name="Fee Location"
+        action="jidoka_purchase.res_location_action"
+        sequence="4"/>
+    </data>
+</odoo>

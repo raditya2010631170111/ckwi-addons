@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_template_only_form_view_inherit_jidoka_inventory" model="ir.ui.view">
+            <field name="name">product.template.view.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='group_general']" position="inside">
+                    <field name="model"/>
+                    <field name="wood_type" />
+                    <field name="is_kayu" />
+                    <field name="wood_kind_id" />
+                    <field name="wood_class_id" />
+                    <field name="colour_id" />
+                    <field name="wood_grade_id" />
+                    <field name="wood_shape_id" />
+                    <!-- <field name="certification" /> -->
+                    <field name="certification_id"/>
+                    <field name="is_jati" />
+                    <field name="is_prod_brg_jadi" />
+                </xpath>
+                <xpath expr="//field[@name='default_code']" position="before">
+                    <field name="snp_id" /> 
+                </xpath>
+                <!-- <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="code" /> 
+                </xpath> -->
+
+                <!-- <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="code" />
+                </xpath> -->
+            </field>
+        </record>
+        <record id="product_normal_form_view_inherit_jidoka_inventory" model="ir.ui.view">
+            <field name="name">product.product.view.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='group_general']" position="inside">
+                    <field name="wood_type" />
+                    <field name="is_kayu" />
+                    <field name="wood_kind_id" />
+                    <field name="wood_class_id" />
+                    <field name="colour_id" />
+                    <field name="wood_grade_id" />
+                    <field name="wood_shape_id" />
+                    <!-- <field name="certification" /> -->
+                    <field name="certification_id"/>
+                    <field name="is_jati" />
+                    <field name="is_prod_brg_jadi" />             
+                    <field name="is_show_pcs" invisible="1"/>
+                    <field name="is_product_variant" invisible="1"/>
+                    <field name="active" invisible="1"/>   
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_open_quants_pr" type="object" icon="fa-cubes" class="oe_stat_button"  attrs="{'invisible': ['|',('is_show_pcs','=',False),('is_product_variant','=',False)]}">
+
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value" widget="statinfo">
+                                <field name="count_show_pr" widget="statinfo" nolabel="1" class="mr4"/>
+                            </span>
+                            <span class="o_stat_text">Pcs</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        
+        <!-- ======================================JC-287====================================== -->      
+
+        <record id="product_template_m3_form" model="ir.ui.view">
+            <field name="name">product.template.m3.form</field>
+            <field name="model">product.template</field>
+            <!-- <field name="inherit_id" ref="product.product_template_form_view" /> -->
+            <field name="inherit_id" ref="product.product_template_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/div[2]/div/div[2]" position="after">
+                    <div>
+                        <field name="is_show_pcs"/>
+                        <label for="is_show_pcs" />
+                        <field name="is_product_variant" invisible="1"/>
+                    </div>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_open_quants_tmpl" type="object" icon="fa-cubes" class="oe_stat_button" attrs="{'invisible': ['|',('is_show_pcs','!=',True),('is_product_variant','=',True)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value" widget="statinfo">
+                                <field name="count_show_tmpl" widget="statinfo" nolabel="1" class="mr4"  
+                                
+                                />
+                            </span>
+                            
+                            <span class="o_stat_text">Pcs</span>
+                        </div>
+                    </button>
+                </xpath>
+
+                <xpath expr="//field[@name='hs_code']" position="before">
+                    <label for="net_weight" string="Net Weight" attrs="{'invisible':[('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
+                        <div class="o_row" name="weight" attrs="{'invisible':[('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}">
+                            <field name="net_weight" string="Net Weight"/>
+                            <span>
+                                <field name="weight_uom_name"/>
+                            </span>
+                        </div>
+                    <label for="gross_weight" string="Gross Weight" attrs="{'invisible':[('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
+                        <div class="o_row" name="gross_weight" attrs="{'invisible':[('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}">
+                            <field name="gross_weight" string="Gross Weight"/>
+                            <span>
+                                <field name="weight_uom_name"/>
+                            </span>
+                        </div>
+                        <label for="pack" string="Pack"/>
+                        <div class="o_row" name="pack">
+                            <field name="pack" string='Pack'/>
+                            <span>ctn</span>
+                        </div>
+                 
+                    <label for="means" string="Means" attrs="{'invisible':[('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
+                        <div class="o_row" name="means" attrs="{'invisible':[('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}">
+                            <field name="means" string="Means"/>
+                            <span>
+                                <field name="volume_uom_name"/>
+                            </span>
+                        </div>            
+                </xpath>
+                
+                <xpath expr="//div[@name='weight']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    
+                    <attribute name="invisible">True</attribute>
+                    
+                </xpath>
+
+                <xpath expr="//div[@name='volume']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    
+                    <attribute name="invisible">True</attribute>
+                    
+                </xpath>
+                
+                <xpath expr="//field[@name='weight']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    
+                    <attribute name="invisible">True</attribute>
+                    
+                </xpath>
+
+                <xpath expr="//field[@name='weight_uom_name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    
+                    <attribute name="invisible">True</attribute>
+                    
+                </xpath>
+
+                <xpath expr="//label[@for='weight']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    
+                    <attribute name="invisible">True</attribute>
+                    
+                </xpath>
+
+                <xpath expr="//field[@name='volume']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    
+                    <attribute name="invisible">True</attribute>
+                    
+                </xpath>
+
+                <xpath expr="//field[@name='volume_uom_name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    
+                    <attribute name="invisible">True</attribute>
+                    
+                </xpath>
+
+                <xpath expr="//label[@for='volume']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    
+                    <attribute name="invisible">True</attribute>
+                    
+                </xpath>
+                
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_stock_quant_tree_inherit_editable">
+            <field name="name">stock.quant.tree.inherit.editable</field>
+            <field name="model">stock.quant</field>
+            <field eval="10" name="priority"/>
+            <field name="arch" type="xml">
+                <tree editable="bottom" create="0" edit="0" import="0" js_class="singleton_list" sample="1">
+                    <field name="id" invisible="1"/>
+                    <field name="tracking" invisible="1"/>
+                    <field name="product_id" attrs="{'readonly': [('id', '!=', False)]}" invisible="context.get('single_product', False)" readonly="context.get('single_product', False)" force_save="1" options="{'no_create': True}"/>
+                    <field name="location_id" attrs="{'readonly': [('id', '!=', False)]}" invisible="context.get('hide_location', False)" options="{'no_create': True}"/>
+                    <field name="lot_id" groups="stock.group_production_lot" attrs="{
+                            'readonly': ['|', ('id', '!=', False), ('tracking', 'not in', ['serial', 'lot'])],
+                            'required': [('tracking', '!=', 'none')]
+                       }" invisible="context.get('hide_lot', False)" context="{'default_product_id': product_id, 'default_company_id': company_id}"/>
+                    <field name="package_id" groups="stock.group_tracking_lot" attrs="{'readonly': [('id', '!=', False)]}"/>
+                    <field name="owner_id" groups="stock.group_tracking_owner" attrs="{'readonly': [('id', '!=', False)]}" options="{'no_create': True}"/>
+                    <field name="quantity" string="On Hand Quantity" invisible="1"/>
+                    <field name="inventory_quantity" string="On Hand Quantity" decoration-danger="inventory_quantity &lt; 0" readonly="0"/>
+                    <field name="available_quantity" optional="show"/>
+                    <field name="product_uom_id" groups="uom.group_uom"/>
+                    <!-- <field name="uom_kubik"/> -->
+                    <!-- <field name="kubikasi"/> -->
+                    <field name='company_id' groups="base.group_multi_company" optional="show"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- ======================================JC-287====================================== -->      
+
+
+
+
+
+
+    </data>
+</odoo>

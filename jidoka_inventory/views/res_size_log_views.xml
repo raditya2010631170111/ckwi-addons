@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_size_log_view_form" model="ir.ui.view">
+            <field name="name">res.size.log.view.form</field>
+            <field name="model">res.size.log</field>
+            <field name="arch" type="xml">
+                <form string="Size Log">
+                    <sheet>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="diameter" invisible="1"/>
+                            <field name="panjang" invisible="1"/>
+                            <field name="ujung_keliling" invisible="1"/>
+                            <field name="diameter_log" />
+                            <field name="panjang_log" />
+                            <field name="ujung_keliling_log" />
+                            <field name="kubikasi" />
+                            <field name="is_jati" />
+                            <!-- <field name="product_id"/> -->
+                            <field name="product_ids" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_size_log_view_tree" model="ir.ui.view">
+            <field name="name">res.size.log.view.tree</field>
+            <field name="model">res.size.log</field>
+            <field name="arch" type="xml">
+                <tree string="Size Log">
+                    <field name="name"/>
+                    <field name="diameter" invisible="1"/>
+                    <field name="panjang" invisible="1"/>
+                    <field name="ujung_keliling" invisible="1"/>
+                    <field name="diameter_log" />
+                    <field name="panjang_log" />
+                    <field name="ujung_keliling_log" />
+                    <field name="kubikasi" />
+                    <field name="is_jati" />
+                    <!-- <field name="product_id"/> -->
+                    <field name="product_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_size_log_action" model="ir.actions.act_window">
+            <field name="name">Size Log</field>
+            <field name="res_model">res.size.log</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Size Log
+                    </p>
+            </field>
+        </record>
+
+        <menuitem id="res_size_log_menu"
+        parent="stock.menu_stock_config_settings"
+        name="Size Log"
+        action="jidoka_inventory.res_size_log_action"
+        sequence="4"/>
+    </data>
+</odoo>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="MaintenanceDashboardView">
+        <div class="maintenance_dashboard">
+            <div class="container-fluid o_maintenance_dashboard">
+                <div class="sales-dashboard">
+                  <h2 class="text-primary text-center py-5">Maintenance Dashboard</h2>
+                  <div class="container">
+                    <div class="maintenance-cards pb-5">
+                      <!-- Start: maintenance Cards -->
+                      <div class="row">
+                        <div class="col-lg-3">
+                            <div class="card">
+                                <div class="card_contan">
+                                  <div class="card_icon1 card_icon">
+                                      <i class="fa fa-pencil-square"></i>
+                                  </div>
+                                  <div class="action-new-request">
+                                    <h2><b class="stage-new-request"></b></h2>
+                                    <h4 class="mb-1 card_up_title">Stage</h4>
+                                    <h2 class="m-0 card_main_title">New Request</h2>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-3">
+                            <div class="card">
+                                <div class="card_contan">
+                                  <div class="card_icon2 card_icon">
+                                      <i class="fa fa-tasks"></i>
+                                  </div>
+                                  <div class="action-in-progress">
+                                    <h2><b class="stage-in-progress"></b></h2>
+                                    <h4 class="mb-1 card_up_title">Stage</h4>
+                                    <h2 class="m-0 card_main_title">In Progress</h2>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-3">
+                            <div class="card">
+                                <div class="card_contan">
+                                  <div class="card_icon3 card_icon">
+                                      <i class="fa fa-wrench"></i>
+                                  </div>
+                                  <div class="action-in-repaired">
+                                    <h2><b class="stage-in-repaired"></b></h2>
+                                    <h4 class="mb-1 card_up_title">Stage</h4>
+                                    <h2 class="m-0 card_main_title">Repaired</h2>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-3">
+                            <div class="card">
+                                <div class="card_contan">
+                                  <div class="card_icon4 card_icon">
+                                      <i class="fa fa-cubes"></i>
+                                  </div>
+                                  <div class="action-scrap">
+                                    <h2><b class="stage-in-scrap"></b></h2>
+                                    <h4 class="mb-1 card_up_title">Stage</h4>
+                                    <h2 class="m-0 card_main_title">Scrap</h2>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+
+
+                        <div class="row justify-content-center">
+
+                          <div class="col-lg-3">
+                            <div class="card maintence">
+                                <div class="card_contan">
+                                  <div class="card_icon2 card_icon">
+                                      <i class="fa fa-list-alt"></i>
+                                  </div>
+                                  <div class="action-in-checklist">
+                                    <h4 class="mb-1 card_up_title">Maintenance<br> CheckList</br></h4>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-3">
+                            <div class="card maintence">
+                                <div class="card_contan">
+                                  <div class="card_icon3 card_icon">
+                                      <i class="fa fa-cogs"></i>
+                                  </div>
+                                  <div class="action-in-equipment">
+                                    <h4 class="mb-1 card_up_title">Maintenance<br> Equipment</br></h4>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-3">
+                            <div class="card maintence">
+                                <div class="card_contan">
+                                  <div class="card_icon4 card_icon">
+                                      <i class="fa fa-users"></i>
+                                  </div>
+                                  <div class="action-team">
+                                    <h4 class="mb-1 card_up_title">Maintenance<br>Team</br></h4>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="maintainance_chart_cards p-sm-3 p-2 shadow-sm text-center border rounded">
+                            <h4 class="mb-2 text-dark">Equipment Purchase Requisition </h4>
+                            <div class="card-body shadow">
+                              <div class="panel">
+                                  <div class="panel-heading">
+                                  </div>
+                                  <div class="panel-body">
+                                        <canvas id="highprice" width="500px" height="400px"/>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="maintainance_chart_cards p-sm-3 p-2 shadow-sm text-center border rounded">
+                            <h4 class="mb-2 text-dark">Maintenance Requests</h4>
+                            <div class="card-body shadow">
+                              <div class="panel">
+                                  <div class="panel-heading">
+                                  </div>
+                                  <div class="panel-body">
+                                        <canvas id="monthlymaintenance" width="500px" height="400px"/>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </t>
+</templates>

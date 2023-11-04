@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <!-- crm.sample.request action window -->
+    <record id="crm_sample_request_action" model="ir.actions.act_window">
+        <field name="name">Sample Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">crm.sample.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+            </p><p>
+                <!-- More details about what a user can do with this object will be OK --> 
+            </p>
+        </field>
+    </record>
+
+    <!-- crm.sample.request tree view -->
+    <record id="crm_sample_request_view_tree" model="ir.ui.view">
+        <field name="name">crm.sample.request.view.tree</field>
+        <field name="model">crm.sample.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="request_no"/>
+                <!-- <field name="buyer_request_no"/> -->
+                <field name="partner_id"/>
+                <field name="date_issued"/>
+                <field name="date_deadline"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- crm.sample.request form view -->
+    <record id="crm_sample_request_view_form" model="ir.ui.view">
+        <field name="name">crm.sample.request.view.form</field>
+        <field name="model">crm.sample.request</field>
+        <field name="arch" type="xml">
+            <form string="Form Sample Request">
+                <header>
+                    <button name="coba" type="object" string="tes aza" invisible="1"/>
+                    <button type="object" name="action_submit" string="Submit" attrs="{'invisible' : [('state', '!=', 'draft')]}" class="oe_highlight"/>
+                    <button type="object" name="action_approve" string="Approve" attrs="{'invisible' : [('state', '!=', 'submitted')]}" class="oe_highlight" groups="jidoka_crm_sample_request.group_crm_manager"/>
+                    <!-- <button type="object" name="action_qoutations" string="Qoutations" states='approved' class="oe_highlight"/> -->
+                    <button type="object" name="action_qoutations" string="Qoutations" class="oe_highlight" attrs="{'invisible' : True}"/>
+                    <button type="object" name="action_reject" string="Reject" attrs="{'invisible' : [('state', '!=', 'submitted')]}" class="btn-danger" groups="jidoka_crm_sample_request.group_crm_manager"/>
+                    <button type="object" name="action_setdraft" states="rejected" string="Set to Draft"  class="oe_highlight"/>
+                    <button name="create_rev" type="object" string="Revisi Sample Request"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Revised" bg_color="bg-danger" attrs="{'invisible': [('is_rev', '=', False)]}"/>
+
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_view_sale" 
+                            attrs="{'invisible' : [('sale_count', '==', 0)]}"
+                            icon="fa-list-alt">
+                            <field string="Sale" name="sale_count" widget="statinfo"/>
+                        </button>
+                        <button string="RnD Sample Request" attrs="{'invisible' : [('state', '!=', 'approved')]}" class="oe_stat_button" type="object" name="v_rnd_sample" icon="fa-wrench">
+                            </button>
+                        <!-- <button class="oe_stat_button" type="object" name="action_view_rnd"
+                            attrs="{'invisible' : [('count_rnd', '==', 0)]}"
+                            icon="fa-comment">
+                            <field string="R &amp; D" name="count_rnd" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_mo"
+                            attrs="{'invisible' : [('count_mo', '==', 0)]}"
+                            icon="fa-wrench">
+                            <field string="Order MRP" name="count_mo" widget="statinfo"/>
+                        </button> -->
+                        <field name="is_show" 
+                        invisible="1"
+                        />
+                        <!-- <button class="oe_stat_button" type="object" name="action_view_rnd"
+                            icon="fa-comment"
+                            attrs="{'invisible' : [('is_show', '=', False)]}"
+                            >
+                            R &amp; D 
+                            <field string="R &amp; D" widget="statinfo"/>
+                        </button> -->
+                        <button class="oe_stat_button" type="object" name="action_view_rnd"
+                            icon="fa-comment"
+                            attrs="{'invisible' : True}"
+                            >
+                            R &amp; D 
+                            <!-- <field string="R &amp; D" widget="statinfo"/> -->
+                        </button>
+                        <!-- <button class="oe_stat_button" type="object" name="action_view_mo"
+                            icon="fa-wrench"
+                            attrs="{'invisible' : [('is_show', '=', False)]}"
+                            >
+                            Order MRP
+                        </button> -->
+                        <button class="oe_stat_button" type="object" name="action_view_mo"
+                            icon="fa-wrench"
+                            attrs="{'invisible' : True}"
+                            >
+                            Order MRP
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" />
+                        <h1>
+                            <field name="name" placeholder="Sample Request No"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="is_rev" invisible="1" />
+                            <field name="buyer_request_no" invisible="1"/>
+                            <field name="request_no"/>
+                            <field name="lead_id"/>
+                            <field name="partner_id" />                 
+                            <field name="purpose" />
+                            <field name="pricelist_id" />
+                        </group>
+                        <group>
+                            <field name="date_issued"/>
+                            <field name="date_deadline" />
+                        </group>
+                        <group string="Sales Team">
+                            <field name="user_id" />
+                            <field name="department_id" />
+                        </group>
+                        <group string="To">
+                            <field name="user_team_id" />
+                            <field name="partner_team" />
+                            <field name="user_rnd_id" invisible="1"/>
+                            <field name="department_rnd_id" />
+                        </group>
+                        <group string="Material Details">
+                            <field name="material_ids" widget="many2many_tags"/>
+                            <field name="detail_finish_ids" widget="many2many_tags" />    
+                        </group>
+                    </group>
+                                
+                    <notebook>
+                        <page string="Specific Design" name="spesific_design">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="qty"/>
+                                    <field name="uom_id"/>
+                                    <field name="description"/>
+                                    <field name="attachment" widget="image" width="90px"/>
+                                    <field name="attachment2" widget="image" width="90px"/>
+                                    <field name="attachment3" widget="image" width="90px"/>
+                                    <!-- <field name="process_state" width="200px" decoration-success="process_state == 'done'" decoration-info="process_state == 'process'" decoration-warning="process_state == 'waiting'" widget="badge" optional="show"/> -->
+                                   <field name="remark"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Design Detail" name="design_detail" invisible="1">
+                            <field name="line_detail_ids">
+                                <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="design_detail_date" align-text="center" width="300px"/>
+                                        <field name="name" align-text="center"/>
+                                        <field name="state" align-text="center" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notifications" name="notifications">
+                            <group>
+                                <group>
+                                    <field name="user_rnd_id"/>
+                                    <field name="user_production_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="signature" string="Signature">
+                            <group>
+                                <group name="rnd_manager" string="R&amp;D Manager">
+                                    <field name="name_rnd_manager"/>
+                                    <field name="ttd_rnd_manager" widget="image" width="90px"/>
+                                </group>
+								<group name="marketing_manager" string="Marketing Manager">
+									<field name="name_marketing_manager"/>
+									<field name="ttd_marketing_manager" widget="image" width="90px"/>
+								</group>                     
+								<group name="rnd_department" string="R&amp;D Department">
+									<field name="name_rnd_department"/>
+									<field name="ttd_rnd_department" widget="image" width="90px"/>
+								</group>
+                                <group name="marketing_department" string="Marketing Department">
+                                    <field name="name_marketing_department"/>
+                                    <field name="ttd_marketing_department" widget="image" width="90px"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <group string="Internal Notes">
+                        <field name="internal_notes" nolabel="1" />
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="crm_sample_request_menu_act" name="Sample Request" parent="crm.crm_menu_sales" 
+        action="crm_sample_request_action" sequence="2"/>
+
+</odoo>

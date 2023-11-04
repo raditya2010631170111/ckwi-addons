@@ -1,0 +1,50 @@
+<odoo>
+    <data noupdate="1">
+        <record model="ir.config_parameter" id="group_approve_manager_marketing">
+        	<field name="key">so.group_approve_manager_marketing</field>
+        	<field name="value">jidoka_crm_sample_request.group_crm_manager</field>
+        </record>
+
+        <!--cr-->
+        <record model="ir.config_parameter" id="validate_cr_template">
+        	<field name="key">so.validate_cr_template</field>
+        	<field name="value">jidoka_marketing.mail_cr_validate_template</field>
+        </record>
+        <record model="ir.config_parameter" id="so_approve_manager_email_template">
+        	<field name="key">so.cr_manager_approve_template</field>
+        	<field name="value">jidoka_marketing.mail_cr_manager_approve</field>
+        </record>
+        <record model="ir.config_parameter" id="so_reject_manager_email_template">
+        	<field name="key">so.cr_manager_reject_template</field>
+        	<field name="value">jidoka_marketing.mail_cr_manager_reject</field>
+        </record>
+
+        <!--mo-->
+        <record model="ir.config_parameter" id="validate_mo_template">
+        	<field name="key">so.validate_mo_template</field>
+        	<field name="value">jidoka_marketing.mail_mo_validate_template</field>
+        </record>
+        <record model="ir.config_parameter" id="mo_approve_manager_email_template">
+        	<field name="key">so.mo_manager_approve_template</field>
+        	<field name="value">jidoka_marketing.mail_mo_manager_approve</field>
+        </record>
+        <record model="ir.config_parameter" id="mo_reject_manager_email_template">
+        	<field name="key">so.mo_manager_reject_template</field>
+        	<field name="value">jidoka_marketing.mail_mo_manager_reject</field>
+        </record>
+
+        <!--sc-->
+        <record model="ir.config_parameter" id="validate_sc_template">
+        	<field name="key">so.validate_sc_template</field>
+        	<field name="value">jidoka_marketing.mail_sc_validate_template</field>
+        </record>
+        <record model="ir.config_parameter" id="sc_approve_manager_email_template">
+        	<field name="key">so.sc_manager_approve_template</field>
+        	<field name="value">jidoka_marketing.mail_sc_manager_approve</field>
+        </record>
+        <record model="ir.config_parameter" id="sc_reject_manager_email_template">
+        	<field name="key">so.sc_manager_reject_template</field>
+        	<field name="value">jidoka_marketing.mail_sc_manager_reject</field>
+        </record>
+    </data>
+</odoo>

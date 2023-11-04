@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <record id="inherit_account_move_form_view" model="ir.ui.view">
+            <field name="name">account.move.form.view.invoice_report</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_reference']" position="after">
+                    <field name="origin" readonly="1"/>
+                    <field name="origin_ids" 
+                    widget="many2many_tags"
+                    />
+                    <field name="peb_no" />
+                    <field name="account_payment_id" invisible="1"/>
+                    <field name="peb_date" />
+                    <field name="bank_name" />
+                    <field name="tax_invoice" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

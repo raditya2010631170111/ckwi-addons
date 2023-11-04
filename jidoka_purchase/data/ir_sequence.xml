@@ -1,0 +1,42 @@
+<odoo>
+	<data noupdate="1">
+
+		<record id="sequence_new_purchase_order" model="ir.sequence">
+		   <field name="name">Purchase Order CKWI</field>
+		   <field name="code">seq.purchase.order.ckwi</field>
+		   <field name="active">TRUE</field>
+		   <field name="padding">4</field>
+		   <field name="number_next">1</field>
+		   <field name="number_increment">1</field>
+		</record>
+
+		<record id="sequence_new_purchase_requisition_ckwi" model="ir.sequence">
+			<field name="name">Purchase Requisition CKWI</field>
+			<field name="code">seq.purchase.requisition.ckwi</field>
+			<field name="active">TRUE</field>
+			<field name="padding">4</field>
+			<field name="number_next">1</field>
+			<field name="number_increment">1</field>
+		 </record>
+
+		 <record id="sequence_grading_summary_ckwi" model="ir.sequence">
+			<field name="name">Grading Summary CKWI</field>
+			<field name="code">seq.grading.summary.ckwi</field>
+			<field name="active">TRUE</field>
+			<field name="padding">4</field>
+			<field name="number_next">1</field>
+			<field name="number_increment">1</field>
+			<field name="suffix">/MP/CKWI/%(month)s/%(y)s</field>
+		 </record>
+
+		 <record id="sequence_rekapitulasi_grading_ckwi" model="ir.sequence">
+			<field name="name">Rekapitulasi Grading CKWI</field>
+			<field name="code">seq.rekapitulasi.grading.ckwi</field>
+			<field name="active">TRUE</field>
+			<field name="padding">4</field>
+			<field name="number_next">1</field>
+			<field name="number_increment">1</field>
+			<field name="suffix">/RKP-AD/%(month)s/%(y)s</field>
+		 </record>
+	</data>
+</odoo>

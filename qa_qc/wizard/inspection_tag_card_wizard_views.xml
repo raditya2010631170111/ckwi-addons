@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="inspection_tag_card_wizard_view_form" model="ir.ui.view">
+        <field name="name">inspection.tag.card.wizard.view.form</field>
+        <field name="model">inspection.tag.card.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="start_date" required="1"/>
+                        <field name="end_date" required="1"/>
+                        <field name="type_qc" required="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_print_inspection_tag_card_report" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="inspection_tag_card_wizard_action" model="ir.actions.act_window">
+        <field name="name">Inspection Tag Card Reports</field>
+        <field name="res_model">inspection.tag.card.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="inspection_tag_card_wizard_view_form"/>
+    </record>   
+			  
+	<menuitem name="Reporting"
+            id="menu_qc_reporting"
+            parent="menu_qc_root"
+            sequence="50"/>
+			
+    <menuitem id="menu_inspection_tag_card_report"
+              name="Inspection Tag Card Report"
+              sequence="10"
+              action="inspection_tag_card_wizard_action"
+              parent="qa_qc.menu_qc_reporting"/>
+			  
+	<record id="report_inspection_tag_card_xls_action" model="ir.actions.report">
+        <field name="name">Inspection Tag Card (XLSX)</field>
+        <field name="model">inspection.tag.card.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">qa_qc.report_inspection_tag_card_xls</field>
+        <field name="report_file">qa_qc.report_inspection_tag_card_xls</field>
+        <field name="print_report_name">'Inspection Tag Card (%s - %s %s)' % (object.start_date,object.end_date,object.type_qc)</field>
+    </record>
+
+</odoo>

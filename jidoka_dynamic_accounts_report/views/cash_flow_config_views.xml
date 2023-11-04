@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- cash.flow.config tree view -->
+    <record id="cash_flow_config_view_tree" model="ir.ui.view">
+        <field name="name">cash.flow.config.view.tree</field>
+        <field name="model">cash.flow.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="report_type"/>
+                <field name="account_ids" widget="many2many_tags"/>
+                <field name="calculation_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- cash.flow.config form view -->
+    <record id="cash_flow_config_view_form" model="ir.ui.view">
+        <field name="name">cash.flow.config.view.form</field>
+        <field name="model">cash.flow.config</field>
+        <field name="arch" type="xml">
+            <form string="CF Form">
+                <sheet>
+                    <group>
+                        <field name="report_type"/>
+                        <field name="account_ids" widget="many2many_tags"/>
+                        <field name="calculation_type"/>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- cash.flow.config action window -->
+    <record id="cash_flow_config_action" model="ir.actions.act_window">
+        <field name="name">Cash Flow Config</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cash.flow.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+            </p><p>
+                <!-- More details about what a user can do with this object will be OK --> 
+            </p>
+        </field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="cash_flow_config_menu_act" name="Cash Flow Config" 
+        parent="base.action_res_partner_bank_account_form" 
+        groups="base.group_no_one"
+        action="cash_flow_config_action" sequence="120"/>
+</odoo>

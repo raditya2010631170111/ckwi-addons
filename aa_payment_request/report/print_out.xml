@@ -1,0 +1,296 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+
+
+
+        <report string="PRINT REQUEST PAYMENT/ADVANCE" paperformat="base.paperformat_euro" id="action_report_apr" model="payment.request" report_type="qweb-pdf" menu="True" name="aa_payment_request.report_apr" file="aa_payment_request.report_apr" />
+
+
+
+        <template id="report_apr">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+
+                            <t t-if="o.type == 'payment' ">
+                                <table width="100%">
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <strong>
+                                                <h3>APPROVAL PAYMENT REQUEST</h3>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+
+                            <t t-if="o.type == 'aap' ">
+                                <table width="100%">
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <strong>
+                                                <h3>APPROVAL ADVANCE PAYMENT</h3>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+
+                            <t t-if="o.type == 'settle' ">
+                                <table width="100%">
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <strong>
+                                                <h3>APPROVAL SETTLEMENT</h3>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td>
+                                     Number
+                                    </td>
+                                    <td colspan="3">
+                                            :                                        <span t-field="o.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Date
+                                    </td>
+                                    <td>
+                                        :                                        <span t-field="o.date"/>
+                                    </td>
+                                    <!-- <td>
+                                        Source Settlement
+                                    </td>
+                                    <td> 
+                                        :                                        <span t-field="o.difference_payment_id"/>
+                                    </td> -->
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Responsible
+                                    </td>
+                                    <td>
+                                        :                                        <span t-field="o.user_id"/>
+                                    </td>
+                                    <!-- <td>
+                                        Partner
+                                    </td>
+                                    <td>
+                                        :                                        <span t-field="o.partner_id"/>
+                                    </td> -->
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Description
+                                    </td>
+                                    <td colspan="3">
+                                        :                                        <span t-field="o.description"/>
+                                    </td>
+
+                                </tr>
+                                <!-- <tr>
+                                    <td>
+                                        Project
+                                    </td>
+                                    <td colspan="3">
+                                        :                                        <span t-field="o.project_id"/>
+                                    </td>
+                                </tr> -->
+                                <t t-if="o.type == 'settle' ">
+                                    <tr>
+                                        <td>
+                                        Advance
+                                        </td>
+                                        <td>
+                                        :                                            <span t-field="o.pembayaran_id"/>
+
+                                        </td>
+                                        <td>
+                                        Difference
+                                        </td>
+                                        <td>
+                                        :                                            <span t-field="o.difference"/>
+
+                                        </td>
+                                    </tr>
+
+                                </t>
+
+                            </table>
+
+
+                            <t t-if="o.nama_rekening">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td>
+                                            Nama Bank
+                                        </td>
+                                        <td>
+                                            :                                            <span t-field="o.nama_bank"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Nama Rekening
+                                        </td>
+                                        <td>
+                                            :                                            <span t-field="o.nama_rekening"/>
+                                        </td>
+                                        <td>
+                                            Nomor Rekening
+                                        </td>
+                                        <td>
+                                            :                                            <span t-field="o.nomor_rekening"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+
+                            <br/>
+                            <br/>
+
+                            <table class="table table-condensed">
+                                <tr>
+                                    <th class="text-center">
+                                        <strong>Description</strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong>Vendor Bill</strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong>Amount</strong>
+                                    </th>
+                                </tr>
+                                <tr t-foreach="o.payment_line" t-as="line">
+                                    <td>
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="line.invoice_id"/>
+                                    </td >
+                                    <td class="text-right">
+                                        <span t-esc="line.amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Note : </span>
+                                        <span t-field="o.reason"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>
+                                            <span t-field="o.amount"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <br/>
+
+                            <table width="50%">
+
+                                <tr>
+                                    <td>
+                                        <strong>Terbilang</strong>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            :                                            <span t-esc="o.terbilang(o.amount)"/>
+ Rupiah
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <br/>
+                            <br/>
+
+                            <div id='tanda_tangan'>
+                                <table width="100%" style="text-align:center;page-break-inside:avoid">
+                                    <tr >
+                                        <td style="text-align:center;" width="25%">
+                                            <b>Prepared by</b>
+                                        </td>
+                                        <td style="text-align:center;" width="25%">
+                                            <b>Reviewed by</b>
+                                        </td>
+                                        <td style="text-align:center;" width="25%">
+                                            <b>Approved by</b>
+                                        </td>
+                                        <td style="text-align:center;" width="25%">
+                                            <b>Approved by</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <u>
+                                                <span t-field="o.company_id.acc_id"/>
+                                            </u>
+                                            <br/>
+                                            <b>
+                                                Accounting
+                                            </b>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <u>
+                                                <span t-field="o.company_id.fin_id"/>
+                                            </u>
+                                            <br/>
+                                            <b>Finance</b>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <u>
+                                                <span t-field="o.company_id.dirut_id"/>
+                                            </u>
+                                            <br/>
+                                            <b>Direktur Utama</b>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <u>
+                                                <span t-field="o.company_id.dirkeu_id"/>
+                                            </u>
+                                            <br/>
+                                            <b>Direktur Keuangan</b>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_voucher,access_account_voucher,model_account_voucher,base.group_user,1,1,1,1
+access_account_voucher_line,access_account_voucher_line,model_account_voucher_line,base.group_user,1,1,1,1
+access_voucher_multi_invoice,access_voucher_multi_invoice,model_voucher_multi_invoice,base.group_user,1,1,1,1
+access_voucher_multi_invoice_line,access_voucher_multi_invoice_line,model_voucher_multi_invoice_line,base.group_user,1,1,1,1
+access_payment_register_custom_user,undefined.payment.register.custom,model_payment_register_custom,base.group_user,1,1,1,1

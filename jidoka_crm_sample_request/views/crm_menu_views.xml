@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <!-- ! OVERRIDE odoo CRM menu -->
+
+    <menuitem
+        id="crm.menu_crm_opportunities"
+        name="Spec Design"
+        parent="crm.crm_menu_sales"
+        sequence="1"/>
+
+        
+    <menuitem
+        id="crm.crm_lead_menu_my_activities"
+        name="My Activities"
+        parent="crm.crm_menu_sales"
+        groups="sales_team.group_sale_manager"
+        sequence="3"/>
+
+</odoo>

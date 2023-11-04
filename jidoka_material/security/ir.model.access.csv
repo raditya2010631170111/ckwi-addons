@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_jidoka_material_user,jidoka_material.jidoka.material,model_jidoka_material,base.group_user,1,1,1,1
+access_jidoka_tagcard_user,jidoka_material.jidoka.tagcard,model_jidoka_tagcard,base.group_user,1,1,1,1
+access_jidoka_tagcard_material_user,jidoka_material.jidoka.tagcard.material,model_jidoka_tagcard_material,base.group_user,1,1,1,1
+access_tagcard_transfer_wizard_user,jidoka_material.tagcard.transfer.wizard,model_tagcard_transfer_wizard,base.group_user,1,1,1,1
+access_stock.quant.package, jidoka_material.stock.quant.package,model_stock_quant_package,base.group_user,1,1,1,1
+access_jidoka_material_sticking_user,jidoka_material.jidoka.material.sticking,model_jidoka_material_sticking,base.group_user,1,1,1,1
+access_result_filters_dimension,Result Filters Dimension,model_result_filters_dimension,base.group_user,1,1,1,1
+access_tagcard_quick_add_wizard,access_tagcard_quick_add_wizard,model_tagcard_quick_add_wizard,base.group_user,1,1,1,1

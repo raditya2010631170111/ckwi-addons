@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_sample_request,crm_sample_request,model_crm_sample_request,base.group_user,1,1,1,1
+access_crm_sample_request_line,crm_sample_request_line,model_crm_sample_request_line,base.group_user,1,1,1,1
+access_crm_sample_request_line1,crm_sample_request_line1,model_crm_sample_request_line1,base.group_user,1,1,1,1
+access_sr_wizard,sr_wizard,model_approval_history_sample_wizard,base.group_user,1,1,1,1
+access_sr_wizard_reject,sr_wizard_reject,model_approval_history_sample_wizard_reject,base.group_user,1,1,1,1

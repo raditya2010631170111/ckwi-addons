@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="tes_cat_master_bahan_view_tree" model="ir.ui.view">
+            <field name="name">tes.cat.master.view.tree</field>
+            <field name="model">tes.cat.master</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="tes_cat_master_action" model="ir.actions.act_window">
+            <field name="name"> Location Test</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tes.cat.master</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   Location Test not found
+                </p><p>
+                   Location Test not found
+                </p>    
+            </field>
+        </record>
+
+        <record id="jenis_pengujian_view_tree" model="ir.ui.view">
+            <field name="name">jenis.pengujian.view.tree</field>
+            <field name="model">jenis.pengujian</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="jenis_pengujian_action" model="ir.actions.act_window">
+            <field name="name">Jenis Pengujian</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">jenis.pengujian</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   Jenis Pengujian not found
+                </p><p>
+                   Jenis Pengujian not found
+                </p>    
+            </field>
+        </record>
+
+        <record id="tahapan_finishing_master_view_tree" model="ir.ui.view">
+            <field name="name">tahapan.finishing.master.view.tree</field>
+            <field name="model">tahapan.finishing.master</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="tahapan_finishing_master_action" model="ir.actions.act_window">
+            <field name="name">Tahapan Finishing</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tahapan.finishing.master</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   Tahapan Finishing not found
+                </p><p>
+                   Tahapan Finishing not found
+                </p>    
+            </field>
+        </record>
+
+
+        <record id="barang_jadi_master_view_tree" model="ir.ui.view">
+            <field name="name">barang.jadi.view.tree</field>
+            <field name="model">barang.jadi</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="barang_jadi_master_action" model="ir.actions.act_window">
+            <field name="name">Barang Jadi</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">barang.jadi</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   Barang Jadi not found
+                </p><p>
+                   Barang Jadi not found
+                </p>    
+            </field>
+        </record>
+
+        <record id="sumber_acuan_master_view_tree" model="ir.ui.view">
+            <field name="name">sumber.acuan.view.tree</field>
+            <field name="model">sumber.acuan</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="sumber_acuan_master_action" model="ir.actions.act_window">
+            <field name="name">Sumber Acuan</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sumber.acuan</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                  Sumber Acuan not found
+                </p><p>
+                  Sumber Acuan not found
+                </p>    
+            </field>
+        </record>
+
+        <record id="jenis_mesin_view_tree" model="ir.ui.view">
+            <field name="name">jenis.mesin.view.tree</field>
+            <field name="model">jenis.mesin</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="jenis_mesin_action" model="ir.actions.act_window">
+            <field name="name">Jenis Mesin</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">jenis.mesin</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                  Jenis Mesin not found
+                </p><p>
+                  Jenis Mesin not found
+                </p>    
+            </field>
+        </record>
+
+        <record id="cek_point_master_view_tree" model="ir.ui.view">
+            <field name="name">cek.point.view.tree</field>
+            <field name="model">cek.point</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+         <record id="cek_point_master_view_form" model="ir.ui.view">
+            <field name="name">cek.point.view.form</field>
+            <field name="model">cek.point</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                        </group>
+                        <notebook>
+                            <page name="komponen" string="Point Pemeriksaan">
+                               <field name="cek_point_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="sequence" widget="handle"/>
+                                        <button name="action_show_details" type="object" icon="fa-list" width="0.1" title="Details"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="cek_point_master_action" model="ir.actions.act_window">
+            <field name="name">Cek Point</field>
+            <field name="res_model">cek.point</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                  Cek point not found
+                </p><p>
+                  Cek point not found
+                </p>    
+            </field>
+        </record>
+
+        <record id="point_pemeriksaan_detail" model="ir.ui.view">
+            <field name="name">cek.point.line.form</field>
+            <field name="model">cek.point.line</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <form string="Point Pemeriksaan Details">
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="max_line" invisible="1"/>
+                            <field name="cek_point_id" invisible="1" />
+                            <field name="sequence" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="point_pemeriksaan_ids" >
+                        <tree editable="bottom">
+                            <field name="max_line" invisible="1"/>
+                            <field name="sequence" widget="handle"/>
+                            <field name="cek_point_id" invisible="1" />
+                            <field name="cek_point_line_id" invisible="1" />
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+
+        <menuitem
+            id="tes_pengujian_qc_master_menu"
+            name="Master Pengujian QC"
+            parent="qa_qc.menu_qc_configuration"/>
+
+        <menuitem
+            id="tes_cat_master_menu"
+            name="Location Test"
+            action="tes_cat_master_action"
+            parent="tes_pengujian_qc_master_menu"/>
+
+        <menuitem
+            id="jenis_pengujian_master_menu"
+            name="Jenis Pengujian"
+            action="jenis_pengujian_action"
+            parent="tes_pengujian_qc_master_menu"/>
+
+        <menuitem
+            id="tahapan_finishing_master_menu"
+            name="Tahapan Finishing"
+            action="tahapan_finishing_master_action"
+            parent="tes_pengujian_qc_master_menu"/>
+
+        <menuitem
+            id="barang_jadi_master_menu"
+            name="Barang Jadi"
+            action="barang_jadi_master_action"
+            parent="tes_pengujian_qc_master_menu"/>
+
+        <menuitem
+            id="sumber_acuan_master_menu"
+            name="Sumber Acuan"
+            action="sumber_acuan_master_action"
+            parent="tes_pengujian_qc_master_menu"/>
+    
+        <menuitem
+            id="jenis_mesin_menu"
+            name="Jenis Mesin"
+            action="jenis_mesin_action"
+            parent="tes_pengujian_qc_master_menu"/>
+
+        <menuitem
+            id="cek_point_master_menu"
+            name="Cek Point"
+            action="cek_point_master_action"
+            parent="tes_pengujian_qc_master_menu"/>
+    </data>
+    
+
+</odoo>

@@ -1,0 +1,23 @@
+<odoo>
+  <data>
+
+        <record id="stock_picking_batch_inherit" model="ir.ui.view">
+            <field name="model">stock.picking.batch</field>
+            <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='scheduled_date']" position="after">
+                    <field name="name1" 
+                    invisible="1"
+                    />
+                    <field name="location_id" />
+                    <field name="ups_awb_no" />
+                    <field name="tagih" widget="radio" options="{'horizontal': true}"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                  <field name="no_kend"/>
+                </xpath>
+              </field>
+        </record>
+
+  </data>
+</odoo>

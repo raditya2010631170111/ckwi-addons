@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="tindakan_perbaikan_bahan_view_tree" model="ir.ui.view">
+            <field name="name">tindakan.perbaikan.view.tree</field>
+            <field name="model">tindakan.perbaikan</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="tindakan_perbaikan_view_form" model="ir.ui.view">
+            <field name="name">tindakan.perbaikan.view.form</field>
+            <field name="model">tindakan.perbaikan</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                        </group>
+                   
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="tindakan_perbaikan_action" model="ir.actions.act_window">
+            <field name="name">Tindakan Perbaikan</field>
+            <field name="res_model">tindakan.perbaikan</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+    
+        <menuitem
+            id="tindakan_perbaikan_menu"
+            name="Tindakan Perbaikan"
+            action="tindakan_perbaikan_action"
+            parent="qa_qc.menu_qc_configuration"/>
+    
+    </data>
+    
+
+</odoo>

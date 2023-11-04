@@ -1,0 +1,24 @@
+<odoo>
+	<data noupdate="1">
+		<record id="sequence_new_sawmill" model="ir.sequence">
+		   <field name="name">Sawmill</field>
+		   <field name="code">jidoka.sawmill</field>
+		   <field name="active">TRUE</field>
+		   <field name="prefix">SW/%(year)s/</field>
+		   <field name="padding">5</field>
+		   <field name="number_next">1</field>
+		   <field name="number_increment">1</field>
+		</record>
+
+		<record id="sequence_lot_sawmill_line" model="ir.sequence">
+		   <field name="name">Sawmill Line Lot</field>
+		   <field name="code">jidoka.sawmill.line.lot</field>
+		   <field name="active">TRUE</field>
+		   <field name="padding">5</field>
+		   <field name="number_next">1</field>
+		   <field name="number_increment">1</field>
+		</record>
+
+
+	</data>
+</odoo>

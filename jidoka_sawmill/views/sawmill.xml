@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">        
+        <!-- Tree view for "model" -->
+        <record id="jidoka_sawmill_tree" model="ir.ui.view">
+            <field name="name">jidoka.sawmill.tree</field>
+            <field name="model">jidoka.sawmill</field>
+            <field name="type">tree</field>
+            <field name="mode">primary</field>
+            <field name="priority" eval="16" />
+            <field name="active" eval="True" />
+            <field name="arch" type="xml">
+                <tree string="jidoka_sawmill_tree" create="true" delete="true" edit="true">
+                    <field name="name" />
+                    <field name="picking_id"/>
+                    <field name="product_id"/>
+                    <field name="lot_id"/>
+                    <field name="date"/>
+                    <field name="rendemen"/>
+                    <field name="state" widget="badge" decoration-muted="state == 'draft'" decoration-success="state == 'done'"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form view for "model" -->
+        <record id="jidoka_sawmill_form" model="ir.ui.view">
+            <field name="name">jidoka.sawmill.form</field>
+            <field name="model">jidoka.sawmill</field>
+            <field name="type">form</field>
+            <field name="mode">primary</field>
+            <field name="priority" eval="16" />
+            <field name="active" eval="True" />
+            <field name="arch" type="xml">
+                <form string="jidoka_sawmill_form" create="true" delete="true" edit="true">
+                    <header>
+                        <button name="action_done" string="Done" type="object" class="oe_highlight" confirm="Complete this sawmill request?" attrs="{'invisible': [('state','not in',('draft'))]}"/>
+                        <button name="action_done_and_duplicate" string="Done and Duplicate" type="object" class="oe_highlight" confirm="Done and duplicate?" attrs="{'invisible': [('state','not in',('draft'))]}"/>
+                        
+                        <!-- <button name="action_done" string="Done" type="object" class="oe_highlight" confirm="Complete this sawmill request?"/> -->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="mo_sawmill_action_view" type="object" class="oe_stat_button" icon="fa-wrench" attrs="{'invisible':[('count_mo_sawmill','&lt;=',0)]}">
+                                <field name="count_mo_sawmill" string="MO" widget="statinfo"/>
+                            </button>
+                            <button name="action_sawmill_scrap_view" type="object" class="oe_stat_button" icon="fa-cubes" attrs="{'invisible':[('state','in',('draft'))]}">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Scrap</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" />
+                            <h1>
+                                <field name="name" class="oe_inline"
+                                    placeholder="name" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="product_id_domain" invisible="1"/>
+                                <field name="picking_id_domain" invisible="1"/>
+                                <field name="lot_id_domain" invisible="1"/>
+                                <field name="product_id" options="{'no_create': True, 'no_create_edit': True}" 
+                                    attrs="{'readonly': [('state','not in',('draft'))]}"
+                                    domain="product_id_domain"/>
+                                <field name="picking_id" options="{'no_create': True, 'no_create_edit': True}" attrs="{'readonly': [('state','not in',('draft'))]}" domain="picking_id_domain"/>
+                                    <!-- <field name="quantity"/> -->
+                              <!--  <field name="lot_id" options="{'no_create': True, 'no_create_edit': True}" 
+                                attrs="{'readonly': [('state','not in',('draft'))]}"/>-->
+
+                                <field name="nota"/>
+                                
+                               <field name="lot_id" options="{'no_create': True, 'no_create_edit': True}" 
+                                attrs="{'readonly': [('state','not in',('draft'))]}" 
+                                domain="lot_id_domain" class="oe_edit_only"/>
+                                <field name="wood_kind_id"/>
+                                <field name="certification_id"/>
+                                <field name="lot_name" class="oe_read_only" force_save="1"/>
+                                <field name="show_lots_text" invisible="1"/>
+                                <!-- # SM from MO versi 1 -->
+                                <!-- <field name="is_sawmill_mo"/>
+                                <field name="mo_to_sawmill_ids" widget="many2many_tags"
+                                    attrs="{'invisible': [('is_sawmill_mo', '=', False)]}"/> -->
+                            </group>
+                            <group>
+                                <field name="date" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                                <!-- <field name="rendemen" attrs="{'readonly': [('state','not in',('draft'))]}"/> -->
+                                <field name="company_id" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                                <field name="picking_type_id" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                                <field name="location_src_id" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                                <field name="location_dest_id" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <h6>
+                                    <button name="generate_multi_product" string="Generate Multi Product Detail" type="object" icon="fa-plus" class='btn-info' attrs="{'invisible': [('state','in',('done'))]}"/>
+                                </h6>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="line_ids" string="Products Detail">
+                                <field name="line_ids" attrs="{'readonly': [('state','not in',('draft'))]}">
+                                    <tree editable="bottom" create="0" delete="1">
+                                        <field name="product_id"/>
+                                        <field name="lot"/>
+                                        <field name="tebal"/>
+                                        <field name="lebar"/>
+                                        <field name="panjang"/>
+                                        <field name="quantity"/>
+                                        <field name="total" invisible="1"/>
+                                        <!-- just for test -->
+                                        <field name="mo_sawmill_id" invisible="1"/>
+                                        <field name="uom_id"  options="{'no_open': True, 'no_create': True}" string="Unit of Measure" groups="uom.group_uom"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="product_id"/>
+                                                <field name="lot_id"/>
+                                            </group>
+                                            <group>
+                                                <field name="tebal"/>
+                                                <field name="lebar"/>
+                                                <field name="panjang"/>
+                                                <field name="quantity"/>
+                                                <field name="uom_id"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                                <group name="total_sawmill" col="6" class="mt-2 mt-md-0">
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_calculate">
+                                        <field name="total_done"/>
+                                        <field name="quantity" attrs="{ 'invisible': [('state','not in',('draft'))]  }"/>
+                                        <field name="display_quantity" attrs="{ 'invisible': [('state','not in',('done'))]  }" readonly="1"/>
+                                        <div class="oe_subtotal_footer_separator oe_inline o_td_label" attrs="{ 'invisible': [('state','not in',('draft'))]  }">
+                                            <label for="rendemen"/>
+                                        </div>
+                                        <field name="rendemen" nolabel="1" class="oe_subtotal_footer_separator" attrs="{ 'invisible': [('state','not in',('draft'))]  }" widget="percentage"/>
+                                        <div class="oe_subtotal_footer_separator oe_inline o_td_label" attrs="{ 'invisible': [('state','not in',('done'))]  }">
+                                            <label for="display_rendemen"/>
+                                        </div>
+                                        <field name="display_rendemen" nolabel="1" class="oe_subtotal_footer_separator" attrs="{ 'invisible': [('state','not in',('done'))]  }" widget="percentage" readonly="1"/>
+                                    </group>
+                                    <div class="oe_clear"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Search view for "model" -->
+        <record id="jidoka_sawmill_search" model="ir.ui.view">
+            <field name="name">jidoka.sawmill.search</field>
+            <field name="model">jidoka.sawmill</field>
+            <field name="type">search</field>
+            <field name="mode">primary</field>
+            <field name="priority" eval="16" />
+            <field name="active" eval="True" />
+            <field name="arch" type="xml">
+                <search string="jidoka_sawmill_search">
+                    <field name="name" />
+                    
+                </search>
+            </field>
+        </record>
+        
+        <record id="jidoka_sawmill_action" model="ir.actions.act_window">
+            <field name="name">Sawmill</field>
+            <field name="res_model">jidoka.sawmill</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p>
+                    Data Kosong
+                </p>
+            </field>
+        </record>
+        
+        <menuitem id="jidoka_sawmill_menu" name="Sawmill Jidoka" parent="mrp.menu_mrp_root" sequence="40"/>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="jidoka_sawmill_menu_act" name="Sawmill" parent="jidoka_sawmill_menu" action="jidoka_sawmill_action" sequence="10"/>
+
+
+        <record id="jidoka_material_sawmill_form" model="ir.ui.view">
+            <field name="name">jidoka.material.sawmill.form</field>
+            <field name="model">jidoka.material</field>
+            <field name="inherit_id" ref="jidoka_material.jidoka_material_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="sawmill" string="Sawmill">
+                        <group>
+                            <field name="sawmill_id"/>
+                            <field name="mo_sawmill_id"/>
+                        </group>
+                    </page>
+             </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+<!--        <record id="project_task_form_view_inherited" model="ir.ui.view">-->
+<!--            <field name="name">project.task.form</field>-->
+<!--            <field name="model">project.task</field>-->
+<!--            <field name="inherit_id" ref="project.view_task_form2"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="date_last_stage_update" position="after">-->
+<!--                    <field name="maintenance_id"/>-->
+<!--					<field name="is_order" invisible="True"/>-->
+<!--				</field>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--		<record id="job_action" model="ir.actions.act_window">-->
+<!--			<field name="name">Job Order</field>-->
+<!--			<field name="res_model">project.task</field>-->
+<!--			<field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>-->
+<!--			<field name="context">{'default_is_order': True}</field>-->
+<!--			<field name="domain">[('is_order', '=', True)]</field>-->
+<!--		</record>-->
+
+<!--		<menuitem id="main_job_menu" name="Job Order"/>-->
+<!--		<menuitem id="sub_job_menu" name="Job Order" parent="main_job_menu"/>-->
+<!--		<menuitem id="job_menu" parent="sub_job_menu" action="job_action" name="Job Order"/>-->
+
+			 
+	</data>
+</odoo>

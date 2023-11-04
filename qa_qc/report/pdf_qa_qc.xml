@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_qa_qc">
+        <t t-call="web.basic_layout">
+            <table width="100%" class="table table-borderless">
+                <thead>
+                    <span style="font-weight:bold; font-size:18px"> No : 
+                        <b style="size:18px;" t-field="o.name" />
+                    </span>
+                    <div style="text-align: right;">
+
+                        <span style="font-weight:bold; font-size:18px"> Tgl : 
+                            <b style="size:18px;" t-field="o.date" />
+                        </span>
+                    </div>
+                    <br />
+                    <br />
+                    <center>
+                        <span style="font-weight:bold; font-size:18px">PT. CITRA KREASI WOOD INDUSTRY</span>
+                        <!-- <b style="size:18px;" t-field="o.company_id" /> -->
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
+                    </center>
+                    <span style="font-weight:bold; font-size:18px">LEMBAR PEMERIKSAAN BAHAN :
+                        <b style="size:18px;" t-field="o.lembar_pengesahan_bahan_id" />
+                    </span>
+                </thead>
+                <br />
+                <br />
+        
+                <tr>
+                    <td width="22%">No Kendaraan</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.no_kendaraan" />
+                    </td>
+
+                    <td width="22%">Ukuran / Jumlah</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.quantity_received"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="30%">Supplier / Jasa Oven</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.supplier_id" />
+                    </td>
+
+                    <td width="22%">No. IT / No. PI</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.no_pi"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="30%">Bagian / Buyer</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.buyer_id" />
+                    </td>
+
+                    <td width="22%">Std. Pembelian</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.std_pembelian"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="30%">Tgl Surat Jalan</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.delivery_date" />
+                    </td>
+
+                    <td width="22%">Jenis Kayu</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.wood_kind_id"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="22%"></td>
+                    <td width="2%"></td>
+                    <td>
+                    </td>
+
+                    <td width="22%"></td>
+                    <td width="2%"></td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+            <br />
+
+            <table width="100%" style=" border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th width="40%" style="border: 1px solid black;">POINT PEMERIKSAAN</th>
+                        <th width="23%" style="border: 1px solid black;">STATUS</th>
+                        <th width="37%" style="border: 1px solid black;">KETERANGAN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="o.line_ids" t-as="line">
+                        <tr >
+                            <td style="padding-left: 20px; height: 50px; text-align: left; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                                <span t-field="line.name" />
+                            </td>
+                            <td style="padding-left: 20px; height: 50px; text-align: left; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                                <span t-field="line.status" />
+                            </td>
+                            <td style="padding-left: 20px; height: 50px; text-align: left; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                                <span t-field="line.keterangan" />
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <table width="100%" style=" border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th width="35%" style="border: 1px solid black;">KESIMPULAN HASIL PEMERIKSAAN</th>
+                        <th width="10%" style="border: 1px solid black;">NO</th>
+                        <th width="35%" style="border: 1px solid black;">URAIAN KETIDAKSESUAIAN</th>
+                        <th width="20%" style="border: 1px solid black;">JUMLAH</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="data" t-value="o" />
+
+                    <tr >
+                        <br />
+                        <br />
+
+                        <td style=" font-size:12px;padding-left: 20px; height: 50px; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                            <br />
+                            <br />
+                            JUMLAH YANG ADA :
+                            <span t-esc="data.actual_quantity"/>
+Pcs
+                            <br />
+                            <br />
+                               JUMLAH YANG DIPERIKSA :
+                            <span t-esc="data.quantity_checked"/>
+Pcs
+                            <br />
+                            <br />
+                               JUMLAH YANG SESUAI :
+                            <span t-esc="data.quantity_match"/>
+Pcs
+                            <br />
+                            <br />
+                               JUMLAH KETIDAKSESUAIAN :
+                            <span t-esc="data.quantity_unmatch"/>
+Pcs
+                            <br />
+                            <br />
+                            KEPUTUSAN :                    
+                            <span style="font-weight:bold;" t-esc="data.keputusan"/>
+                            <br />
+                            <br />
+
+                            <span style="font-weight:bold;">
+                            *Jumlah ketidaksesuaian yang diperbolehkan
+                            </span>
+                            <br />
+                            <br />
+                        </td>
+
+                        <td style="font-size:15px;padding-left: 20px;padding-top: 10px;  vertical-align: top; height: 50px; text-align: left; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                            <span t-foreach="enumerate(o.uraian_ketidaksesuaian_ids)" style="vertical-align: top;" t-as="item">
+                                <span t-esc="item[0] + 1"/>
+                                <br />
+                                <br />
+                            </span>
+                        </td>
+                        <td style="font-size:15px;padding-left: 20px; padding-top: 10px;  vertical-align: top; text-align: left; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                            <span t-foreach="o.uraian_ketidaksesuaian_ids" style="vertical-align: top;" t-as="item">
+                                <span t-field="item.name" />
+                                <br />
+                                <br />
+
+                            </span>
+                        </td>
+                        <td style="font-size:15px;padding-left: 20px; padding-top: 10px;  vertical-align: top; text-align: left; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                            <span t-foreach="o.uraian_ketidaksesuaian_ids" t-as="item">
+                                <span t-field="item.jumlah" />
+                                <br />
+                                <br />
+
+                            </span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="font-size:12px;padding-left: 20px; padding-top: 10px; padding-bottom: 10px;  vertical-align: top; text-align: left; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                            <span>Catatan / Gambar :</span>
+                            <br />
+
+                            <span t-field="o.note"/>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+            <table width="100%" style=" border-collapse: collapse;">
+                <tbody>
+                    <tr>
+                        <td style="height:40px"></td>
+                        <td style="height:40px"></td>
+                        <td style="height:40px"></td>
+
+                    </tr>
+                    <tr style="padding-top: 60px;">
+                        <td colspan='6'>Disetujui,</td>
+                        <td colspan='6'>Diperiksa,</td>
+                        <td colspan='6'>Dibuat,</td>
+                    </tr>
+
+
+                    <tr>
+
+                        <td colspan='6'>
+                            <t t-if="o.ttd_disetujui">
+                                <img t-att-src="image_data_uri(o.ttd_disetujui)" style="max-height: 4cm; max-width: 4cm;"/>
+                            </t>
+                            <t t-if="not o.ttd_disetujui">
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+
+                            </t>
+                        </td>
+                        <td colspan='6'>
+                            <t t-if="o.ttd_diperiksa">
+                                <img t-att-src="image_data_uri(o.ttd_diperiksa)" style="max-height: 4cm; max-width: 4cm;"/>
+                            </t>
+                            <t t-if="not o.ttd_diperiksa">
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                            </t>
+                        </td>
+                        <td colspan='6'>
+                            <t t-if="o.ttd_dibuat">
+                                <img t-att-src="image_data_uri(o.ttd_dibuat)" style="max-height: 4cm; max-width: 4cm;"/>
+                            </t>
+                            <t t-if="not o.ttd_dibuat">
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                            </t>
+                        </td>
+
+
+
+                    </tr>
+                    <tr>
+                        <td colspan='6'>
+                            <span t-field="o.disetujui" style="margin-top: 2em;"/>
+                        </td>
+                        <td colspan='6'>
+                            <span t-field="o.diperiksa" style="margin-top: 2em;"/>
+                        </td>
+                        <td colspan='6'>
+                            <span t-field="o.dibuat" style="margin-top: 2em;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan='6'>
+                            <hr style="border: none; border-top: 2px solid black; margin-top: 4em; width: 75%; margin-left: 0.5em;"/>
+                        </td>
+                        <td colspan='6'>
+                            <hr style="border: none; border-top: 2px solid black; margin-top: 4em; width: 75%; margin-left: 0.5em;"/>
+                        </td>
+                        <td colspan='6'>
+                            <hr style="border: none; border-top: 2px solid black; margin-top: 4em; width: 95%; margin-left: 0.5em;"/>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </t>
+
+        <!-- <t t-foreach="data.line_ids" t-as="line">
+
+        </t> -->
+    </template>
+
+    <template id="qa_qc_rpt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="qa_qc.report_qa_qc" t-lang="lang" />
+            </t>
+        </t>
+    </template>
+
+</odoo>

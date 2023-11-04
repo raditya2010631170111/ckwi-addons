@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="tes_packaging_view_tree" model="ir.ui.view">
+            <field name="name">tes.packaging.view.tree</field>
+            <field name="model">tes.packaging</field>
+            <field name="arch" type="xml">
+                <tree string="Tes Packaging">
+                    <field name="name" />
+                    <field name="partner_id"/>
+                    <field name="test_seq" string="Test Sequence"/>
+                    <field name="buyer_id"/>
+					<field name="state" decoration-success="state == 'confirm'" decoration-danger="state == 'repeat'" widget="badge" optional="show"/>
+                </tree>
+            </field>
+        </record>
+		
+       <record id="tes_packaging_view_form" model="ir.ui.view">
+            <field name="name">tes.packaging.view.form</field>
+            <field name="model">tes.packaging</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                        <button name="button_confirm" string="Confirmed" type="object" class="oe_highlight" states='draft'/>
+                        <button name="button_cancel" string="Repeat" type="object" class="btn-danger" states='confirm'/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+							<field name="date" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+							<field name="partner_id"/>
+							<field name="buyer_id" />
+							<field name="product_pembahanan_id" attrs="{'readonly': [('state', 'in', ('confirm'))]}"/>
+							<field name="product_id_domain_ids" options="{'no_create': True, 'no_create_edit': True}" widget="many2many_tags" domain="[('id', 'in', product_tmpl_ids)]" attrs="{'readonly': [('state', 'in', ['confirm'])], 'invisible': [('no_mo_id', '=', False)]}"/>
+							<field name="available_products" invisible="1"/>
+							<field name="product_tmpl_ids" domain="[('id', 'not in', available_products)]" widget="many2many_tags" invisible="1"/>
+							<field name="woodkind_id" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+							<field name="no_mo_id"  domain="[('state', '=', 'sale')]"  attrs="{'readonly': [('state','in',('confirm'))]}"/>
+							<field name="cek_point_id"/>
+							<field name="fabric_colour_id"/>
+							<field name="unfinish_goods_ids" widget="many2many_checkboxes" attrs="{'readonly': [('state', 'in', ('confirm'))]}"/>
+							<field name="finished_goods_ids" widget="many2many_checkboxes" attrs="{'readonly': [('state', 'in', ('confirm'))]}"/>
+                            <field name="test_seq"/>
+							<field name="work_standard_ids" widget="many2many_checkboxes" attrs="{'readonly': [('state', 'in', ('confirm'))]}"/>
+                            <field name="max_line" invisible="1"/>
+                        </group>
+						<notebook>
+                            <page name="qc_line" string="Packaging Line">
+                                <field name="line_ids" widget="section_and_note_one2many">
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_product_control" string="Add a checking point"/>
+                                            <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                            <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                        </control>
+                                        <field name="display_type" invisible="1"/>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="cek_point_line_id" optional="hide" />
+                                        <field name="req_name"/>
+                                        <field name="name" widget="section_and_note_text" />
+                                        <field name="status" />
+                                        <field name="keterangan" />
+                                        <field name="is_computed" invisible="1"/>
+                                        <field name="max_line" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <group name="notes" string="Result &amp; Notes">
+									<field name="result_of_test" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                                    <field name="pemeriksaan_selection" invisible="1"/>
+                                    <field name="hasil_pemeriksaan" string="" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                                    <field name="note"/>
+                                </group>
+                            </page>
+                            <page name="hasil_test" string="Test Result Objective">
+                                <group name="reguler" style="oe_row">
+                                    <group>
+										<field name="design_image" string="Bukti Test">
+											<kanban>
+												<field name="id"/>
+												<field name="note"/>
+												<field name="first_attachment_img"/>
+												<field name="second_attachment_img"/>
+												<field name="third_attachment_img"/>
+												<templates>
+													<t t-name="kanban-box">
+														<t t-set="attachment_img" t-value="kanban_color(record.first_attachment_img)"/>
+														<div t-att-class="attachment_img + (record.note.raw_value == 1 ? ' oe_kanban_color_alert' : '') + ' oe_kanban_global_click'">
+															<div class="o_kanban_image">
+																<img alt="Logo" t-if="record.first_attachment_img" t-att-src="kanban_image('tes.packaging.line', 'first_attachment_img', record.id.raw_value)" width="350px"/>
+																<img alt="Logo" t-if="record.second_attachment_img" t-att-src="kanban_image('tes.packaging.line', 'second_attachment_img', record.id.raw_value)" width="350px"/>
+																<img alt="Logo" t-if="record.third_attachment_img" t-att-src="kanban_image('tes.packaging.line', 'third_attachment_img', record.id.raw_value)" width="350px"/>
+															</div>
+															<div class="oe_kanban_details">
+																<div t-if="record.note.raw_value">Notes : <t t-esc="record.note.value"/></div>
+															</div>
+														</div>
+													</t>
+												</templates>
+											</kanban>
+											<form>
+												<sheet>
+													<group>
+														<group>
+															<field name="note" string="Title" required="1"/>
+															<field name="attachment_img" widget="many2many_binary"/>
+														</group>
+													</group>
+												</sheet>
+											</form>
+										</field>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="signature" string="Signature">
+                                <group>
+									<group class="oe_row">
+										<field name="dibuat"/>
+										<field name="ttd_dibuat" widget="image" class="oe_avatar" options="{'size': [100, 100]}" />
+									</group>
+									<group class="oe_row">
+										<field name="disetujui"/>
+										<field name="ttd_disetujui" widget="image" class="oe_avatar" options="{'size': [100, 100]}"/>
+									</group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="tes_packaging_view_form_action" model="ir.actions.act_window">
+            <field name="name">Tes Packaging</field>
+            <field name="res_model">tes.packaging</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+
+        <menuitem
+            id="tes_packaging_menu"
+            name="Tes Packaging"
+            action="tes_packaging_view_form_action"
+            parent="tes_pengujian_qc_menu"
+            sequence="40"/>
+            
+     </data>
+</odoo>
+    

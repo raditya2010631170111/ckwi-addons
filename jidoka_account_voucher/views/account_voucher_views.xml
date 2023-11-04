@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="act_account_move_from_voucher" model="ir.actions.act_window">
+            <field name="res_model">account.move</field>
+            <field name="name">Journal Entries</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('voucher_id','=',active_id),('move_type','=','entry')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new Journal Entries
+                </p>
+            </field>
+        </record>
+
+        <record id="act_account_invoice_from_voucher" model="ir.actions.act_window">
+            <field name="res_model">account.move</field>
+            <field name="name">Invoice/Bill</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('voucher_id','=',active_id),('move_type','in',('in_invoice','out_invoice'))]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new Invoice/Bill
+                </p>
+            </field>
+        </record>
+
+        <!-- account.voucher form view -->
+        <record id="account_voucher_view_form" model="ir.ui.view">
+            <field name="name">account.voucher.view.form</field>
+            <field name="model">account.voucher</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                        <button string="Confirm" name="action_confirm" type="object" class="oe_highlight" states="draft"/>
+                        <button string="Cancel" name="action_cancel" type="object" class="" states="draft"/>
+                        <button string="Reset to Draft" name="action_reset_to_draft" type="object" class="" states="post,cancel"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,post"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(act_account_invoice_from_voucher)d" type="action" class="oe_stat_button" icon="fa-list" attrs="{'invisible':[('count_account_invoice','&lt;=',0)]}">
+                                <field name="count_account_invoice" string="Invoice/Bill" widget="statinfo"/>
+                            </button>
+                            <button name="%(act_account_move_from_voucher)d" type="action" class="oe_stat_button" icon="fa-list" attrs="{'invisible':[('count_account_move','&lt;=',0)]}">
+                                <field name="count_account_move" string="Journal Entries" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="vendor_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="many_po_ids"  domain = "[('id', 'in', invoice_po_ids)]" attrs="{'invisible':[('voucher_type','=','in')]}" widget="many2many_tags"/>
+                                <field name="many_sc_ids" domain="[('id', 'in', invoice_sc_ids)]"  attrs="{'invisible' : [('voucher_type', '=', 'out')]}" widget="many2many_tags" />
+                                <field name="move_id" domain="[('move_type', '=', 'out_invoice'),('create_uid', '=', uid)]" attrs="{'invisible':[('voucher_type','=','out')]}"/>
+                                <field name="many_bill_ids" domain="[('move_type', '=', 'in_invoice'), ('create_uid', '=', uid), ('id', 'in', invoice_bill_ids)]" attrs="{'invisible':[('voucher_type','=','in')]}" widget="many2many_tags"/>
+                                <field name="invoice_po_ids" domain = "[('id', 'in', invoice_po_ids)]" invisible="1"/>
+                                 <field name="invoice_sc_ids" domain="[('state', '=', 'sale')]" invisible="1"  />
+                                <field name="invoice_bill_ids" domain="[('move_type', '=', 'in_invoice'),('create_uid', '=', uid)]" invisible="1"/>
+                                <field name="journal_id" attrs="{'readonly':[('state','!=','draft')]}" options="{'no_create':1,'no_create_edit':1}"/>
+                                <field name="currency_id" options="{'no_create':1,'no_create_edit':1}"/>
+                                <field name="selected_currency_id" invisible="1"/>
+                                <!-- <label for="currency_rate_rp"/> -->
+                                <!-- <div name='rate-div' class='d-flex'>
+                                    <field name="currency_rate_rp" context="{'changed_rate': True}"/>
+                                    <span class="oe_inline o_form_label mx-3 oe_read_only" attrs="{'invisible':[('currency_rate_date', '=', False)]}"> on </span>
+                                    <span class="oe_inline o_form_label mr-3 ml-5 oe_edit_only" attrs="{'invisible':[('currency_rate_date', '=', False)]}"> on </span>
+                                    <field name="currency_rate_date" readonly="1" force_save="1"/>          
+                                </div> -->
+                                <field name="received_from" attrs="{'invisible':[('voucher_type','=','out')]}"/>
+                                <field name="received_for" attrs="{'invisible':[('voucher_type','=','out')]}"/>
+                                <field name="paid_for" attrs="{'invisible':[('voucher_type','=','in')]}"/>
+                            </group>
+                            <group>
+                                <field name="company_id" invisible="1"/>
+                                <field name="total_amount"/>
+                                <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="user_id" readonly="1" force_save="1"/>
+                                <field name="voucher_type" invisible="1"/>
+                            </group>
+                            <!-- <group>
+                                <field name="payment_type" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('voucher_type','!=','out')]}"/>
+                                <field name="date_transfer" attrs="{'readonly':[('state','!=','draft')], 'invisible':['|',('voucher_type','!=','out'),('payment_type','!=','bank')]}"/>
+                                <field name="bank_reference" attrs="{'readonly':[('state','!=','draft')], 'invisible':['|',('voucher_type','!=','out'),('payment_type','!=','bank')]}"/>
+                                <field name="bank_account" attrs="{'readonly':[('state','!=','draft')], 'invisible':['|',('voucher_type','!=','out'),('payment_type','!=','bank')]}"/>
+                                <field name="struck_pembayaran" widget="image" attrs="{'readonly':[('state','!=','draft')], 'invisible':['|',('voucher_type','!=','out'),('payment_type','!=','bank')]}"/>
+                                <field name="cheque_number" attrs="{'readonly':[('state','!=','draft')], 'invisible':['|',('voucher_type','!=','out'),('payment_type','!=','cheque')]}"/>
+                                <field name="date_chaque" attrs="{'readonly':[('state','!=','draft')], 'invisible':['|',('voucher_type','!=','out'),('payment_type','!=','cheque')]}"/>
+                            </group> -->
+                            <group>
+                                <field name="payment_type" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="date_transfer" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('payment_type','!=','bank')]}"/>
+                                <field name="bank_reference" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('payment_type','!=','bank')]}"/>
+                                <field name="bank_account" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('payment_type','!=','bank')]}"/>
+                                <field name="struck_pembayaran" widget="image" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('payment_type','!=','bank')]}"/>
+                                <field name="cheque_number" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('payment_type','!=','cheque')]}"/>
+                                <field name="date_chaque" attrs="{'readonly':[('state','!=','draft')], 'invisible':[('payment_type','!=','cheque')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="line_ids" string="Details">
+                                <field name="line_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="code"/>
+                                                    <field name="date"/>
+                                                    <field name="description"/>
+                                                    <field name="taxes_ids" widget="many2many_tags"/>
+                                                    <field name="company_id" invisible="1"/>
+                                                </group>
+
+                                                <group>
+                                                    <field name="account_id"/>
+                                                    <field name="is_currency_exchange" invisible="1"/>
+                                                    <field name="exchange_currency_id" 
+                                                        attrs="{'invisible':[('is_currency_exchange','=',False)]}"/>
+                                                    <field name="exchange_rate"
+                                                        attrs="{'invisible':[('is_currency_exchange','=',False)]}"/>
+                                                    <field name="partner_id"/>
+                                                    <!-- <field name="move_id" 
+                                                        attrs="{'readonly':[('account_id','!=',False),('domain_account','not in',('receivable','payable'))], 'invisible':[('is_currency_exchange','=',True)]}"/>
+                                                    <field name="amount"/> -->
+                                                        <field name="invoice_sc_id" domain="[('state', '=', 'sale')]" attrs="{'column_invisible' : [('parent.voucher_type', '=', 'out')]}"/>
+                                                        <field name="invoice_po_id"  attrs="{'column_invisible' : [('parent.voucher_type', '=', 'in')]}" />
+                                                    <field name="domain_account" invisible="1"/>
+                                                    <field name="move_residual_amount" invisible="1"/>                                                    
+                                                </group>
+                                            </group>
+                                            <notebook>
+                                                <page name="extra" string="Extra Info" class="oe_edit_only">
+                                                    <group name="total_amount" col="6" class="mt-2 mt-md-0">
+                                                        <group class="oe_subtotal_footer oe_right" name="sale_total">
+                                                            <field name="amount_with_extra"/>
+                                                            <field name="selisih_amount" invisible="1"/>
+                                                        </group>
+                                                    </group>
+
+                                                    <group>
+                                                        <group name="name" string="Payment Difference" colspan="2" attrs="{'invisible': [('selisih_amount', '=', False)]}">
+                                                            <field name="payment_difference_handling"/>
+                                                            <field name="writeoff_account_id" attrs="{
+                                                                'invisible': [('payment_difference_handling','!=','reconcile')]}"/>
+                                                            <field name="writeoff_label" attrs="{
+                                                                'invisible': [('payment_difference_handling','!=','reconcile')]}"/>
+                                                        </group>
+                                                    </group>
+                                                </page>
+                                            </notebook>
+                                        </sheet>
+                                    </form>
+                                    <tree editable="bottom">
+                                        <field name="code" invisible="1"/>
+                                        <field name="date" invisible="1"/>
+                                        <field name="description"/>
+                                        <field name="account_id" options="{'no_create':1,'no_create_edit':1}" string="COA"/>
+                                        <field name="partner_id" attrs="{'required':[('domain_account','=','receivable')]}" invisible="1"/>
+                                        <!-- <field name="move_id" options="{'no_create':1,'no_create_edit':1}"/> -->
+                                        <field name="invoice_sc_id" domain="[('state', '=', 'sale')]" attrs="{'column_invisible' : [('parent.voucher_type', '=', 'out')]}" invisible="1" />
+                                        <field name="invoice_po_id"  attrs="{'column_invisible' : [('parent.voucher_type', '=', 'in')]}" invisible="1"  />
+                                        <field name="selected_currency_id" invisible="1"/>
+                                        <field name="coa" invisible="1"/>
+                                        <field name="taxes_ids" widget="many2many_tags"/>
+                                        <field name="amount"/>
+                                        <field name="keterangan"/>
+                                        <field name="amount_with_extra" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="domain_account" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="voucher_type" invisible="1"/>
+                                    </tree>
+                                </field>
+								<group class="oe_subtotal_footer oe_right">
+                                    <field name="payment_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="amount_ppn" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <div class="oe_subtotal_footer_separator oe_inline">
+                                        <label for="amount_total"/>
+                                    </div>
+                                    <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                            </page>
+                            <page name="notes" string="Notes">
+                                <field name="notes"/>
+                            </page>
+                            <page name="signature" string="Signature">
+                                <group>
+									<group name="Approver" string="Approver">
+										<field name="approved_by"/>
+										<field name="signature_approver" widget="image" width="90px"/>
+									</group>                               
+									<group  name="Authorizer" string="Authorizer">
+										<field name="authorized_by"/>
+										<field name="signature_authorizer" widget="image" width="90px"/>
+									</group>
+									<group string="Receiver">
+										<field name="received_by"/>
+										<field name="signature_receiver" widget="image" width="90px" />
+									</group>
+                                    <group string="Creator By">
+										<field name="created_by"/>
+										<field name="signature_creator" widget="image" width="90px" />
+									</group>
+                                </group>
+                            </page>
+                        </notebook>
+                        
+                        <!-- <group class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="amount_total"/>
+                                </div>
+                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount_fee" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                        </group> -->
+                             
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- account.voucher tree view -->
+        <record id="account_voucher_view_tree" model="ir.ui.view">
+            <field name="name">account.voucher.view.tree</field>
+            <field name="model">account.voucher</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="journal_id"/>
+                    <field name="total_amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- account.voucher action window -->
+        <record id="account_voucher_in_action" model="ir.actions.act_window">
+            <field name="name">Voucher In</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.voucher</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('voucher_type','=','in')]</field>
+            <field name="context">{'default_voucher_type':'in'}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p><p>
+                    <!-- More details about what a user can do with this object will be OK --> 
+                </p>
+            </field>
+        </record>
+
+        <record id="account_voucher_out_action" model="ir.actions.act_window">
+            <field name="name">Voucher Out</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.voucher</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('voucher_type','=','out')]</field>
+            <field name="context">{'default_voucher_type':'out'}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p><p>
+                    <!-- More details about what a user can do with this object will be OK --> 
+                </p>
+            </field>
+        </record>
+
+        <!-- This Menu Item Must have a parent -->
+        <menuitem id="voucher_menu_categ" name="Voucher" 
+            parent="account.menu_finance" sequence="3"/>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="voucher_in_menu_act" name="In" parent="voucher_menu_categ" 
+            action="account_voucher_in_action" sequence="10"/>
+        
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="voucher_out_menu_act" name="Out" parent="voucher_menu_categ" 
+            action="account_voucher_out_action" sequence="20"/>
+    </data>
+</odoo>

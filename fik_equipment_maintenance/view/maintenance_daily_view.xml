@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="hr_equipment_action_maintenance_report" model="ir.actions.act_window">
+        <field name="name">Maintenance Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">maintenance.request</field>
+        <field name="view_mode">tree,pivot</field>
+        <field name="context">{'group_by': 'category_id'}</field>
+    </record>
+
+    <record id="hr_equipment_request_action_from_daily" model="ir.actions.act_window">
+        <field name="name">Maintenance Requests</field>
+        <field name="res_model">maintenance.request</field>
+        <field name="binding_model_id" ref="model_maintenance_daily" />
+        <field name="view_mode">kanban,tree,form,pivot,graph,calendar</field>
+        <field name="context">{
+            'default_maintenance_daily_id': active_id,
+        }</field>
+        <field name="domain">[('maintenance_daily_id', '=', active_id)]</field>
+    </record>
+    <record id="maintenance_daily_view_form" model="ir.ui.view">
+        <field name="name">maintenance.daily.form</field>
+        <field name="model">maintenance.daily</field>
+        <field name="arch" type="xml">
+            <form string="Maintenance Daily">
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <field name="active" attrs="{'invisible': 1}" />
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="%(hr_equipment_request_action_from_daily)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-ticket"
+                        >
+                            <field
+                                string="Maintenance"
+                                name="maintenance_count"
+                                widget="statinfo"
+                            />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" />
+                        <h1>
+                            <field
+                                name="name"
+                                placeholder="e.g. Calibration"
+                                attrs="{'required': [('equipment_id', '=', False)]}"
+                            />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field
+                                name="equipment_id" string="Nama Mesin"
+                                invisible="context.get('hide_equipment_id', 0)"
+                            />
+                            <field name="category_id" string="Bagian"/>
+                            <field name="start_maintenance_date" />
+                        </group>
+                        <group>
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                            />
+                            <field
+                                name="maintenance_team_id"
+                                attrs="{'required': [('equipment_id', '=', False)]}"
+                            />
+                            <field name="user_id" />
+                            <field name="employee_id" />
+                            <field name="department_id" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="duration" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="General">
+                            <field name="maintenance_daily_line_ids" nolabel="1">
+                                <tree editable="True">
+                                    <field name='bagian_id'/>
+                                    <field name='aliran_listrik'/>
+                                    <field name='tempat'/>
+                                    <field name='dasar'/>
+                                    <field name='cara'/>
+                                    <field name='greas'/>
+                                    <field name='alat'/>
+                                    <field name='waktu'/>
+                                    <field name='all_shift'/>
+                                    <field name='shift1'/>
+                                    <field name='shift2'/>
+                                    <field name='date'/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="o_attachment_preview" />
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="maintenance_daily_view_tree" model="ir.ui.view">
+        <field name="name">maintenance.daily.tree</field>
+        <field name="model">maintenance.daily</field>
+        <field name="arch" type="xml">
+            <tree string="Maintenance Dailys" decoration-muted="active == False">
+                <field name="equipment_id" />
+                <field name="name" />
+                <field name="duration" />
+                <field name="active" attrs="{'invisible': True}" />
+                <field name="company_id" groups="base.group_multi_company" />
+            </tree>
+        </field>
+    </record>
+    <record id="maintenance_daily_view_search" model="ir.ui.view">
+        <field name="name">maintenance.daily.search</field>
+        <field name="model">maintenance.daily</field>
+        <field name="arch" type="xml">
+            <search string="Maintenance Dailys">
+                <field name="equipment_id" />
+                <field name="maintenance_team_id" />
+                <field name="name" />
+                <field name="company_id" groups="base.group_multi_company" />
+                <field name="start_maintenance_date" />
+                <filter string="Active" name="active" domain="[('active', '=',True)]" />
+                <filter
+                    string="Inactive"
+                    name="archived"
+                    domain="[('active', '=',False)]"
+                />
+                <filter
+                    string="Daily Maintenance"
+                    name="under_maintenance"
+                    domain="[('maintenance_open_count', '&gt;', 0)]"
+                />
+            </search>
+        </field>
+    </record>
+    <record id="maintenance_daily_action" model="ir.actions.act_window">
+        <field name="name">Maintenance dailys</field>
+        <field name="res_model">maintenance.daily</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="maintenance_daily_view_tree" />
+        <field name="domain">['|', ('active', '=', True), ('active', '=',
+            False)]
+        </field>
+    </record>
+    <record id="maintenance_daily_equipment_action" model="ir.actions.act_window">
+        <field name="name">Maintenance Dailys</field>
+        <field name="res_model">maintenance.daily</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="maintenance_daily_view_tree" />
+        <field name="context">{
+            'default_equipment_id': active_id, 'hide_equipment_id': 0
+        }</field>
+        <field name="domain">['|', ('active', '=', True), ('active', '=',
+            False), ('equipment_id', '=', active_id)]
+        </field>
+    </record>
+
+    <menuitem id="menu_maintenance_report" 
+            name="Maintenance For Report" 
+            action="hr_equipment_action_maintenance_report" 
+            parent="maintenance.menu_m_request" 
+            sequence="100"/>
+    
+</odoo>

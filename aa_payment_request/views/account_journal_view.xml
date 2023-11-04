@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_view_account_journal_form">
+            <field name="name">inherit.view.account.journal.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='group_alias_edit']" position="after">
+                    <group string="Kas Akses" attrs="{'invisible':[('type','!=','cash')]}">
+                        <field name="user_ids" widget="many2many_tags"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,54 @@
+<odoo>
+    <data>
+
+        <record id="master_data_aql_view_form" model="ir.ui.view">
+            <field name="name">Master Data AQL Form</field>
+            <field name="model">qc.aql.data</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="min_lot"/>
+                            <field name="max_lot"/>
+                            <field name="categ_id" />
+                            <field name="level_id"/>
+                            <field name="name_lev" invisible="1"/>
+                            <field name="sample_size"/>
+                            <field name="ac"/>
+                            <field name="re"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="master_data_aql_view_tree">
+            <field name="name">Master Data AQL List</field>
+            <field name="model">qc.aql.data</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" invisible="1"/>
+                    <field name="min_lot"/>
+                    <field name="max_lot"/>
+                    <field name="categ_id" />
+                    <field name="level_id"/>
+                    <field name="name_lev" invisible="1"/>
+                    <field name="sample_size"/>
+                    <field name="ac"/>
+                    <field name="re"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_data_aql" model="ir.actions.act_window">
+            <field name="name">Master Data AQL</field>
+            <field name="res_model">qc.aql.data</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="AQL" id="master_data_aql" parent="qa_qc.menu_qc_root" sequence="20" action="action_data_aql"/>
+    </data>
+
+</odoo>

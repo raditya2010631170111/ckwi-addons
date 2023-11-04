@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="awb_action" model="ir.actions.act_window">
+            <field name="name">AWB</field>
+            <field name="res_model">awb</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                Create a new AWB
+                </p>
+            </field>
+        </record>
+
+        <record id="awb_view_tree" model="ir.ui.view">
+            <field name="name">awb.view.tree</field>
+            <field name="model">awb</field>
+            <field name="arch" type="xml">
+                <tree string="Summary Costing">
+                    <field name="name" />
+                    <field name="batch_transfer_id" />
+                    <field name="transfer_ids" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="awb_view_form" model="ir.ui.view">
+            <field name="name">awb.view.form</field>
+            <field name="model">awb</field>
+            <field name="arch" type="xml">
+                <form string="AWB">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="batch_transfer_id" />
+                        </group>
+                        <group>
+                            <field name="transfer_ids" style="width:900px !important;" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <menuitem id="awb_sub_menu"
+            parent = 'stock.menu_stock_warehouse_mgmt'
+            name="AWB"
+            action="awb_action"
+            sequence="11"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_a5" model="report.paperformat">
+            <field name="name">A5</field>
+            <field name="default" eval="False" />
+            <field name="format">A5</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">36</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">33</field>
+        </record>
+
+        <report id="log_list_xlsx" model="stock.picking" string="PL" report_type="xlsx" name="jidoka_inventory.report_log_list_xlsx" file="stock_picking" print_report_name="'PL - %s' % (object.name)" attachment_use="False" />
+        <report id="status_log_xlsx" model="stock.picking" string="Status Log" report_type="xlsx" name="jidoka_inventory.report_status_log_xlsx" file="stock_picking" print_report_name="'Status_log'" attachment_use="False" />
+        <!-- <report id="warehouse_receipt_pdf" model="stock.picking" string="Bukti Penerimaan Gudang" report_type="qweb-pdf" name="jidoka_inventory.report_warehouse_receipt_pdf" file="stock_picking" print_report_name="'Bukti Penerimaan Gudang - %s' % (object.name)" paperformat_id="jidoka_inventory.paperformat_a5" attachment_use="False" /> -->
+        <record id="warehouse_receipt_pdf" model="ir.actions.report">
+            <field name="name">Bukti Penerimaan Gudang</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">jidoka_inventory.report_warehouse_receipt_pdf</field>
+            <field name="report_file">jidoka_inventory.report_warehouse_receipt_pdf</field>
+            <field name="print_report_name">'Bukti Penerimaan Gudang - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_stock_picking"/>
+            <field name="paperformat_id" ref="jidoka_inventory.paperformat_a5"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <report id="report_stock_quant"
+         string="Stock Quant Report"
+          model="stock.quant" 
+          report_type="xlsx" 
+          name="custom_stock_report.stock_quant_report" 
+          file="custom_stock_report.stock_quant_report" 
+          attachment_use="True" 
+          attachment="(object.name or 'Stock Quant Report').xlsx" />
+    </data>
+</odoo>

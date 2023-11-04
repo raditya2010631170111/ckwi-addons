@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+
+        <record id="account_move_inherit_form_awb" model="ir.ui.view">
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bank_name']" position="after">
+                    <field name="ups_awb_no" />
+                </xpath>
+              </field>
+        </record>
+
+  </data>
+</odoo>

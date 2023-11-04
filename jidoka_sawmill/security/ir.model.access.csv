@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_jidoka_sawmill_user,jidoka_sawmill.jidoka.sawmill,model_jidoka_sawmill,base.group_user,1,1,1,1
+access_jidoka_sawmill_noftification_user,jidoka_sawmill.jidoka.sawmill.noftification,model_jidoka_sawmill_noftification,base.group_user,1,1,1,1
+access_wiz_multi_line_sawmill_user,jidoka_sawmill.wiz.multi.line.sawmill,model_wiz_multi_line_sawmill,base.group_user,1,1,1,1
+access_wiz_multi_line_sawmill_master_user,jidoka_sawmill.wiz.multi.line.sawmill.master,model_wiz_multi_line_sawmill_master,base.group_user,1,1,1,1
+access_jidoka_sticking_user,jidoka_sticking.jidoka.sticking,model_jidoka_sticking,base.group_user,1,1,1,1

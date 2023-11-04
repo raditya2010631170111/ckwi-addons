@@ -1,0 +1,312 @@
+
+<odoo>
+    <data>
+
+            <template id="report_mrp_bom_1" inherit_id="mrp.report_mrp_bom" name="BoM Report">
+                <xpath expr="//table[@class='o_mrp_bom_expandable']" position="replace">
+                <table width="100%" class="o_mrp_bom_expandable" style="border-collapse:collapse;border-bottom:1px solid black;border-top:1px solid black;">
+                    <thead>
+                        <tr style="border-bottom:1px solid black;border-top:1px solid black;">
+                            <th>Product</th>
+                            <th name="th_mrp_bom_h">BoM</th>
+                            <th class="text-right">Quantity</th>
+                            <th class="text-left" groups="uom.group_uom">Unit of Measure</th>
+                            <th class="text-right">Panjang</th>
+                            <th class="text-right">Lebar</th>
+                            <th class="text-right">Tebal</th>
+                            <th class="text-right">(M³)</th>
+                            <th class="text-right">(M²)</th>
+                            <th class="text-right">(M)</th>
+                            <th t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_prod_cost text-right" title="This is the cost defined on the product.">Product Cost</th>
+                            <th t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_bom_cost text-right" title="This is the cost based on the BoM of the product. It is computed by summing the costs of the components and operations needed to build the product.">BoM Cost</th>
+                            <th t-if="data['report_type'] == 'html' and data['has_attachments']" class="o_mrp_has_attachments" title="Files attached to the product">Attachments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid black;border-top:1px solid black;">
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;">
+                                <span><a href="#" t-if="data['report_type'] == 'html'" t-att-data-res-id="data['product'].id" t-att-data-model="'product.product'" class="o_mrp_bom_action"><t t-esc="data['bom_prod_name']"/></a><t t-else="" t-esc="data['bom_prod_name']"/></span>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" name="td_mrp_bom">
+                                <div><a href="#" t-if="data['report_type'] == 'html'" t-att-data-res-id="data['bom'].id" t-att-data-model="'mrp.bom'" class="o_mrp_bom_action"><t t-esc="data['code']"/></a><t t-else="" t-esc="data['code']"/></div>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right"><span><t t-esc="data['bom_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/></span></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" groups="uom.group_uom"><span><t t-esc="data['bom'].product_uom_id.name"/></span></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right"> 
+                                <span t-esc="data['prod_panjang']"/>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right">
+                                <span t-esc="data['prod_lebar']"/>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right">
+                                <span t-esc="data['prod_tebal']"/>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right">
+                                <span t-esc="data['total_meter_cubic']"/>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right">
+                                <span t-esc="data['total_meter_persegi']"/>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right">
+                                 <span t-esc="data['total_meter']"/>
+                            </td>
+                           
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_prod_cost text-right">
+                                <span><t t-esc="data['price']" t-options='{"widget": "monetary", "display_currency": currency}'/></span>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_bom_cost text-right">
+                                <span><t t-esc="data['total']" t-options='{"widget": "monetary", "display_currency": currency}'/></span>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" t-if="data['report_type'] == 'html'">
+                                <span>
+                                    <t t-if="data['attachments']">
+                                        <a href="#" role="button" t-att-data-res-id="data['attachments'].ids" t-att-data-model="'mrp.document'" class="o_mrp_show_attachment_action fa fa-fw o_button_icon fa-files-o"/>
+                                    </t>
+                                </span>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;">
+                                <a href="#" t-if="data['report_type'] == 'html'"
+                                    t-att-data-bom="data['bom'].id"
+                                    t-att-data-prod="data['product'].id"
+                                    t-att-data-model="'bom.rnd.wizard'"
+                                    class="o_mrp_bom_add">
+                                    Edit BoM
+                                </a>
+                            </td>
+                        </tr>
+                        <t t-if="data['report_type'] == 'html'" t-call="mrp.report_mrp_bom_line"/>
+                        <t t-if="data['report_type'] == 'pdf'" t-call="mrp.report_mrp_bom_pdf_line"/>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" name="td_mrp_bom_f"></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" t-if="data['report_structure'] != 'bom_structure'" class="text-right o_mrp_prod_cost"><span><strong>Unit Cost</strong></span></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" groups="uom.group_uom"></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_prod_cost text-right">
+                                <span><t t-esc="data['price']/data['bom_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/></span>
+                            </td>
+                            <td style="border-bottom:1px solid black;border-top:1px solid black;" t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_bom_cost text-right">
+                                <span><t t-esc="data['total']/data['bom_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/></span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </xpath>
+        </template>
+
+
+        <template id="report_mrp_bom_line" inherit_id="mrp.report_mrp_bom_line" name="BoM Line">
+            <xpath expr="//tr[1]" position="replace">
+                <tr class="o_mrp_bom_report_line" t-att-data-id="l['child_bom']" t-att-parent_id="l['parent_id']" t-att-data-line="l['line_id']" t-att-data-product_id="l['prod_id']" t-att-data-qty="l['prod_qty']" t-att-data-level="l['level']">
+                <td style="border-bottom:1px solid black;border-top:1px solid black;">
+                    <div t-att-style="space_td">
+                        <t t-if="l['child_bom']">
+                            <div t-att-data-function="'get_bom'" class="o_mrp_bom_unfoldable fa fa-fw fa-caret-right" style="display:inline-block;" role="img" aria-label="Unfold" title="Unfold"/>
+                        </t>
+                        <div t-att-class="None if l['child_bom'] else 'o_mrp_bom_no_fold'" style="display:inline-block;">
+                            <a href="#" t-att-data-res-id="l['prod_id']" t-att-data-model="'product.product'" class="o_mrp_bom_action"><t t-esc="l['prod_name']"/></a>
+                        </div>
+                        <t t-if="l['phantom_bom']">
+                            <div class="fa fa-dropbox" title="This is a BoM of type Kit!" role="img" aria-label="This is a BoM of type Kit!"/>
+                        </t>
+                    </div>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" name="td_mrp_bom">
+                    <div>
+                        <a href="#" t-att-data-res-id="l['child_bom']" t-att-data-model="'mrp.bom'" class="o_mrp_bom_action"><t t-esc="l['code']"/></a>
+                  </div>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right"><span><t t-esc="l['prod_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/></span></td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" groups="uom.group_uom"><span><t t-esc="l['prod_uom']"/></span></td>
+
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['prod_panjang']"/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['prod_lebar']"/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['prod_tebal']"/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['total_meter_cubic']"/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['total_meter_persegi']"/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['total_meter1']"/>
+                </td>
+
+                
+
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['prod_cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_bom_cost text-right">
+                    <span t-esc="l['total']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;">
+                    <span>
+                        <t t-if="l['attachments']">
+                            <a href="#" role="button" t-att-data-res-id="l['attachments'].ids" t-att-data-model="'mrp.document'" class="o_mrp_show_attachment_action fa fa-fw o_button_icon fa-files-o"/>
+                        </t>
+                    </span>
+                </td>
+                 <td width="80px">
+                    <t t-if="l['child_bom']">
+                        <div>
+                            <a href="#"
+                                t-att-data-bom="l['child_bom']"
+                                t-att-data-prod="l['prod_id']"
+                                t-att-data-model="'bom.rnd.wizard'"
+                                class="o_mrp_bom_add">Edit BoM</a>
+                        </div>
+                    </t>
+                    <t t-if="not l['child_bom']">
+                        <div>
+                            <a href="#"
+                                t-att-data-prod="l['prod']"
+                                t-att-data-model="'bom.rnd.wizard'"
+                                class="o_mrp_bom_add">Add BoM</a>
+                        </div>
+                    </t>
+                </td>
+            </tr>
+            </xpath>
+            <xpath expr="//t[3]" position="replace">
+                <t t-if="data['operations']">
+                    <t t-set="space_td" t-value="'margin-left: '+ str(data['level'] * 20) + 'px;'"/>
+                    <tr style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_bom_report_line o_mrp_bom_cost" t-att-data-id="'operation-' + str(data['bom'].id)" t-att-data-bom-id="data['bom'].id" t-att-parent_id="data['bom'].id" t-att-data-qty="data['bom_qty']" t-att-data-level="data['level']">
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;" name="td_opr">
+                            <span t-att-style="space_td"/>
+                            <span class="o_mrp_bom_unfoldable fa fa-fw fa-caret-right" t-att-data-function="'get_operations'" role="img" aria-label="Unfold" title="Unfold"/>
+                            Operations
+                        </td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;"/>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right">
+                            <span t-esc="data['operations_time']" t-options='{"widget": "float_time"}'/>
+                        </td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;" groups="uom.group_uom"><span>Minutes</span></td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;"></td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost">
+                        </td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_bom_cost text-right">
+                            <span t-esc="data['operations_cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                        </td>
+                        <td style="border-bottom:1px solid black;border-top:1px solid black;"/>
+                    </tr>
+                </t>
+            </xpath>
+
+        </template>
+
+        <template id="report_mrp_bom_pdf_line" inherit_id="mrp.report_mrp_bom_pdf_line" name="BoM pdf Line">
+            <xpath expr="//tr[1]" position="replace">
+                <tr style="border-bottom:1px solid black;border-top:1px solid black;" t-if="data['report_structure'] != 'bom_structure' or l['type'] != 'operation'">
+                  <td style="border-bottom:1px solid black;border-top:1px solid black;">
+                      <div t-att-style="space_td">
+                        <div><t t-esc="l['name']"/></div>
+                      </div>
+                  </td>
+                  <td style="border-bottom:1px solid black;border-top:1px solid black;" name="td_mrp_code">
+                      <div t-if="l.get('code')" t-esc="l['code']" />
+                  </td>
+                  <td style="border-bottom:1px solid black;border-top:1px solid black;" class="text-right">
+                      <span>
+                          <t t-if="l['type'] == 'operation'" t-esc="l['quantity']" t-options='{"widget": "float_time"}'/>
+                          <t t-if="l['type'] == 'bom'" t-esc="l['quantity']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                      </span>
+                  </td>
+                  <td style="border-bottom:1px solid black;border-top:1px solid black;" groups="uom.group_uom"><span><t t-esc="l['uom']"/></span></td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['prod_panjang']"/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['prod_lebar']"/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+                    <span t-esc="l['prod_tebal']"/>
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+					<span t-esc="l.get('total_meter_cubic1')"/>
+					<!--<span t-esc="l['total_meter_cubic']"/>-->
+                </td>
+                <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+					<span t-esc="l.get('total_meter_cubic1')"/>
+					<!--<span t-esc="l['total_meter_cubic']"/>-->
+                </td>
+                 <td style="border-bottom:1px solid black;border-top:1px solid black;" class="o_mrp_prod_cost text-right">
+					<span t-esc="l.get('total_meter1')"/>
+					<!--<span t-esc="l['total_meter1']"/>-->
+                </td>
+                
+                  <td style="border-bottom:1px solid black;border-top:1px solid black;" t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_prod_cost text-right">
+                      <span t-if="'prod_cost' in l" t-esc="l['prod_cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                  </td>
+                  <td style="border-bottom:1px solid black;border-top:1px solid black;" t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_bom_cost text-right">
+                      <span t-esc="l['bom_cost']" t-options='{"widget": "monetary", "display_currency": currency}'/>
+                  </td>
+                </tr>
+            </xpath>
+        </template>
+
+
+<!--        <template id="report_mrp_bom" inherit_id="mrp.report_mrp_bom" name="Perincian">-->
+<!--            <xpath expr="//table/tbody" position="replace">-->
+<!--                <tbody>-->
+<!--                    <tr>-->
+<!--                        <td>-->
+<!--                            <span><a href="#" t-if="data['report_type'] == 'html'" t-att-data-res-id="data['product'].id" t-att-data-model="'product.product'" class="o_mrp_bom_action"><t t-esc="data['bom_prod_name']"/></a><t t-else="" t-esc="data['bom_prod_name']"/></span>-->
+<!--                        </td>-->
+<!--                        <td name="td_mrp_bom">-->
+<!--                            <div><a href="#" t-if="data['report_type'] == 'html'" t-att-data-res-id="data['bom'].id" t-att-data-model="'mrp.bom'" class="o_mrp_bom_action"><t t-esc="data['code']"/></a><t t-else="" t-esc="data['code']"/></div>-->
+<!--                        </td>-->
+<!--                        <td class="text-right"><span><t t-esc="data['bom_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/></span></td>-->
+<!--                        <td groups="uom.group_uom"><span><t t-esc="data['bom'].product_uom_id.name"/></span></td>-->
+<!--                        <td t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_prod_cost text-right">-->
+<!--                            <span><t t-esc="data['price']" t-options='{"widget": "monetary", "display_currency": currency}'/></span>-->
+<!--                        </td>-->
+<!--                        <td t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_bom_cost text-right">-->
+<!--                            <span><t t-esc="data['total']" t-options='{"widget": "monetary", "display_currency": currency}'/></span>-->
+<!--                        </td>-->
+<!--                        <td t-if="data['report_type'] == 'html'">-->
+<!--                            <span>-->
+<!--                                <t t-if="data['attachments']">-->
+<!--                                    <a href="#" role="button" t-att-data-res-id="data['attachments'].ids" t-att-data-model="'mrp.document'" class="o_mrp_show_attachment_action fa fa-fw o_button_icon fa-files-o"/>-->
+<!--                                </t>-->
+<!--                            </span>-->
+<!--                        </td>-->
+<!--                         <td >-->
+<!--                            <a href="#" t-if="data['report_type'] == 'html'" -->
+<!--                                t-att-data-bom="data['bom'].id"-->
+<!--                                t-att-data-prod="data['product'].id"-->
+<!--                                t-att-data-model="'bom.rnd.wizard'" -->
+<!--                                class="o_mrp_bom_add">-->
+<!--                                Edit BoM-->
+<!--                            </a>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <t t-if="data['report_type'] == 'html'" t-call="mrp.report_mrp_bom_line"/>-->
+<!--                    <t t-if="data['report_type'] == 'pdf'" t-call="mrp.report_mrp_bom_pdf_line"/>-->
+<!--                </tbody>-->
+<!--            </xpath>-->
+<!--        </template>-->
+ 
+
+
+    </data>
+
+
+</odoo>

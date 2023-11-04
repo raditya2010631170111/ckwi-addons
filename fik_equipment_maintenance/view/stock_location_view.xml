@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <data>
+
+        <record id="view_picking_form_consume_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.view.form.consume.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_deadline']" position="after">
+                    <field name="is_consume" invisible="True"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="action_comsume_transfer" model="ir.actions.act_window">
+            <field name="name">Consume Maintenance</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_id" ref="stock.vpicktree"/>
+            <field name="context">{}</field>
+            <field name="domain">[('is_consume', '=', True)]</field>
+        </record>
+
+        <record id="consume_maintenance_inherit_location" model="ir.ui.view">
+            <field name="name">consume.maintenance.inherit.location</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <field name="return_location" position="after">
+                    <field name="consume_maintenance"/>
+                </field>
+            </field>
+        </record>
+        
+        <record id="view_picking_type_form_inherit_job_order" model="ir.ui.view">
+            <field name="name">Operation Types Job Order</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <field name="show_operations" position="after">
+                	<field name="consume_maintenance"/>
+                </field>
+            </field>
+        </record>	
+
+    </data>
+</odoo>

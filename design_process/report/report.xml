@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data >
+
+        <record id="action_report_doc_contract_reviews" model="ir.actions.report">
+            <field name="name">Contract Review (PDF)</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">design_process.report_contract_docs2</field>
+            <field name="report_file">design_process.report_contract_docs2</field>
+            <field name="binding_model_id" ref="model_sale_order"/>
+            <field name="binding_model_id" ref="model_sale_order"/>
+            <field name="binding_type">report</field>
+        </record>
+        <record id="action_report_doc_contract_reviews" model="ir.actions.report">
+            <field name="paperformat_id" ref="design_process.paperformat_report_us_letter"/>
+        </record>
+
+
+
+
+
+
+
+    </data>
+</odoo>

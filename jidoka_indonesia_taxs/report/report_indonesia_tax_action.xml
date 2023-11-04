@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="report_indonesia_tax_action" model="ir.actions.report">
+        <field name="name">Indonesia Tax (XLSX)</field>
+        <field name="model">indonesia.tax.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">jidoka_indonesia_taxs.report_indonesia_tax</field>
+        <field name="report_file">jidoka_indonesia_taxs.report_indonesia_tax</field>
+        <field name="print_report_name">'Indonesia Tax (%s - %s)' % (object.start_date,object.end_date)</field>
+    </record>
+</odoo>

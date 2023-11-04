@@ -1,0 +1,131 @@
+<odoo>
+
+	        <record id="view_product_product" model="ir.ui.view">
+	            <field name="model">product.product</field>
+	            <field name="inherit_id" ref="product.product_normal_form_view"/>
+	            <field name="arch" type="xml">
+	                <xpath expr="//field[@name='uom_po_id']" position="after">
+	                    <field name="meter_cubic" invisible="1"/>
+	                </xpath>
+	              </field>
+	        </record>
+
+
+
+	        <record id="view_product_template" model="ir.ui.view">
+	            <field name="model">product.template</field>
+	            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+	            <field name="arch" type="xml">
+	            	<xpath expr="//field[@name='uom_po_id']" position="after">
+	                    <field name="meter_cubic" invisible="1"/>
+	                </xpath>
+	                <xpath expr="//field[@name='barcode']" position="after">
+	                    <!-- <field name="is_componen" />
+	                    <field name="kubikasi_id"/>
+	                    <field name="parent_id" attrs="{'invisible': [('is_componen', '=', False)]}"/>
+	                    <label for="size_tebal" string="Size (cm)" attrs="{'invisible': [('is_componen', '=', False)]}"/>
+	                    <div class="o_row" name="size_tebal" attrs="{'invisible': [('is_componen', '=', False)]}">
+	                        <span>Panjang</span>
+	                        <field name="size_panjang" nolabel="1" placeholder="Panjang"/>	                        
+	                        <span>X</span>
+	                        <span>Lebar</span>
+	                        <field name="size_lebar" nolabel="1" placeholder="Lebar"/>
+	                        <span>X</span>
+	                        <span>Tebal</span>
+	                        <field name="size_tebal" nolabel="1" placeholder="Tebal"/>
+	                    </div> -->
+						<!-- <field name="size_value" invisible="1"/> -->
+						<field name="is_componen" invisible="1"/>
+	                    <field name="kubikasi_id" invisible="1"/>
+	                    <field name="parent_id" invisible="1"/>
+	                    <label for="size_tebal" string="Dimensi" />
+	                    <div class="o_row" name="size_tebal">
+	                        <span>Panjang</span>
+	                        <field name="size_panjang" nolabel="1" placeholder="Panjang"/>	                        
+	                        <span>X</span>
+	                        <span>Lebar</span>
+	                        <field name="size_lebar" nolabel="1" placeholder="Lebar"/>
+	                        <span>X</span>
+	                        <span>Tebal</span>
+	                        <field name="size_tebal" nolabel="1" placeholder="Tebal"/>
+							<span></span>
+	                        <field name="size" nolabel="1"/>
+	                    </div>
+						<!-- <field name="size"/> -->
+						<field name="rasio" />
+	                    <field name="total_meter_cubic"/>
+	                    <field name="total_meter_persegi"/>
+						<field name="total_meter" /> 
+	                </xpath>
+	              </field>
+	        </record>
+
+
+
+		    <record model="ir.ui.view" id="prod_kubikasi_tree">
+		      <field name="name">prod_kubikasi Tree</field>
+		      <field name="model">product.kubikasi</field>
+		      <field name="arch" type="xml">
+		        <tree>
+		             <field name="name"/>
+		             <field name="product_id"/>
+		             <field name="size_tebal"/>
+		             <field name="size_lebar"/>
+		             <field name="size_panjang"/>
+		             <field name="total_meter_cubic" />
+                     <field name="total_meter_persegi" />
+		        </tree>
+		      </field>
+		    </record>
+
+
+
+		    <record model="ir.actions.act_window" id="action_prod_kubikasi">
+			      <field name="name">Kubikasi</field>
+			      <field name="res_model">product.kubikasi</field>
+			      <field name="view_mode">tree,form</field>
+		    </record>
+
+
+		    <record id="prod_kubikasi_form" model="ir.ui.view">
+		        <field name="name">product.kubikasi.form</field>
+		        <field name="model">product.kubikasi</field>
+		        <field name="arch" type="xml">
+		            <form string="Kubikasi">
+		                <sheet>
+		                    <group>
+			                    <group>
+		                            <div class="oe_title">
+		                                <div class="oe_edit_only">
+		                                    <label for="name"/>
+		                                </div>
+		                                <h1>
+		                                    <field name="name" required="1"/>
+		                                </h1>
+		                            </div>
+		                        </group>
+	                        </group>
+	                        <group>
+		                        <group>
+		                        	    <field name="product_id"/>
+					                    <label for="size_tebal" string="Size"/>
+					                    <div class="o_row" name="size_tebal">
+					                        <span>Panjang</span>
+					                        <field name="size_panjang" nolabel="1" placeholder="Panjang"/>
+					                        <span>X</span>
+					                        <span>Lebar</span>
+					                        <field name="size_lebar" nolabel="1" placeholder="Lebar"/>
+					                        <span>X</span>
+					                        <span>Tebal</span>
+					                        <field name="size_tebal" nolabel="1" placeholder="Tebal"/>
+					                    </div>
+					                    <field name="total_meter_cubic" />
+					                    <field name="total_meter_persegi" />
+		                        </group>
+		                    </group>
+		                </sheet>
+		            </form>
+		        </field>
+		    </record>
+
+</odoo>

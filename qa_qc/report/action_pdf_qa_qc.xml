@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_a4" model="report.paperformat">
+            <field name="name">A4</field>
+            <field name="default" eval="False" />
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">15</field>
+        </record>
+
+        <record id="action_report_tag_card" model="ir.actions.report">
+            <field name="name">QA and QC Report</field>
+            <field name="model">quality.check</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">qa_qc.qa_qc_rpt</field>
+            <field name="report_file">qa_qc.qa_qc_rpt</field>
+            <field name="print_report_name">'%s' % object.name</field>
+            <field name="binding_model_id" ref="model_quality_check"/>
+            <field name="paperformat_id" ref="qa_qc.paperformat_a4"/>
+            <field name="binding_type">report</field>
+        </record>
+    
+        <record id="action_report_ketidaksuaian" model="ir.actions.report">
+            <field name="name">Laporan Ketidaksesuaian Barang</field>
+            <field name="model">quality.check</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">qa_qc.qa_qc_ketidaksesuaian</field>
+            <field name="report_file">qa_qc.qa_qc_ketidaksesuaian</field>
+            <field name="print_report_name">'%s' % object.name</field>
+            <field name="binding_model_id" ref="model_quality_check"/>
+            <field name="paperformat_id" ref="qa_qc.paperformat_a4"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

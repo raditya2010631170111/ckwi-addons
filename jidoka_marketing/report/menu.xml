@@ -1,0 +1,26 @@
+<odoo>
+	<data>
+
+
+        <report 
+            id="doc_sale_confirm"
+            string="Sale Confirmation (PDF)"
+            model="sale.order.line"
+            report_type="qweb-pdf"
+            paperformat="jidoka_marketing.paperformat_report_a4_new"
+            file="jidoka_marketing.report_sale_confirm"
+            name="jidoka_marketing.report_sale_confirm"/>
+
+
+        <report 
+            id="doc_contract_reviews_id"
+            string="Contracts Reviews (PDF)"
+            model="cr.rv.wizard"
+            report_type="qweb-pdf"
+            paperformat="jidoka_marketing.paperformat_report_us_letter"
+            file="jidoka_marketing.report_contract_docs"
+            name="jidoka_marketing.report_contract_docs"/>
+
+
+	</data>
+</odoo>

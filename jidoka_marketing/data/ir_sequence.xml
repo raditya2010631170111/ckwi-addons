@@ -1,0 +1,52 @@
+<odoo>
+	<!-- <data noupdate='1'> -->
+	<data noupdate="0">
+
+		<record id="sequence_new_request" model="ir.sequence">
+			<field name="name">New Request Sequence</field>
+			<field name="code">new.request</field>
+			<field name="active">TRUE</field>
+			<field name="prefix"></field>
+			<field name="padding">4</field>
+			<field name="number_next">1</field>
+			<field name="number_increment">1</field>
+		</record>
+
+
+		<record id="sequence_no_cr" model="ir.sequence">
+			<field name="name">No CR</field>
+			<field name="code">no.cr</field>
+			<field name="active">TRUE</field>
+			<!-- <field name="prefix">CKWI-</field> -->
+			<field name="prefix"></field>
+			<field name="padding">4</field>
+			<!-- <field name="number_next">1</field> -->
+			<field name="number_increment">1</field>
+		</record>
+
+
+		<record id="sequence_no_mo" model="ir.sequence">
+			<field name="name">No Mo Sequence</field>
+			<field name="code">no.mo.mrp</field>
+			<field name="active">TRUE</field>
+			<field name="prefix"></field>
+			<field name="padding">2</field>
+			<field name="number_next">1</field>
+			<field name="number_increment">1</field>
+		</record>
+
+		<record id="sequence_no_mo_cr" model="ir.sequence">
+			<field name="name">No MO</field>
+			<field name="code">MO</field>
+			<field name="active">TRUE</field>
+			<field name="prefix">E%(range_y)s-%(range_month)s</field>
+			<!-- <field name="prefix"></field> -->
+			<field name="padding">2</field>
+			<field name="number_next">1</field>
+			<field name="number_increment">1</field>
+			<field eval="True" name="use_date_range"/>
+		</record>
+
+
+	</data>
+</odoo>

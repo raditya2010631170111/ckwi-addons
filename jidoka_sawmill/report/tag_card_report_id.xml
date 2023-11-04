@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_tag_card_pdf">
+        <t t-call="web.basic_layout">
+            <table width="100%" class="table table-borderless">
+                <thead>
+                    <center>
+                        <b style="size:18px;" t-field="o.company_id" />
+                        <br />
+                        <span style="font-weight:bold; font-size:18px">TAG CARD</span>
+                    </center>
+                </thead>
+                <br />
+                <br />
+                <tr>
+                    <td width="18%">Prod Instruction</td>
+                    <td width="2%">:</td>
+                    <td width="30%">
+                        <span t-field="o.prod_intruction_id" />
+                    </td>
+                    <td width="18%">Tgl Masuk</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.tgl_masuk" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="18%">Bahan</td>
+                    <td width="2%">:</td>
+                    <td width="30%">
+                        <span t-field="o.bahan" />
+                    </td>
+                    <td width="18%">Jenis Kayu</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.jenis_kayu" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="18%">Fisik</td>
+                    <td width="2%">:</td>
+                    <td width="30%">
+                        <span t-field="o.fisik" />
+                    </td>
+                    <td width="18%">Supplier</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.supplier_id" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="18%">Kode Beli</td>
+                    <td width="2%">:</td>
+                    <td width="30%">
+                        <span t-field="o.kode_beli" />
+                    </td>
+                    <td width="18%">Total Pcs</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.total_pcs" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="18%">Kualitas</td>
+                    <td width="2%">:</td>
+                    <td width="30%">
+                        <span t-field="o.kualitas" />
+                    </td>
+                    <td width="18%">Total M3</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.total_m3" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="18%">Proses</td>
+                    <td width="2%">:</td>
+                    <td width="30%">
+                        <span t-field="o.stage" />
+                    </td>
+                    <td width="18%">Location</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.location_id" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="18%">Marking</td>
+                    <td width="2%">:</td>
+                    <td width="30%">
+                        <span t-field="o.marking" />
+                    </td>
+                    <td width="18%">IT</td>
+                    <td width="2%">:</td>
+                    <td>
+                        <span t-field="o.it" />
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+            <table width="100%" style="border:black solid 1px;" class="table table-bordered">
+                <thead>
+                    <th width="25%" style="text-align: center;">ITEM NO./UKURAN</th>
+                    <th width="25%" style="text-align: left;">PART NAME</th>
+                    <!-- <th width="25%" style="border-top:2px solid black;border-bottom:1px solid black;" colspan="2">JUMLAH</th> -->
+                    <th width="13%" style="text-align: right;">PCS</th>
+                    <th width="12%" style="text-align: right;">M3</th>
+                    <th width="25%" style="text-align: left;">KETERANGAN</th>
+                </thead>
+                <tbody>
+                    <t t-set="count" t-value="1" />
+                    <tr t-foreach="o.card_line_ids" t-as="card">
+                        <td style="text-align: center;">
+                            <span t-field="card.ukuran" />
+                        </td>
+                        <td style="text-align: left;">
+                            <span t-field="card.name" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span t-field="card.quantity" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span t-field="card.volume" />
+                        </td>
+                        <td style="text-align: left;">
+                            <span t-field="card.note" />
+                        </td>
+                        <t t-set="count" t-value="count+1" />
+                    </tr>
+                </tbody>
+            </table>
+            <br/>
+            <br/>
+            <tr>
+                <td>Tgl Keluar : </td>
+                <td>
+                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y')" />
+                </td>
+            </tr>
+            <br/>
+            <tr>
+                <td>KET :</td>
+                <td>
+                    <span t-field="o.note"/>
+                </td>
+            </tr>
+            <br/>
+            <br/>
+            <table class="table table-bordered text-center" width="100%">
+                <tr>
+                    <td style="margin-bottom:75px;">Ditali Oleh,</td>
+                    <td >Dikirim, </td>
+                    <td >Diterima,</td>
+                </tr>
+                <tr>
+                    <td>( . . . . . . . . . . . . . )</td>
+                    <td>( . . . . . . . . . . . . . )</td>
+                    <td>( . . . . . . . . . . . . . )</td>
+                </tr>
+
+            </table>
+        </t>
+    </template>
+
+    <template id="tag_card_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="jidoka_manufacturing.report_tag_card_pdf" t-lang="lang" />
+            </t>
+        </t>
+    </template>
+
+</odoo>

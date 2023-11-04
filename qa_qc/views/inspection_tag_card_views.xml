@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <!-- <record id="inspection_tag_card_pivot" model="ir.ui.view">
+            <field name="name">inspection.tag.card.pivot</field>
+            <field name="model">inspection.tag.card</field>
+            <field name="arch" type="xml">
+                <pivot string="">
+                    <field name="name" type="row"/>
+                    <field name="partner_id" type="row"/>
+                    <field name="partner_id" type="measure"/>
+                </pivot>
+            </field>
+        </record> -->
+
+        <record id="inspection_tag_card_view_tree" model="ir.ui.view">
+            <field name="name">inspection.tag.card.view.tree</field>
+            <field name="model">inspection.tag.card</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name"/>
+                    <field name="partner_id" />
+                    <field name="user_id" />
+                    <field name="type_qc"/>
+                    <field name="no_mo_id" />
+                    <field name="status_pemeriksaan" />
+                    <field name="tindakan_pemeriksaan" />
+					<field name="qc_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="inspection_tag_card_view_form" model="ir.ui.view">
+            <field name="name">inspection.tag.card.view.form</field>
+            <field name="model">inspection.tag.card</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                        <button name="button_confirm" string="Confirm" type="object" class="oe_highlight" states='draft'/>
+                        <!-- <button name="button_approve" string="Approved" type="object" class="oe_highlight" states='approve'/> -->
+                        <button name="button_cancel" string="Cancel" type="object" states='confirm'/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm" />
+                    </header>
+                    <sheet>
+                        <!-- <div class="oe_button_box" name="button_box">
+                            <button type="object" name="button_defect" string="Defect" class="oe_stat_button" icon="fa-pencil-square-o"/>     
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" />
+                            <h1>
+                                <field name="name" class="oe_inline" placeholder="name" />
+                            </h1>
+                        </div> -->
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="type_qc"  attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                            <field name="partner_id" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                            <field name="user_id" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                            <field name="categ_id" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                            <field name="date" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                            <!-- <field name="tag_card_ids" domain="[('state', '=', 'done')]" attrs="{'readonly': [('state','in',('confirm'))]}" 
+                            widget="many2many_tags"/>
+                           <field name="no_mo_id"  domain="[('state', '=', 'sale')]"  attrs="{'readonly': [('state','in',('confirm'))]}"/> -->
+                            <field name="tag_card_ids" domain="[('state', '=', 'done')]" attrs="{'readonly': [('state', 'in', ('confirm'))]}" widget="many2many_tags" options="{'no_create': True}" editable="false"/>
+                            <field name="no_mo_id" domain="[('state', '=', 'sale')]" attrs="{'readonly': [('state', 'in', ('confirm'))]}" options="{'no_create': True}" editable="false"/>
+                            <field name="product_id_domain_ids" options="{'no_create': True, 'no_create_edit': True}" widget="many2many_tags" domain="[('id', 'in', product_tmpl_ids)]" attrs="{'readonly': [('state', 'in', ['confirm'])], 'invisible': [('no_mo_id', '=', False)]}"/>
+                            <field name="available_products" invisible="1"/>
+                            <field name="product_tmpl_ids" domain="[('id', 'not in', available_products)]" widget="many2many_tags" invisible="1"/>
+                            <!-- <field name="product_uom_qty" attrs="{'readonly': [('state','in',('confirm'))], 'invisible': [('no_mo_id', '=', False)]}"/> -->
+                            <!-- <field name="tag_card" domain="[('state', '=', 'done'),('product_id','=',product_id)]"/> -->
+                            <field name="destination_location_id" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                            <field name="product_pembahanan_id" attrs="{'readonly': [('state', 'in', ('confirm'))], 'invisible': [('type_qc', '!=', 'pembahanan')]}"/>
+                            <field name="metode_pemeriksaan" widget="radio" options="{'horizontal' : true}" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                            <field name="status_pemeriksaan" widget="radio" options="{'horizontal' : true}" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                            <field name="tindakan_pemeriksaan" widget="radio" options="{'horizontal' : true}" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+                            <field name="note" attrs="{'readonly': [('state','in',('confirm'))]}"/>
+							<field name="name" invisible="1"/>
+							<field name="no_pi" invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page name="product_line" string="Operations">
+                                <field name="operation_line_ids" widget="section_and_note_one2many" attrs="{'readonly': [('state','in',('confirm'))]}">
+                                    <tree editable="bottom">
+                                        <field name="inspection_tag_card_line_id" invisible="1"/>
+                                        <field name="product_id" options="{'no_create': True, 'no_create_edit': True}"/>
+										<field name="fabric_colour_id" attrs="{'column_invisible': [('parent.type_qc', 'in', ['pembahanan'])]}"/>
+                                        <field name="code_id" invisible="1"/>
+                                        <field name="tes_ids" widget="many2many_tags" invisible="1"/>
+                                        <field name="ket_masalah_id"  attrs="{'column_invisible': [('parent.type_qc', 'in', ['proses_pengiriman','pre_finishing','top_coat','packing','bras_component','cushion','kawai_top_coat'])]}"/>
+                                        <field name="no_su" attrs="{'column_invisible': [('parent.type_qc', 'in', ['proses_pengiriman','pre_finishing','top_coat','packing','bras_component','cushion','kawai_top_coat'])]}"/>
+                                        <field name="persentase" attrs="{'column_invisible': [('parent.type_qc', 'in', ['proses_pengiriman','pre_finishing','top_coat','packing','bras_component','cushion','kawai_top_coat'])]}"/>
+                                        <field name="code1_id" invisible="1"/>
+                                        <field name="ket_masalah1_id" attrs="{'column_invisible': [('parent.type_qc', 'in', ['pembahanan', 'proses_pengiriman','pre_finishing','top_coat','packing','bras_component','kawai_top_coat','cushion'])]}" />
+                                        <field name="no_kbl" attrs="{'column_invisible': [('parent.type_qc', 'in', ['pembahanan', 'proses_pengiriman','pre_finishing','top_coat','packing','bras_component','kawai_top_coat','cushion'])]}"/>
+                                        <field name="defect_proses_id" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['proses_pengiriman'])]}"/>
+                                        <field name="no_su_proses" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['proses_pengiriman'])]}"/>
+                                        <field name="persentase_proses" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['proses_pengiriman'])]}"/>
+                                        <field name="defect_material_id" attrs="{'column_invisible' : [('parent.type_qc','!=','proses_pengiriman')]}"/>
+                                        <field name="no_su_material" attrs="{'column_invisible' : [('parent.type_qc','!=','proses_pengiriman')]}"/>
+                                        <field name="persentase_material" attrs="{'column_invisible' : [('parent.type_qc','!=','proses_pengiriman')]}"/>
+                                        <field name="defect_production_id" attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="su_prodution"  attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="persentase_production"  attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="defect_pre_finishing_id" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['pre_finishing'])]}"/>
+                                        <field name="su_pre_finishing" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['pre_finishing'])]}"/>
+                                        <field name="persentase_pre_finishing" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['pre_finishing'])]}"/>
+                                        <field name="defect_kbl_id" attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="su_kbl" attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="persentase_kbl" attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="defect_proses_coat_id" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="su_proses_coat"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="persentase_proeses"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="defect_pre_finishing_coat_id" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="su_pre_finishing_coat"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="persentase_pre_finishing_coat"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="defect_coat_finishing_id" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="su_coat_finishing"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="persentase_coat_finishing"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="defect_proses_packing_id"  attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="su_proses_packing"  attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="persentase_proeses_packing"  attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="defect_pre_finishing_packing_id"  attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="su_pre_finishing_packing"  attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="persentase_pre_finishing_packing"  attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="defect_packing_finishing_id"  attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="su_packing_finishing"  attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="persentase_packing_finishing"  attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="defect_proses_component_id" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="su_proses_component" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="persentase_proses_component" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="defect_material_component_id" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="su_component_material" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="persentase_component_material" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="defect_cushion_id" attrs="{'column_invisible' : [('parent.type_qc','!=','cushion')]}"/>
+                                        <field name="jumlah_cushion" attrs="{'column_invisible' : [('parent.type_qc','!=','cushion')]}"/>
+                                        <field name="persentase_cushion" attrs="{'column_invisible' : [('parent.type_qc','!=','cushion')]}"/>
+                                        <field name="defect_kawai_id"  attrs="{'column_invisible' : [('parent.type_qc','!=','kawai_top_coat')]}"/>
+                                        <field name="su_kawai_top"  attrs="{'column_invisible' : [('parent.type_qc','!=','kawai_top_coat')]}"/>
+                                        <field name="persentese_kawai"  attrs="{'column_invisible' : [('parent.type_qc','!=','kawai_top_coat')]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="product_line" string="Detailed Operations">
+                                <field name="product_line_ids" widget="section_and_note_one2many" attrs="{'readonly': [('state','in',('confirm'))]}">
+                                    <tree editable="bottom">
+                                        <field name="product_tmpl_id" invisible="1"/>
+                                        <field name="product_code"/>
+                                        <field name="product_id"/>
+                                        <field name="size_tebal" invisible="1"/>
+                                        <field name="size_lebar" invisible="1"/>
+                                        <field name="size_panjang" invisible="1"/>
+                                        <field name="ukuran_pembahanan"  attrs="{'column_invisible' : [('parent.type_qc','!=','pembahanan')]}"/>
+                                        <field name="jenis_kayu_pembahanan_id" attrs="{'column_invisible' : [('parent.type_qc','!=','pembahanan')]}"/>
+                                        <field name="product_uom_qty" attrs="{'column_invisible': [('parent.type_qc', 'in', ['pembahanan','bras_component','kawai_top_coat','cushion'])]}"/>
+                                        <field name="tk_pembahanan" attrs="{'column_invisible' : [('parent.type_qc','!=','pembahanan')]}"/>
+                                        <field name="tk_pengiriman" attrs="{'column_invisible' : [('parent.type_qc','!=','proses_pengiriman')]}"/>
+                                        <field name="tk_finishing" attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="tk_packing" attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="tk_component" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="tk_coat" attrs="{'column_invisible' : [('parent.type_qc','!=','top_coat')]}"/>
+                                        <field name="tk_cushion" attrs="{'column_invisible' : [('parent.type_qc','!=','cushion')]}"/>
+                                        <field name="no_tk" attrs="{'column_invisible': [('parent.type_qc', 'in', ['pembahanan', 'proses_pengiriman','pre_finishing','top_coat','packing','bras_component','kawai_top_coat','cushion'])]}"/>
+                                        <field name="top_coat_id"  attrs="{'column_invisible' : [('parent.type_qc','!=','kawai_top_coat')]}"/>
+                                        <field name="tk_kawai_top"  attrs="{'column_invisible' : [('parent.type_qc','!=','kawai_top_coat')]}"/>
+                                        <field name="no_lp"/>
+                                        <field name="su_kawai_top"  attrs="{'column_invisible' : [('parent.type_qc','!=','kawai_top_coat')]}"/>
+                                        <field name="persentese_kawai"  attrs="{'column_invisible' : [('parent.type_qc','!=','kawai_top_coat')]}"/>
+                                        <field name="no_su"  attrs="{'column_invisible': [('parent.type_qc', 'in', ['proses_pengiriman','pre_finishing','top_coat','packing','bras_component','cushion','kawai_top_coat'])]}"/>
+                                        <field name="no_su_proses" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['proses_pengiriman'])]}"/>
+                                        <field name="persentase_proses" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['proses_pengiriman'])]}"/>
+                                        <field name="no_su_material" attrs="{'column_invisible' : [('parent.type_qc','!=','proses_pengiriman')]}"/>
+                                        <field name="persentase_material" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['proses_pengiriman'])]}"/>
+                                        <field name="su_prodution" attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="persentase_production" attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="su_pre_finishing" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['pre_finishing'])]}"/>
+                                        <field name="persentase_pre_finishing" attrs="{'column_invisible': [('parent.type_qc', 'not in', ['pre_finishing'])]}"/>
+                                        <field name="su_kbl" attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="persentase_kbl" attrs="{'column_invisible' : [('parent.type_qc','!=','pre_finishing')]}"/>
+                                        <field name="su_proses_coat"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="persentase_proeses"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="su_pre_finishing_coat"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="persentase_pre_finishing_coat"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="su_coat_finishing"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="persentase_coat_finishing"  attrs="{'column_invisible': [('parent.type_qc', 'not in', ['top_coat'])]}"/>
+                                        <field name="no_kbl" attrs="{'column_invisible': [('parent.type_qc', 'in', ['pembahanan', 'proses_pengiriman','pre_finishing','top_coat','packing','bras_component','kawai_top_coat','cushion'])]}"/>
+                                        <field name="persentase" attrs="{'column_invisible' : [('parent.type_qc','!=','pembahanan')]}"/>
+                                        <field name="su_proses_packing" attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}" />
+                                        <field name="persentase_proeses_packing" attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="su_pre_finishing_packing" attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="persentase_pre_finishing_packing" attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="su_packing_finishing" attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="persentase_packing_finishing" attrs="{'column_invisible' : [('parent.type_qc','!=','packing')]}"/>
+                                        <field name="su_proses_component" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="persentase_proses_component" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="su_component_material" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="persentase_component_material" attrs="{'column_invisible' : [('parent.type_qc','!=','bras_component')]}"/>
+                                        <field name="jumlah_cushion" attrs="{'column_invisible' : [('parent.type_qc','!=','cushion')]}"/>
+                                        <field name="persentase_cushion" attrs="{'column_invisible' : [('parent.type_qc','!=','cushion')]}"/>
+                                    </tree>
+                                </field>
+                                <group name="total" col="6" class="mt-2 mt-md-0" style="float: left;">
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_calculate" attrs="{'invisible': [('type_qc', 'not in', ['pembahanan'])]}">
+                                        <label for="sum_total_kirim" string="SUM Total Kirim"/>
+                                        <div class="o_row" name="sum_total_kirim">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_total_kirim" string="SUM Total Kirim" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_no_su" string="SUM Total Defect"/>
+                                        <div class="o_row" name="sum_no_su">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_no_su" string="SUM Total Defect" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                        <label for="persentase_harian" string="% Harian"/>
+                                        <div class="o_row" name="sum_no_su">
+                                            <div class="d-flex align-items-center">
+                                                <field name="persentase_harian" string="% Harian" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_calculate" attrs="{'invisible': [('type_qc', 'not in', ['proses_pengiriman'])]}">
+                                        <label for="sum_tk_pengiriman" string="SUM Total Kirim"/>
+                                        <div class="o_row" name="sum_tk_pengiriman">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_tk_pengiriman" string="SUM Total Kirim" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_su_proses" string="SUM SU Proses"/>
+                                        <div class="o_row" name="sum_su_proses">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_proses" string="SUM SU Proses" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                        <label for="sum_su_material" string="SUM SU Material"/>
+                                        <div class="o_row" name="sum_su_material">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_material" string="SUM SU Material" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                        <label for="persentase_harian_pengiriman" string="% Harian"/>
+                                        <div class="o_row" name="persentase_harian_pengiriman">
+                                            <div class="d-flex align-items-center">
+                                                <field name="persentase_harian_pengiriman" string="% Harian" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_calculate" attrs="{'invisible': [('type_qc', 'not in', ['pre_finishing'])]}">
+                                        <label for="sum_tk_finishing" string="SUM Total Kirim"/>
+                                        <div class="o_row" name="sum_tk_finishing">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_tk_finishing" string="SUM Total Kirim" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_su_prodution" string="SUM SU Produksi"/>
+                                        <div class="o_row" name="sum_su_prodution">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_prodution" string="SUM SU Produksi" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_su_pre_finishing" string="SUM SU Pre Finishing"/>
+                                        <div class="o_row" name="sum_su_pre_finishing">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_pre_finishing" string="SUM SU Pre Finishing" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_su_kbl" string="SUM SU KBL"/>
+                                        <div class="o_row" name="sum_su_kbl">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_kbl" string="SUM SU KBL" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                        <label for="persentase_harian_finishing" string="% Harian"/>
+                                        <div class="o_row" name="persentase_harian_finishing">
+                                            <div class="d-flex align-items-center">
+                                                <field name="persentase_harian_finishing" string="% Harian" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_calculate" attrs="{'invisible': [('type_qc', 'not in', ['top_coat'])]}">
+                                        <label for="sum_tk_coat" string="SUM Total Kirim"/>
+                                        <div class="o_row" name="sum_tk_coat">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_tk_coat" string="SUM Total Kirim" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_su_proses_coat" string="SUM SU Proses"/>
+                                        <div class="o_row" name="sum_su_proses_coat">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_proses_coat" string="SUM SU Proses" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                        <label for="sum_su_pre_finishing_coat" string="SUM SU Pre Finishing"/>
+                                        <div class="o_row" name="sum_su_pre_finishing_coat">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_pre_finishing_coat" string="SUM SU Pre Finishing" class="mr-2"/>
+                                            </div>
+                                        </div>  
+                                        <label for="sum_su_coat_finishing" string="SUM SU Top Coat Finishing"/>
+                                        <div class="o_row" name="sum_su_coat_finishing">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_coat_finishing" string="SUM SU Top Coat Finishing" class="mr-2"/>
+                                            </div>
+                                        </div>  
+                                        <label for="persentase_harian_coat" string="% Harian"/>
+                                        <div class="o_row" name="persentase_harian_coat">
+                                            <div class="d-flex align-items-center">
+                                                <field name="persentase_harian_coat" string="% Harian" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_calculate" attrs="{'invisible': [('type_qc', 'not in', ['packing'])]}">
+                                        <label for="sum_tk_packing" string="SUM Total Kirim"/>
+                                        <div class="o_row" name="sum_tk_packing">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_tk_packing" string="SUM Total Kirim" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_su_proses_packing" string="SUM SU Produksi"/>
+                                        <div class="o_row" name="sum_su_proses_packing">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_proses_packing" string="SUM SU Produksi" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                        <label for="sum_su_pre_finishing_packing" string="SUM SU Pre Finishing"/>
+                                        <div class="o_row" name="sum_su_pre_finishing_packing">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_pre_finishing_packing" string="SUM SU Pre Finishing" class="mr-2"/>
+                                            </div>
+                                        </div>  
+                                        <label for="sum_su_packing_finishing" string="SUM SU Top Coat Finishing"/>
+                                        <div class="o_row" name="sum_su_packing_finishing">
+                                            <div class="d-flex align-items-cen  ter">
+                                                <field name="sum_su_packing_finishing" string="SUM SU Top Coat Finishing" class="mr-2"/>
+                                            </div>
+                                        </div>  
+                                        <label for="persentase_harian_packing" string="% Harian"/>
+                                        <div class="o_row" name="persentase_harian_packing">
+                                            <div class="d-flex align-items-center">
+                                                <field name="persentase_harian_packing" string="% Harian" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_calculate" attrs="{'invisible': [('type_qc', 'not in', ['bras_component'])]}">
+                                        <label for="sum_tk_component" string="SUM Total Kirim"/>
+                                        <div class="o_row" name="sum_tk_component">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_tk_component" string="SUM Total Kirim" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_su_proses_component" string="SUM SU Proses"/>
+                                        <div class="o_row" name="sum_su_proses_component">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_proses_component" string="SUM SU Proses" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                        <label for="sum_su_component_material" string="SUM SU Material"/>
+                                        <div class="o_row" name="sum_su_component_material">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_component_material" string="SUM SU Material" class="mr-2"/>
+                                            </div>
+                                        </div>  
+                                        <label for="persentase_harian_component" string="% Harian"/>
+                                        <div class="o_row" name="persentase_harian_component">
+                                            <div class="d-flex align-items-center">
+                                                <field name="persentase_harian_component" string="% Harian" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_calculate" attrs="{'invisible': [('type_qc', 'not in', ['cushion'])]}">
+                                        <label for="sum_tk_cushion" string="SUM Total Kirim"/>
+                                        <div class="o_row" name="sum_tk_cushion">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_tk_cushion" string="SUM Total Kirim" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_jumlah_cushion" string="SUM Defect"/>
+                                        <div class="o_row" name="sum_jumlah_cushion">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_jumlah_cushion" string="SUM Defect" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                        <label for="persentase_harian_cushion" string="% Harian"/>
+                                        <div class="o_row" name="persentase_harian_cushion">
+                                            <div class="d-flex align-items-center">
+                                                <field name="persentase_harian_cushion" string="% Harian" class="mr-2"/>
+                                            </div>
+                                        </div>  
+                                    </group>
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_calculate" attrs="{'invisible': [('type_qc', 'not in', ['top_coat'])]}">
+                                        <label for="sum_tk_kawai_top" string="SUM Total Kirim"/>
+                                        <div class="o_row" name="sum_tk_kawai_top">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_tk_kawai_top" string="SUM Total Kirim" class="mr-2"/>
+                                            </div>
+                                        </div> 
+                                        <label for="sum_su_kawai_top" string="SUM Defect"/>
+                                        <div class="o_row" name="sum_su_kawai_top">
+                                            <div class="d-flex align-items-center">
+                                                <field name="sum_su_kawai_top" string="SUM Defect" class="mr-2"/>
+                                            </div>
+                                        </div>
+                                        <label for="persentase_harian_kawai_top" string="% Harian"/>
+                                        <div class="o_row" name="persentase_harian_kawai_top">
+                                            <div class="d-flex align-items-center">
+                                                <field name="persentase_harian_kawai_top" string="% Harian" class="mr-2"/>
+                                            </div>
+                                        </div>  
+                                    </group>
+                                    <div class="oe_clear"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="inspection_tag_card_action" model="ir.actions.act_window">
+            <field name="name">Inspection Tag Card</field>
+            <field name="res_model">inspection.tag.card</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="view_mode">tree,form,pivot</field> -->
+        </record>
+    
+        <menuitem
+            id="inspection_tag_card_menu"
+            name="Inspection Tag Card"
+            action="inspection_tag_card_action"
+            parent="menu_qc_root"
+            sequence="10"/>
+
+        <menuitem
+            id="tes_pengujian_qc_menu"
+            name="Tes Pengujian QC"
+            parent="menu_qc_root"
+            sequence="15"/>
+    </data>
+    
+
+</odoo>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="dfr_table" t-inherit="dynamic_accounts_report.dfr_table" t-inherit-mode="extension" owl="1">
+        <xpath expr="//thead/tr[1]" position="replace">
+            <th colspan="6"></th>
+            <t t-if="headers_table">
+                <t t-set="i" t-value="headers_table.length-1"/>
+                <t t-if="headers_table.length==1">
+                    <th style="text-align: right; padding-right: 50px;">As of <t t-esc="headers_table[0]"/></th>
+                </t>
+                <t t-else="">
+                    <t t-foreach="headers_table" t-as="header">
+                        <t t-if="title == 'Profit and Loss'">
+                            <th style="text-align: right; padding-right: 50px;">As of <t t-esc="header"/></th>
+                        </t>
+                        <t t-else="">
+                            <t t-if="i > 0">
+                                <th style="text-align: right; padding-right: 50px;">As of <t t-esc="header"/></th>
+                            </t>
+                            <t t-set="i" t-value="i-1"/>
+                        </t>
+                    </t>
+                </t>
+            </t>
+            <t t-else="">
+                <th style="text-align: right; padding-right: 50px;">As of <t t-esc="today"/></th>
+            </t>
+        </xpath>
+        <xpath expr="//tbody[1]" position="replace">
+            <tbody>
+                <t t-set="none_value" t-value="_"/>
+                <t t-foreach="bs_lines" t-as="a">
+                    <t t-if="a !== bs_lines[0]">
+                        <t t-if="a['code']">
+                            <t t-foreach="report_lines" t-as="account">
+                                <t t-set="common_id" t-value="0"/>
+                                <t t-if="account['code'] == a['code']">
+                                    <t t-if="!a['is_no_children']">
+                                        <tr style="border: 1.5px solid black;" class="gl-line"
+                                            data-toggle="collapse"
+                                            t-att-data-account-id="account['id']"
+                                            t-attf-data-target=".a{{account['id']}}">
+                                            <td colspan="6" style="border: 0px solid black; padding-left: 50px;">
+                                                <span>
+                                                    <t t-esc="account['code']"/>
+                                                    -
+                                                    <t t-esc="account['name']"/>
+                                                </span>
+                                                <div class="" style="display: inline-block;">
+                                                <a type="button" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                </a>
+                                                    <div class="dropdown-menu " role="menu">
+                                                        <div class="o_foldable_menu o_closed_menu " >
+                                                            <div class="form-group ">
+                                                                <div class="show-gl" aria-atomic="true" id="" data-target-input="">
+                                                                    <li role="presentation">
+                                                                        <a role="menuitem" style="background-color:aqua; font-weight:bold;" t-att-data-account-id="account['id']" class="show-gl" >View General Ledger</a>
+                                                                    </li>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <t t-if="headers_table">
+                                                <t t-set="i" t-value="headers_table.length-1"/>
+                                                <t t-if="headers_table.length==1">
+                                                    <xpath expr="//tr[@class='gl-line']/td[@t-att-style='fr_padding'][1]" position="replace">
+                                                        <td t-att-style="fr_padding"><t t-esc="a['m_balance']" t-att-style="style"/></td>
+                                                    </xpath>
+                                                </t>
+                                                <t t-else="">
+                                                    <xpath expr="//tr[@class='gl-line']/td[@t-att-style='fr_padding'][1]" position="replace">
+                                                        <t t-foreach="headers_table" t-as="table">
+                                                            <t t-if="title == 'Profit and Loss'">
+                                                                <t t-if="i">
+                                                                    <t t-set="key" t-value="'m_balance_'+i.toString()"/>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <t t-set="key" t-value="'m_total_balance'"/>
+                                                                </t>
+                                                                <td t-att-style="fr_padding"><t t-esc="a[key]" t-att-style="style"/></td>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <t t-if="i > 0">
+                                                                    <t t-set="key" t-value="'m_balance_'+i.toString()"/>
+                                                                    <td t-att-style="fr_padding"><t t-esc="a[key]" t-att-style="style"/></td>
+                                                                </t>
+                                                            </t>
+                                                            <!-- <t t-else="">
+                                                                <t t-set="key" t-value="'m_balance'"/>
+                                                            </t> -->
+                                                            <t t-set="i" t-value="i-1"/>
+                                                        </t>
+                                                    </xpath>
+                                                </t>
+                                            </t>
+                                            
+                                            <t t-set="common_id" t-value="'a'+account['id']"/>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+
+                        </t>
+                        <t t-else="">
+                            
+                            <t t-set="style" t-value="'padding: 5px;padding-left: 25px;'"/>
+                            <t t-set="fr_head" t-value="'border-bottom: double;'"/>
+                            <t t-set="fr_padding" t-value="'padding-top: 5px; text-align: right;padding-right: 50px; vertical-align: bottom;'"/>
+                            <t t-if="a['level'] == 1">
+                                <t t-set="style" t-value="'padding: 5px;padding-left: 15px; padding-top: 15px;'"/>
+                            </t>
+                            <t t-if="a['level'] == 2">
+                                <t t-set="style" t-value="'padding: 5px;padding-left: 25px; padding-top: 25px;'"/>
+                            </t>
+                            <t t-if="a['level'] == 3">
+                                <t t-set="style" t-value="'padding: 5px;padding-left: 50px;'"/>
+                                <t t-set="fr_head" t-value="'border-bottom: 1px solid black;'"/>
+                            </t>
+                            <t t-if="a['level'] &gt; 3">
+                                <t t-set="style" t-value="'padding: 5px;padding-left: 50px;'"/>
+                                <t t-set="fr_head" t-value="'border-bottom: 1px solid black;'"/>
+                            </t>
+                            <t t-if="!a['is_hidden']">
+                                <tr t-att-style="fr_head">
+                                    <t t-if="a['level'] &gt; 3 &amp;&amp; a['report_type'] == 'account_report'">
+                                        <td colspan="6" t-att-style="style">
+                                            <t t-esc="a['name']"/>
+                                        </td>
+                                    </t>
+                                    <t t-else="">
+                                        <th colspan="6" t-att-style="style">
+                                            <t t-esc="a['name']"/>
+                                        </th>
+                                    </t>
+                                    <t t-if="headers_table">
+                                        <t t-set="i" t-value="headers_table.length - 1"/>
+                                        <t t-if="headers_table.length == 1">
+                                            <xpath expr="//tr[@class='gl-line']/td[@t-att-style='fr_padding'][1]" position="replace">
+                                                <t t-if="a['level'] &gt; 3 &amp;&amp; a['report_type'] == 'account_report'">
+                                                    <td t-att-style="fr_padding"><t t-esc="a['m_balance']"/></td>
+                                                </t>
+                                                <t t-else="">
+                                                    <th t-att-style="fr_padding"><t t-esc="a['m_balance']"/></th>
+                                                </t>
+                                            </xpath>
+                                        </t>
+                                        <t t-else="">
+                                            <xpath expr="//tr[@class='gl-line']/td[@t-att-style='fr_padding'][1]" position="replace">
+                                                <t t-foreach="headers_table" t-as="table">
+                                                    <t t-if="title == 'Profit and Loss'">
+                                                        <t t-if="i">
+                                                            <t t-set="key" t-value="'m_balance_'+i.toString()"/>                                                    
+                                                        </t>
+                                                        <t t-else="">
+                                                            <t t-set="key" t-value="'m_total_balance'"/>                                                    
+                                                        </t>
+                                                        <t t-if="a['level'] &gt; 3 &amp;&amp; a['report_type'] == 'account_report'">
+                                                            <td t-att-style="fr_padding"><t t-esc="a[key]"/></td>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <th t-att-style="fr_padding"><t t-esc="a[key]"/></th>
+                                                        </t>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-if="i > 0">
+                                                            <t t-set="key" t-value="'m_balance_'+i.toString()"/>
+                                                            <t t-if="a['level'] &gt; 3 &amp;&amp; a['report_type'] == 'account_report'">
+                                                                <td t-att-style="fr_padding"><t t-esc="a[key]"/></td>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <th t-att-style="fr_padding"><t t-esc="a[key]"/></th>
+                                                            </t>
+                                                        </t>
+                                                    </t>
+                                                    <!-- <t t-else="">
+                                                        <t t-set="key" t-value="'m_balance'"/>
+                                                    </t> -->
+                                                    <t t-set="i" t-value="i-1"/>
+                                                </t>
+                                            </xpath>
+                                        </t>
+                                    </t>
+                                </tr>
+                            </t>
+                        </t>
+                    </t>
+                </t>
+                <t t-if="title == 'Profit and Loss'">
+                    <t t-if="bs_lines &amp;&amp; bs_lines.length &gt; 0">
+                        <t t-set="a" t-value="bs_lines[0]"/>
+                        <t t-set="style" t-value="'padding: 5px;padding-left: 25px;'"/>
+                        <t t-set="fr_head" t-value="'border-bottom: double;'"/>
+                        <t t-set="fr_padding" t-value="'padding-top: 5px; text-align: right;padding-right: 50px; vertical-align: bottom;'"/>
+                        <t t-if="a['level'] == 1">
+                            <t t-set="style" t-value="'padding: 5px;padding-left: 15px; padding-top: 15px;'"/>
+                        </t>
+                        <t t-if="a['level'] == 2">
+                            <t t-set="style" t-value="'padding: 5px;padding-left: 25px; padding-top: 25px;'"/>
+                        </t>
+                        <t t-if="a['level'] == 3">
+                            <t t-set="style" t-value="'padding: 5px;padding-left: 50px;'"/>
+                            <t t-set="fr_head" t-value="'border-bottom: 1px solid black;'"/>
+                        </t>
+                        <t t-if="a['level'] &gt; 3">
+                            <t t-set="style" t-value="'padding: 5px;padding-left: 50px;'"/>
+                            <t t-set="fr_head" t-value="'border-bottom: 1px solid black;'"/>
+                        </t>
+                        <tr t-att-style="fr_head">
+                            <th colspan="6" t-att-style="style">
+                                NET PROFIT/LOSS
+                            </th>
+                            <t t-if="headers_table">
+                                <t t-set="i" t-value="headers_table.length - 1"/>
+                                <t t-if="headers_table.length == 1">
+                                    <xpath expr="//tr[@class='gl-line']/td[@t-att-style='fr_padding'][1]" position="replace">
+                                        <th t-att-style="fr_padding"><t t-esc="a['m_balance']"/></th>
+                                    </xpath>
+                                </t>
+                                <t t-else="">
+                                    <xpath expr="//tr[@class='gl-line']/td[@t-att-style='fr_padding'][1]" position="replace">
+                                        <t t-foreach="headers_table" t-as="table">
+                                            <t t-if="title == 'Profit and Loss'">
+                                                <t t-if="i">
+                                                    <t t-set="key" t-value="'m_balance_'+i.toString()"/>                                                    
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="key" t-value="'m_total_balance'"/>                                                    
+                                                </t>
+                                                <th t-att-style="fr_padding"><t t-esc="a[key]"/></th>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-if="i > 0">
+                                                    <t t-set="key" t-value="'m_balance_'+i.toString()"/>                                                    
+                                                    <th t-att-style="fr_padding"><t t-esc="a[key]"/></th>
+                                                </t>
+                                            </t>
+                                            <!-- <t t-else="">
+                                                <t t-set="key" t-value="'m_balance'"/>
+                                            </t> -->
+                                            <t t-set="i" t-value="i-1"/>
+                                        </t>
+                                    </xpath>
+                                </t>
+                            </t>
+                        </tr>
+                    </t>
+                </t>
+
+            </tbody>
+        </xpath>
+    </t>
+    <t t-name="DfrFilterView" t-inherit="dynamic_accounts_report.DfrFilterView" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@id='pdf']" position="attributes">
+            <attribute name="class">btn btn-primary d-none</attribute>
+        </xpath>
+        <xpath expr="//div[@class='journals_filter']" position="before">
+            <div class="comparation_filter" style="">
+                <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="fa fa-book"></span>
+    Comparasion:
+                </a>
+                <div class="dropdown-menu  previous_periode">
+                    <label for="periode_start">Periode Start</label>
+                    <input type="text" id="periode_start" name="periode_start" placeholder="2022-01"/>
+                    <label for="periode_end">Periode End</label>
+                    <input type="text" id="periode_end" name="periode_end" placeholder="2022-02"/>
+                </div>
+                <span id="comparasion_periode_res"></span>
+            </div>
+        </xpath>
+        <xpath expr="//div[@class='time_range']" position="replace">
+            <!-- Add your fields here -->
+            
+        </xpath>
+    </t>
+</templates>

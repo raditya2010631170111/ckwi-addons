@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_manufacturing_report_wizard,manufacturing_report_wizard,model_manufacturing_report_wizard,base.group_user,1,1,1,1
+access_manufacturing_report,manufacturing_report,model_manufacturing_report,base.group_user,1,1,1,1
+access_manufacturing_view,manufacturing_view,model_manufacturing_view,base.group_user,1,1,1,1
+access_rekap_gudang_report_wizard,rekap_gudang_report_wizard,model_rekap_gudang_report_wizard,base.group_user,1,1,1,1
+access_rekap_gudang_report,rekap_gudang_report,model_rekap_gudang_report,base.group_user,1,1,1,1
+access_rekap_gudang_view,rekap_gudang_view,model_rekap_gudang_view,base.group_user,1,1,1,1
+access_manufacturing_report_wizard_summary,manufacturing_report_wizard_summary,model_manufacturing_report_wizard_summary,base.group_user,1,1,1,1
+access_manufacturing_summary_report,manufacturing_summary_report,model_manufacturing_summary_report,base.group_user,1,1,1,1
+access_manufacturing_summary_view,manufacturing_summary_view,model_manufacturing_summary_view,base.group_user,1,1,1,1
+access_rekap_order,rekap_order_wizard,model_rekap_order_wizard,base.group_user,1,1,1,1
+access_rekap_view,rekap_view,model_rekap_view,base.group_user,1,1,1,1
+access_rekap_report,rekap_report,model_rekap_report,base.group_user,1,1,1,1

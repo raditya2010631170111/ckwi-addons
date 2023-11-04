@@ -1,0 +1,311 @@
+<odoo>
+    <data>
+
+
+        <record id="action_quotations_with_so" model="ir.actions.act_window">
+            <field name="name">Marketing Quotation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'default_is_type': 'is_so','default_state_is_so': 'draft','default_document_type': 'marketing_quotation'}</field>
+            <!-- <field name="domain">[('is_type', '=', 'is_so')]</field> -->
+            <field name="domain">[('is_type', '=', 'is_so'),('document_type', '=', 'marketing_quotation')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                Create a new quotation, the first step of a new sale!
+                </p>
+                <p>
+                Once the quotation is confirmed by the customer, it becomes a sales order.<br/>
+ You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <record id="sale_order_inherit_tree" model="ir.ui.view">
+            <field name="name">sale.order.inherit.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='create_date']" position="replace">
+
+                    <field name="create_date" string="Creation Date" optional="show"/>
+
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- <record id="views_action_contract_reviews" model="ir.actions.server">
+            <field name="name">Action Contract Reviews</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="jidoka_marketing.model_sale_order"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if record.action_contact_reviews():
+                    action = record.action_contact_reviews()
+            </field>
+        </record> -->
+
+        <!-- Action Contract Reviews Revisi0 -->
+        <!-- <record id="views_action_contract_reviews_r0" model="ir.actions.server">
+            <field name="name">Action Contract Reviews</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="jidoka_marketing.model_sale_order"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if record.action_contact_reviews_r0():
+                    action = record.action_contact_reviews_r0()
+            </field>
+        </record> -->
+        <record id="views_action_contract_reviews_r1" model="ir.actions.server">
+            <field name="name">Action Contract Reviews</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="jidoka_marketing.model_sale_order"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+            action = records.action_contact_reviews_r1() 
+            </field>
+        </record>
+
+
+
+        <record id="view_sale_buyer" model="ir.ui.view">
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <!-- <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="country_id" />
+                </xpath> -->
+
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|','&amp;',('state', 'not in', ('draft', 'mo', 'sr_to_approve')), ('is_revisi', '!=', True), '&amp;',('state', 'in', ('sale','rev')),('is_revisi', '=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <!-- <field name="destination_id" attrs="{ 
+                        'invisible': [('state','not in',('cr_to_approve','cr','mo','mo_to_approve','sr','sr_to_approve'))], 
+                        'readonly': [('state','in',('mo','mo_to_approve','sr','sr_to_approve'))]}"/> -->
+                           <field name="destination_id" attrs="{'invisible': [('state','not in',('mo','mo_to_approve','sr','sr_to_approve'))], 'readonly': [('state','not in',('draft','mo','sr_to_approve')), ('is_revisi', '!=', True)]}"/>
+                            <field name="is_cr" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+                    <!-- <attribute name="attrs">{'readonly': [('state', '!=', 'draft'), ('is_revisi', '!=', True)]}</attribute> -->
+                    <attribute name="attrs">{'readonly': ['|','&amp;',('state', 'not in', ('draft', 'mo', 'sr_to_approve')), ('is_revisi', '!=', True), '&amp;',('state', 'in', ('sale','rev')),('is_revisi', '=', True) ]}</attribute>
+                </xpath>
+
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" attrs="{'invisible': [('count_mo_search', '=', 0)]}" type="object" name="action_sale_mo" icon="fa-comment">
+                        <field string="Sale MO" name="count_mo_search" widget="statinfo"/>
+                    </button>
+                </div>
+                <xpath expr="//button[@name='action_cancel']" position="before">
+                    <!--                    <button name="action_unlock" type="object" string="Unlock" states="done" groups="jidoka_crm_sample_request.group_crm_manager"/>-->
+                    <button name="action_quotation" string="Confirm Quotation" class="btn-primary" type="object" groups="jidoka_crm_sample_request.group_crm_manager" 
+                    attrs="{'invisible':['|', ('state_is_so','!=','draft'),('is_type','=','is_sc')]}"/>
+                    <!-- <button name="action_quotation" string="Confirm Quotation" class="btn-primary" type="object" groups="jidoka_crm_sample_request.group_crm_manager" attrs="{'invisible':[('state_is_so','not in',('draft')),('state', 'not in', ('draft','mo'))]}"/> -->
+                    <button name="action_approve_quotation" string="Quotaion To Approve" class="btn-primary" type="object" groups="jidoka_crm_sample_request.group_crm_manager" 
+                    attrs="{'invisible':[('state_is_so','!=','quotation_to_approve')]}"/>
+                    <button name="action_approve_cr" string="Confirm Contract Review" class="btn-primary" type="object" groups="jidoka_crm_sample_request.group_crm_manager" attrs="{'invisible': ['|',('state','not in',('cr_to_approve')),('is_type','!=','is_sc')]}"/>
+
+                    <!-- <button name="action_approve_cr" string="Confirm Contract Review" class="btn-primary" type="object" groups="jidoka_crm_sample_request.group_crm_manager" 
+                    attrs="{ 
+                    'invisible': [('state','not in',('draft'))] 
+                     }"
+                    /> -->
+
+                    <button name="action_draft_cr" string="Confirm Draft" class="btn-primary" type="object" groups="jidoka_crm_sample_request.group_crm_manager" attrs="{'invisible': ['|',('state','!=','draft'),('state_is_so','=','draft')]}"/>
+
+                    <!-- <button name="action_approve_cr_tes" string="Confirm Contract Review Tes" class="btn-primary" type="object" states="cr_to_approve" groups="jidoka_crm_sample_request.group_crm_manager"/> -->
+                    <!-- <button name="action_approve_mo" string="Confirm MO" class="btn-primary" type="object" states="mo_to_approve" groups="jidoka_crm_sample_request.group_crm_manager"/> -->
+                    <button name="action_approve_mo" string="Confirm MO" class="btn-primary" type="object" states="mo_to_approve" groups="jidoka_marketing.group_allow_button_mo"/>
+                    <!-- <button name="action_approve_sr" string="Confirm SC" class="btn-primary" type="object" states="sr_to_approve" groups="jidoka_crm_sample_request.group_crm_manager"/> -->
+                    <button name="action_approve_sr" string="Confirm SC" class="btn-primary" type="object" 
+                    attrs="{'invisible': [('state', '!=', 'sr_to_approve')]}"
+                     groups="jidoka_crm_sample_request.group_crm_manager"/>
+
+                    <!-- <button name="action_reject_cr" string="Reject CR" class="btn-danger" type="object" groups="jidoka_crm_sample_request.group_crm_manager" attrs="{'invisible': ['|',('state','!=','cr_to_approve'),('state_is_so','!=','cr_to_approve')]}"/> -->
+
+                    <button name="action_reject_cr" string="Reject CR" class="btn-danger" type="object" groups="jidoka_crm_sample_request.group_crm_manager" attrs="{'invisible': [('state','!=','cr_to_approve')]}"/>
+                    
+                    <!-- <button name="action_reject_mo" string="Reject MO" class="btn-danger" type="object" states="mo_to_approve" groups="jidoka_crm_sample_request.group_crm_manager"/> -->
+                    <button name="action_reject_mo" string="Reject MO" class="btn-danger" type="object" states="mo_to_approve" groups="jidoka_marketing.group_allow_button_mo"/>
+                    <button name="action_reject_sr" string="Reject SC" class="btn-danger" type="object" states="sr_to_approve" groups="jidoka_crm_sample_request.group_crm_manager"/>
+
+                    <!-- <button name="action_contact_reviews" string="Contract Reviews" class="btn-primary" type="object" states="quotation"/> -->
+                    <!-- <button name="action_contact_reviews" string="Contract Reviews" class="btn-primary" type="object" states="quotation"/> -->
+                    <!-- <button name="action_contact_reviews_r1" string="Contract Reviews" class="btn-primary" type="object" attrs="{'invisible': ['|',('state_is_so','!=','quotation'),('state','!=','draft')]}"/> -->
+                    <button name="action_contact_reviews_r1" string="Contract Reviews" class="btn-primary" type="object" attrs="{
+                    'invisible': [('state_is_so','not in',('quotation'))] 
+                    }"/>
+                    <!-- <button name="action_contact_reviews" string="Contract Reviews" class="btn-primary" type="object" attrs="{'invisible': ['|',('is_type', '!=', 'is_sc'),('state', '!=', 'draft')]}"/>
+                    <button name="action_quotation" string="Qoutations" class="btn-primary" type="object" attrs="{'invisible': ['|',('is_type', '!=', 'is_so'),('state', '!=', 'draft')]}"/> -->
+
+                    <!-- <button name="action_manufactur_order" confirm="Are You Sure Confirm MO?" string="Manufacturing Order" class="btn-primary" type="object" states="cr"/> -->
+                    <button name="action_manufactur_order_tes" confirm="Are You Sure Confirm MO?" string="Manufacturing Order" class="btn-primary" type="object" states="cr"/>
+                    <button name="action_sale_confirm" string="Sale Confirmation" class="btn-primary" type="object" states="mo"/>
+                    <button name="revisi" type="object" string="Revisi SC" class="btn-warning" attrs="{'invisible': ['|',('state', '!=', 'sale'), ('is_revisi', '=', True)]}"/>
+                    <!-- attrs="{'invisible': ['|',('state', '!=', 'sale'),('is_revisi','=', True)]} -->
+                </xpath>
+                <!-- <xpath expr="//button[@name='action_cancel']" position="replace">
+                    <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible': 
+                    [
+                    ('state_is_so','!=','draft'),
+                    ('state_is_so','!=','quotation_to_approve'),
+                    ('state','!=','cr'),
+                    ('state','!=','mo'),
+                    ('state','!=','sc'),
+                    ('state','=','cancel')
+                    ]}"
+                    /> -->
+                    <xpath expr="//button[@name='action_cancel']" position="replace">
+                        <!-- <button name="action_cancel" string="Cancel" type="object" states="sr,mo,draft,cr,quotation_to_approve"/> -->
+                        <button name="action_cancel" string="Cancel" type="object" 
+                        attrs="{ 
+                        'invisible': [
+                        ('state_is_so','not in',('draft','quotation_to_approve')),('state','not in',('cr','mo'))
+                        ] 
+                         }"
+                        
+                        />
+                    </xpath>
+                <xpath expr="//button[@name='action_quotation_send']" position="replace">
+                    <button name="action_quotation_send" string="Send by Email" type="object" states="sr"/>
+                </xpath>
+                <!-- <xpath expr="//button[@name='action_confirm'][2]" position="replace"/>
+                <xpath expr="//button[@name='action_confirm'][1]" position="replace">
+                    <button name="action_confirm" string="Confirmasi" type="object" states="sr" class="btn-warning"/>
+                </xpath> -->
+                <!-- <button name="action_confirm" string="Confirm Quotation" type="object" states="quotation" class="btn-primary"/> -->
+                <xpath expr="//field[@name='state']" position="replace">
+                    <!-- <field name="state" widget="statusbar" statusbar_visible="cr_to_approve,cr,mo_to_approve,mo,sale" attrs="{'invisible': [('is_type', '!=', 'is_sc')]}"/> -->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,cr_to_approve,cr,mo_to_approve,mo,sale" attrs="{'invisible': [('is_type', '!=', 'is_sc')]}"/>
+                    <!-- <field name="state" widget="statusbar" statusbar_visible="draft,quotation_to_approve,quotation,cr_to_approve" attrs="{'invisible': [('is_type', '!=', 'is_so')]}"/>
+                    </xpath> -->
+                    <!-- <field name="state_is_so" widget="statusbar" statusbar_visible="draft,quotation_to_approve,quotation,cr_to_approve" attrs="{'invisible': [('is_type', '!=', 'is_so')]}"/> -->
+                    <field name="state_is_so" widget="statusbar" statusbar_visible="draft,quotation_to_approve,quotation,cr_draft" attrs="{'invisible': [('is_type', '!=', 'is_so')]}"/>
+                </xpath>
+                <xpath expr="//label[@for='date_order']" position="attributes">
+                    <attribute name="string">Date Meeting</attribute>
+                    <!-- <attribute name="attrs">{'readonly': [('state', '!=', 'draft'), ('is_revisi', '!=', True)]}</attribute> -->
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|','&amp;',('state', 'not in', ('draft', 'mo', 'sr_to_approve')), ('is_revisi', '!=', True), '&amp;',('state', 'in', ('sale','rev')),('is_revisi', '=', True) ]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                    <attribute name="string">Customer</attribute>
+                    <!-- <attribute name="attrs">{'readonly': [('state', '!=', 'draft'), ('is_revisi', '!=', True)]}</attribute> -->
+                    <attribute name="attrs">{'readonly': ['|','&amp;',('state', 'not in', ('draft', 'mo', 'sr_to_approve')), ('is_revisi', '!=', True), '&amp;',('state', 'in', ('sale','rev')),('is_revisi', '=', True) ]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="string">Term</attribute>
+                    <attribute name="attrs">{'readonly': [('state', '!=', 'draft'), ('is_revisi', '!=', True)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="payment" invisible="1"/>
+                    <field name="destination" invisible="1"/>
+                    <field name="no_cr" invisible="1"/>
+                    <field name="no_mo" invisible="1"/>
+                    <field name="is_type" invisible="1"/>
+                    <field name="is_parent" invisible="1"/>
+                    <field name="is_revisi" invisible="1"/>
+                    <field name="request_date" invisible="1"/>
+
+                    <!-- <field name="tgl_skrg"/> -->
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="country_of_deliver" attrs="{'invisible': [('is_type','==','is_so')]}"/>
+                    <label for="country_of_deliver" string="Port Of Delivery"/>
+                        <div class="o_row" name="country_of_deliver">
+                            <field name="city_deliver" nolabel="1" placeholder="City"/>
+                            <field name="country_of_deliver" nolabel="1" placeholder="Country"/>
+                        </div>
+                    <!-- <field name="city_deliver" attrs="{'readonly': [('state','!=',('draft'))]}"/> -->
+                    <!-- <field name="buyer_po" attrs="{'invisible': [('is_type','==','is_so')],  'readonly': [('state','not in',('draft','mo','sr_to_approve')), ('is_revisi', '!=', True)]}"/> -->
+                    <field name="buyer_po" attrs="{'readonly': ['|','&amp;',('state', 'not in', ('draft', 'mo', 'sr_to_approve')), ('is_revisi', '!=', True), '&amp;',('state', 'in', ('sale','rev')),('is_revisi', '=', True) ]}"/>
+                    <!-- <field name="department_id" attrs="{'readonly': [('state','!=',('draft')), ('is_revisi', '!=', True)]}"/> -->
+                    <field name="department_id" attrs="{'readonly': ['|','&amp;',('state', 'not in', ('draft', 'mo', 'sr_to_approve')), ('is_revisi', '!=', True), '&amp;',('state', 'in', ('sale','rev')),('is_revisi', '=', True) ]}"/>
+                    <!-- <field name="origin" string="Cust Reference" attrs="{'readonly': [('state','not in',('draft','mo','sr_to_approve')), ('is_revisi', '!=', True)]}"/> -->
+                    <field name="origin" string="Cust Reference" attrs="{'readonly': ['|','&amp;',('state', 'not in', ('draft', 'mo', 'sr_to_approve')), ('is_revisi', '!=', True), '&amp;',('state', 'in', ('sale','rev')),('is_revisi', '=', True) ]}"/>
+                    <field name="crm_id" invisible="1" attrs="{'readonly': [('state','!=',('draft'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='validity_date']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('is_type','==','is_sc')],'readonly': [('state_is_so','not in',('draft')),('state','not in',('sent'))]}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- FILTER SALE.ORDER -->
+        <!-- <record id="app_view_contract_review_search" model="ir.ui.view">
+            <field name="name">app.contract.review.view search</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//field[@name='campaign_id']" position="after">
+                    <field name="is_cr" />
+                </xpath>
+                <xpath expr="//filter[@name='my_quotation']" position="after">
+                    <filter string="Contract Review" name="is_cr" />
+                </xpath>
+            </field>
+        </record> -->
+
+
+        <record id="view_res_partner" model="ir.ui.view">
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[2]" position="inside">
+                    <group string="Code">
+                        <group>
+                            <field name="exim_code" string="Code Customer" />
+                            <field name="number_sequence"/>
+                            <field name="number_mo"/>
+                            <field name="number_sample"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale.action_orders_upselling" model="ir.actions.act_window">
+            <field name="name">Orders to Upsell</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,kanban,activity</field>
+            <field name="domain">[('invoice_status','=','upselling')]</field>
+            <field name="context">{'create': False}</field>
+            <field name="search_view_id" ref="sale.view_sales_order_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                No orders to upsell found.
+                </p>
+                <p>
+                An order is to upsell when delivered quantities are above initially
+                ordered quantities, and the invoicing policy is based on ordered quantities.
+                </p>
+                <p>
+                As an example, if you sell pre-paid hours of services, Odoo recommends you
+                to sell extra hours when all ordered hours have been consumed.
+                </p>
+            </field>
+        </record>
+
+        <!-- 
+        <menuitem action="sale.action_orders_upselling" id="menu_sale_order_upselling" parent="sale.menu_sale_invoicing" sequence="5" active="False" groups="group_allow_orders_to_upsell"/>
+
+        <record id="group_allow_orders_to_upsell" model="res.groups">
+            <field name="name">Allow access Orders to Upsell</field>
+        </record> -->
+
+    </data>
+</odoo>

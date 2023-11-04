@@ -1,0 +1,133 @@
+<odoo>
+  <data>
+    <record id="rnd_mrp_production_action" model="ir.actions.act_window">
+        <field name="name">Manufacture Sample</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.production</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="search_view_id" ref="mrp.view_mrp_production_filter"/>
+        <!-- <field name="context">{'search_default_todo': True, 'default_company_id': allowed_company_ids[0],'edit': 0,'create': 0}</field> -->
+        <field name="context">{'search_default_todo': True, 'default_company_id': allowed_company_ids[0],'create': 0}</field>
+        <field name="domain">[('picking_type_id.active', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              No manufacturing order found. Let's create one.
+            </p><p>
+              Consume <a name="%(product.product_template_action)d" type='action' tabindex="-1">components</a> and build finished products using <a name="%(mrp.mrp_bom_form_action)d" type='action' tabindex="-1">bills of materials</a>
+            </p>
+          </field>
+    </record>
+
+
+        <record id="view_asign_mrp_production" model="ir.ui.view">
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="rnd_id" />
+                    <field name="request_no" />
+                    <field name="workcenter" invisible="1"/>
+                    <field name="workcenter_id" invisible="1"/>
+                    <!-- <field name="work_order_ids" widget="many2many_tags"/> -->
+                </xpath>
+            </field>
+        </record>
+
+        <record id="mrp_production_tree" model="ir.ui.view">
+            <field name="name">mrp.production.tree</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <!-- <field name="work_order_ids" widget="many2many_tags"/> -->
+                    <field name="workcenter" invisible="1"/>
+                    <field name="workcenter_id" />
+                    <field name="rnd_id" />
+
+                </xpath>
+              </field>
+        </record>
+
+
+        <record id="view_mrp_bom" model="ir.ui.view">
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/group/group[1]/field[@name='product_tmpl_id']" position="attributes">
+                    <!-- <attribute name="context">{'default_type': 'product', 'default_is_prod_brg_jadi': True, 'default_categ_id': 5}</attribute> -->
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="after">
+                        <field name="is_product_componen" attrs="{'invisible': 1}"/>
+                        <label for="size_tebal" string="Assembling Size" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+                        <div class="o_row" name="size_tebal" attrs="{'invisible': [('is_product_componen', '=', False)]}">
+                            <span>W:</span>
+                            <field name="size_panjang" nolabel="1" placeholder="W" readonly="1"/>
+                            <!-- <span>X</span> -->
+                            <span>D:</span>
+                            <field name="size_lebar" nolabel="1" placeholder="D" readonly="1"/>
+                            <!-- <span>X</span> -->
+                            <span>H:</span>
+                            <field name="size_tebal" nolabel="1" placeholder="H" readonly="1"/>
+                        </div>
+                        <!-- <label for="qty_so" string="Quantity SO" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+                        <div class="o_row" name="qty_so" attrs="{'invisible': [('is_product_componen', '=', False)]}">
+                            <field name="qty_so" readonly='0'/>
+                            <field name="uom_so" readonly='0'/>
+                        </div>
+                        <label for="ratio" string="Rasio" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+                        <div class="o_row" name="ratio" attrs="{'invisible': [('is_product_componen', '=', False)]}">
+                            <field name="ratio" readonly='0'/>
+                            <span>Catatan</span>
+                            <field name="desc" readonly='0'/>
+                        </div> -->
+                        <field name="total_meter_cubic" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+                        <field name="total_meter_persegi" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+                </xpath>
+                <!-- <xpath expr="//notebook/page[@name='operations']" position="replace"/> -->
+                <xpath expr="//notebook/page[@name='by_products']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('type','!=','normal'),('type_bom','=','is_design')]}</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='miscellaneous']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('type','=','phantom'),('type_bom','=','is_design')]}</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='operations']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('type', 'not in',('normal','phantom')),('type_bom','=','is_design')]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='type']" position="attributes">
+                     <attribute name="attrs">{'invisible': [('type_bom','=','is_design')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="rnd_id" invisible="1"/>
+                    <field name="crm_id" invisible="1"/>
+                    <field name="type_bom" invisible="1"/>
+                    <field name="attachments" widget="image" width="200px"/>
+                </xpath>
+                <xpath expr="//field[@name='bom_line_ids']/tree/field[@name='product_uom_id']" position="after">
+                    <field name="model"/>
+                    <field name="size_panjang" />
+                    <field name="size_lebar"  />
+                    <field name="size_tebal" />
+                    <field name="total_meter_cubic" sum="Meter Cubic" invisible="1"/>
+                    <field name="total_meter_persegi"  sum="Meter Persegi" invisible="1"/>
+                    <field name="total_meter" sum="Meter" invisible="1"/>
+                    <field name="total_meter_cubic1" sum="Meter Cubic"/>
+                    <field name="total_meter_persegi1"  sum="Meter Persegi"/>
+                    <field name="total_meter1" sum="Meter" />
+                    <field name="standard_price"/>
+                    <field name="sub_cost" />
+                    <field name="description" />
+                </xpath>
+                <xpath expr="//field[@name='bom_line_ids']/tree/field[@name='product_id']" position="before">
+                    <field name="product_code" />
+                </xpath>
+            </field>
+        </record>
+
+
+  </data>
+</odoo>

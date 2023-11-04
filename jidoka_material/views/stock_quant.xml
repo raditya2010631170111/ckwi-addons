@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_quant_tree_editable_inherit" model="ir.ui.view">
+            <field name="name">view.stock.quant.inherit.tree</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.view_stock_quant_tree_editable" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lot_id']" position="after">
+                    <field name="wood_kind_product_id" optional="show"/>
+                    <field name="certification_id" optional="show"/>
+                    <field name="name_code_gudang" optional="hide"/>
+                    <field name="write_date" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_stock_quant_inherit_tree" model="ir.ui.view">
+            <field name="name">view.stock.quant.inherit.tree</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.view_stock_quant_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lot_id']" position="after">
+                    <field name="wood_kind_product_id" optional="show"/>
+                    <field name="certification_id" optional="show"/>
+                    <field name="name_code_gudang" optional="hide"/>
+                    <field name="write_date" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="stock_quant_view_search" model="ir.ui.view">
+            <field name="name">stock.quant.view.search</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.quant_search_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/group[2]/filter[1]" position="after">
+                    <filter string="Jenis Kayu" name="locationgroup" domain="[]" context="{'group_by': 'wood_kind_product_id'}"/>
+                    <filter string="Certification" name="cert_group" domain="[]" context="{'group_by': 'certification_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data> 
+</odoo>

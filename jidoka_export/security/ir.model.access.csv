@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_packing_list,access.packing.list,model_packing_list,,1,1,1,1
+access_shipping_ins,access.shipping.ins,model_shipping_ins,,1,1,1,1
+access_shipping_ins_line,access.shipping.ins.line,model_shipping_ins_line,,1,1,1,1
+access_invoice,access.invoice,model_invoice,,1,1,1,1
+access_invoice_line,access.invoice.line,model_invoice_line,,1,1,1,1
+access_invoice_container_line,access.invoice.container.line,model_invoice_container_line,,1,1,1,1
+access_container_operation,access.container.operation,model_container_operation,,1,1,1,1
+access_container_operation_line,access.container.operation.line,model_container_operation_line,,1,1,1,1
+access_invoice_container_operation,access.invoice.container.operation,model_invoice_container_operation,,1,1,1,1
+access_invoice_container_operation_line,access.invoice.container.operation.line,model_invoice_container_operation_line,,1,1,1,1
+access_packing_list_order_line,access.packing.list.order.line,model_packing_list_order_line,,1,1,1,1
+access_invoice_order_line,access.invoice.order.line,model_invoice_order_line,,1,1,1,1
+access_shipping_inst_line,access.shipping.inst.line,model_shipping_inst_line,,1,1,1,1

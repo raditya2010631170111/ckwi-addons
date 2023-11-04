@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">        
+        
+        <record id="sawmill_notification_form" model="ir.ui.view">
+            <field name="name">sawmill.notification.form</field>
+            <field name="model">jidoka.sawmill.noftification</field>
+            <field name="arch" type="xml">
+                <form string="Wizard Form">
+                    <field name="name" nolabel="1" readonly="1"/>
+                    <footer>
+                        <button string="Close" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

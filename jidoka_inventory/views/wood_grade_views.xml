@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Your List View Definition -->
+        <record id="wood_grade_list" model="ir.ui.view">
+            <field name="name">wood.grade.list</field>
+            <field name="model">wood.grade</field>
+            <field name="arch" type="xml">
+                <tree string="wood_grade_list">
+                    <field name="name"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Your Form View Definition -->
+        <record id="wood_grade_form" model="ir.ui.view">
+            <field name="name">wood.grade.form</field>
+            <field name="model">wood.grade</field>
+            <field name="arch" type="xml">
+                <form string="wood_grade_form">
+                    <group>
+                        <field name="name" required="1"/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Your Action Window Definition -->
+        <record model="ir.actions.act_window" id="wood_grade_action">
+        <field name="name">Wood Grade</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wood.grade</field>
+        <field name="view_mode">form,tree</field>
+        <field name="view_id" ref="wood_grade_list" />
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to set a new wood grade.
+            </p>
+        </field>
+    </record>
+
+        <!-- Action Menu Item Related To Above Action Window -->
+        <menuitem
+            action="wood_grade_action"
+            id="action_menu_wood_grade"
+            parent="stock.menu_stock_config_settings"
+            name="Wood Grade"
+            sequence="50"/>
+
+        <!-- DIPINDAHKAN KE JIDOKA INVENTORY -->
+    </data>
+</odoo>

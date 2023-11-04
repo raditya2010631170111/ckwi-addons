@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- ============JC-336============ -->
+        <record id="res_notes_sale_view_form" model="ir.ui.view">
+            <field name="name">res.notes.sale.view.form</field>
+            <field name="model">res.notes.sale</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="customer_id" />
+                            <field name="type_note" />
+                            <field name="information" invisible="1"/>
+                            <field name="info_teks" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_notes_sale_view_tree" model="ir.ui.view">
+            <field name="name">res.notes.sale.view.tree</field>
+            <field name="model">res.notes.sale</field>
+            <field name="arch" type="xml">
+                <tree string="">
+
+                    <field name="name" />
+                    <field name="customer_id" />
+                    <field name="type_note" />
+                    <!-- <field name="information" /> -->
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_notes_sale_action" model="ir.actions.act_window">
+            <field name="name">Notes Sale</field>
+            <field name="res_model">res.notes.sale</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Notes Sale
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="res_notes_sale_config" name="Notes Sale" parent="sale.menu_sale_config" action="jidoka_sale.res_notes_sale_action" sequence="2"/>
+        <!-- ============JC-336============ -->
+    </data>
+</odoo>

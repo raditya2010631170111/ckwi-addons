@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+
+		    <record id="view_revisi_order_cancel" model="ir.ui.view">
+		        <field name="name">Reason</field>
+		        <field name="model">crm.lead.reason</field>
+		        <field name="arch" type="xml">
+		            <form string="Reason for the Revisi">
+		                <p class="oe_grey">
+		                    Choose the reason for the Revisi of the
+		                    CRM.
+		                </p>
+		                <group>
+		                    <field name="reason" />
+		                </group>
+		                <footer>
+		                    <button
+		                        name="confirm_revisi"
+		                        string="Confirm"
+		                        type="object"
+		                        class="oe_highlight"
+		                    />
+		                    or
+		                    <button string="Cancel" class="oe_link" special="cancel" />
+		                </footer>
+		            </form>
+		        </field>
+		    </record>
+
+		    <record id="action_revisi_crm" model="ir.actions.act_window">
+		        <field name="name">Reason for the Revisi</field>
+		        <field name="type">ir.actions.act_window</field>
+		        <field name="res_model">crm.lead.reason</field>
+		        <field name="view_mode">form</field>
+		        <field name="view_id" ref="view_revisi_order_cancel" />
+		        <field name="target">new</field>
+		    </record>
+
+
+
+    
+</odoo>

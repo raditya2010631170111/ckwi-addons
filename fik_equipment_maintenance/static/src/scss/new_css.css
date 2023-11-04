@@ -1,0 +1,147 @@
+*{
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+}
+.card { cursor:pointer;
+    border: 0;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    border-radius: 6px;
+    color: #333;
+    background: #fff;
+    width: 100%;
+    height: 100px;
+    border:1px solid #bdbdbd;
+}
+.card:hover{background:#fff; border:1px solid #000;}
+
+.o_maintenance_dashboard{
+ background-color:#e7e7e7
+}
+
+
+
+.card_icon i {
+    font-size: 35px;
+    line-height: 56px;
+    width: 56px;
+    height: 56px;
+    text-align: center;
+}
+.card_contan {
+    text-align: right;
+    margin-top: 0px;
+    color: black;
+    padding-right: 40px;
+    padding-top: 10px;
+}
+.card_icon i{
+	color: white;
+}
+p{
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+}
+.card_icon {
+    border-radius: 3px;
+    /* background-color: black; */
+    padding: 7px;
+    margin-right: 15px;
+    float: left;
+    position: absolute;
+    top: -18px;
+    left: 11px;
+
+}
+.card_icon1{
+	 background: #4285F4;
+}
+.card_icon2{
+	    background: #F4B400;
+
+}
+.card_icon3{
+	      background: #0F9D58;
+
+}
+
+.card_icon4{
+	        background: #DB4437;
+}
+.p_style{
+    font-size: 18px;
+    font-weight: 600;
+}
+.action-new-request h2.card_main_title {
+    color: #4285F4;
+}
+.action-new-request h2 b.stage-new-request {
+    font-size: 25px;
+    color: #4285F4;
+}
+.action-in-progress h2 b.stage-in-progress {
+    font-size: 25px;
+    color: #F4B400;
+}
+.action-in-progress h2.card_main_title {
+    color: #F4B400;
+}
+.action-in-repaired h2 b.stage-in-repaired {
+font-size: 25px;
+    color: #0F9D58;
+}
+.action-in-repaired h2.card_main_title {
+    color: #0F9D58;
+}
+.action-scrap h2 b.stage-in-scrap {
+ font-size: 25px;
+    color: #DB4437;
+}
+.action-scrap h2.card_main_title {
+    color: #DB4437;
+}
+
+.action-in-checklist h4.card_up_title{
+   color: #F4B400;
+    line-height: 24px;
+    font-size: 19px;
+    margin-top:10px
+}
+
+.action-in-equipment h4.card_up_title{
+color:#0F9D58;
+    line-height: 24px;
+    font-size: 19px;
+     margin-top:10px
+}
+
+.action-team h4.card_up_title{
+color:#DB4437;
+    line-height: 24px;
+    font-size: 19px;
+     margin-top:10px
+}
+.center-boxes{justify-content: center;}
+
+.maintainance_chart_cards{
+    margin-top: 6px;
+}
+
+.card.maintence .card_icon {
+    left: 85px;
+    margin-right: 0px;
+    text-align: center;
+    top:-31px
+}
+
+.card.maintence .card_contan {
+    text-align: center;
+    margin-top: 40px;
+    padding: 0px;
+}
+
+
+html .o_web_client > .o_action_manager{
+    overflow: auto !important;
+}

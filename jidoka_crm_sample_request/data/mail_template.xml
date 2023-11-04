@@ -1,0 +1,330 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_sample_request_validate" model="mail.template">
+            <field name="name">Mail Sample Request Approver</field>
+            <field name="model_id" ref="model_crm_sample_request"/>
+            <field name="email_from">erp@jidokasystem.co.id</field>
+            <field name="subject">[Sample Request] Proses Approval Sample Request ${object.name}</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                    <tbody>
+                        <!-- HEADER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr>
+                                        <td valign="middle">
+                                            <span style="font-size: 20px; font-weight: bold;">
+                                                Hallo!
+                                            </span>
+                                        </td>
+                                        <td valign="middle" align="right">
+                                            <img src="/logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="text-align:center;">
+                                            <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- CONTENT -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr>
+                                        <td valign="top" style="font-size: 13px;">
+                                            <div>
+                                                Dear ${ctx.get('name')},
+                                                <br></br>
+                                                <br></br>
+                                                Sehubungan dengan adanya proses approval Sample Request dengan detail berikut:
+                                                <br></br>
+                                                <br></br>
+                                                <table style="font-family: Helvetica,Arial,Verdana,sans-serif;width: 100%;">
+                                                    <tbody style="font-size: 13px;">
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Sample Request Detail</td>
+                                                            <td>: ${object.name}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Customer</td>
+                                                            <td>: ${object.partner_id.name}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Purpose</td>
+                                                            <td>: ${object.purpose}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br></br>
+                                                Untuk informasi lebih detail, dapat dilihat pada halaman detail dengan klik tombol "Detail Request" dibawah ini.
+                                                <br/><br/><br/>
+                                                <div style="font-size: 15px; font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif; text-align: center;"><a class="btn btn-success btn-sm" style="text-decoration-line: none; border-radius: 0px; padding: 0.25rem 0.5rem; cursor: pointer; transition: color 0.15s ease-in-out 0s, background-color 0.15s ease-in-out 0s, border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s; line-height: 1.5; user-select: none; vertical-align: middle; white-space: nowrap; display: inline-block; background-color: #00a04a; color: #ffffff; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; border: 1px solid #00a04a; width:150px; height:30px;" href="${ctx.get('url')}" data-original-title="" aria-describedby="tooltip983117">Detail Request</a><p></p><p></p></div>
+                                                <span></span>
+                                                <br/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                        </td></tr>
+                                </table>
+                            </td>
+                        </tr>
+                <!-- FOOTER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr><td valign="middle" align="left">
+                                        ${object.create_uid.company_id.name}
+                                        <br></br>
+                                        ${object.create_uid.company_id.phone} | ${object.create_uid.company_id.email} | ${object.create_uid.company_id.website}
+                                    </td></tr>
+                                    <tr><td valign="middle" align="left" style="opacity: 0.7;">
+                                    </td></tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </td></tr>
+        <!-- POWERED BY -->
+                    <tr><td align="center" style="min-width: 590px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                            <tr><td style="text-align: center; font-size: 13px;">
+                                Powered by <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>
+                            </td></tr>
+                        </table>
+                    </td></tr>
+                </table>
+            </field>
+            <field name="auto_delete"/>
+        </record>
+
+        <record id="mail_sample_request_manager_approve" model="mail.template">
+            <field name="name">Mail Sample Request Approve</field>
+            <field name="model_id" ref="model_crm_sample_request"/>
+            <field name="email_from">erp@jidokasystem.co.id</field>
+            <field name="subject">[Sample Request] Proses Approval Sample Request ${object.name} telah disetujui Approver</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                    <tbody>
+                        <!-- HEADER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr>
+                                        <td valign="middle">
+                                            <span style="font-size: 20px; font-weight: bold;">
+                                                Hallo!
+                                            </span>
+                                        </td>
+                                        <td valign="middle" align="right">
+                                            <img src="/logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="text-align:center;">
+                                            <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- CONTENT -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr>
+                                        <td valign="top" style="font-size: 13px;">
+                                            <div>
+                                                Dear ${ctx.get('name')},
+                                                <br></br>
+                                                <br></br>
+                                                Sehubungan dengan adanya proses approval Sample Request dengan detail berikut:
+                                                <br></br>
+                                                <br></br>
+                                                <table style="font-family: Helvetica,Arial,Verdana,sans-serif;width: 100%;">
+                                                    <tbody style="font-size: 13px;">
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Sample Request Detail</td>
+                                                            <td>: ${object.name}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Customer</td>
+                                                            <td>: ${object.partner_id.name}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Purpose</td>
+                                                            <td>: ${object.purpose}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Comment</td>
+                                                            <td>: ${ctx.get('reason')}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br></br>
+                                                Kami informasikan bahwa Sample Request tersebut sudah di approve oleh approver, dapat dilihat pada halaman detail dengan klik tombol "Detail Request" dibawah ini untuk dapat dilakukan proses selanjutnya.
+                                                <br/><br/><br/>
+                                                <div style="font-size: 15px; font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif; text-align: center;"><a class="btn btn-success btn-sm" style="text-decoration-line: none; border-radius: 0px; padding: 0.25rem 0.5rem; cursor: pointer; transition: color 0.15s ease-in-out 0s, background-color 0.15s ease-in-out 0s, border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s; line-height: 1.5; user-select: none; vertical-align: middle; white-space: nowrap; display: inline-block; background-color: #00a04a; color: #ffffff; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; border: 1px solid #00a04a; width:150px; height:30px;" href="${ctx.get('url')}" data-original-title="" aria-describedby="tooltip983117">Detail Request</a><p></p><p></p></div>
+                                                <span></span>
+                                                <br/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                        </td></tr>
+                                </table>
+                            </td>
+                        </tr>
+                <!-- FOOTER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr><td valign="middle" align="left">
+                                        ${object.create_uid.company_id.name}
+                                        <br></br>
+                                        ${object.create_uid.company_id.phone} | ${object.create_uid.company_id.email} | ${object.create_uid.company_id.website}
+                                    </td></tr>
+                                    <tr><td valign="middle" align="left" style="opacity: 0.7;">
+                                    </td></tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </td></tr>
+        <!-- POWERED BY -->
+                    <tr><td align="center" style="min-width: 590px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                            <tr><td style="text-align: center; font-size: 13px;">
+                                Powered by <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>
+                            </td></tr>
+                        </table>
+                    </td></tr>
+                </table>
+            </field>
+            <field name="auto_delete"/>
+        </record>
+
+        <record id="mail_sample_request_manager_reject" model="mail.template">
+            <field name="name">Mail Sample Request Reject</field>
+            <field name="model_id" ref="model_crm_sample_request"/>
+            <field name="email_from">erp@jidokasystem.co.id</field>
+            <field name="subject">[Sample Request] Proses Request Sample Request ${object.name} telah direject Approver</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                    <tbody>
+                        <!-- HEADER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr>
+                                        <td valign="middle">
+                                            <span style="font-size: 20px; font-weight: bold;">
+                                                Hallo!
+                                            </span>
+                                        </td>
+                                        <td valign="middle" align="right">
+                                            <img src="/logo.png?company=${object.company_id.id}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${object.company_id.name}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="text-align:center;">
+                                            <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- CONTENT -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr>
+                                        <td valign="top" style="font-size: 13px;">
+                                            <div>
+                                                Dear ${ctx.get('name')},
+                                                <br></br>
+                                                <br></br>
+                                                Sehubungan dengan adanya proses approval Sample Request dengan detail berikut:
+                                                <br></br>
+                                                <br></br>
+                                                <table style="font-family: Helvetica,Arial,Verdana,sans-serif;width: 100%;">
+                                                    <tbody style="font-size: 13px;">
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Sample Request Detail</td>
+                                                            <td>: ${object.name}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Customer</td>
+                                                            <td>: ${object.partner_id.name}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Purpose</td>
+                                                            <td>: ${object.purpose}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="font-weight:bold;width:110px">Reason</td>
+                                                            <td>: ${ctx.get('reason')}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br></br>
+                                                Kami informasikan bahwa Sample Request tersebut sudah direject oleh approver, dapat dilihat pada halaman detail dengan klik tombol "Detail Request" dibawah ini.
+                                                <br/><br/><br/>
+                                                <div style="font-size: 15px; font-family: 'Lucida Grande', Helvetica, Verdana, Arial, sans-serif; text-align: center;"><a class="btn btn-success btn-sm" style="text-decoration-line: none; border-radius: 0px; padding: 0.25rem 0.5rem; cursor: pointer; transition: color 0.15s ease-in-out 0s, background-color 0.15s ease-in-out 0s, border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s; line-height: 1.5; user-select: none; vertical-align: middle; white-space: nowrap; display: inline-block; background-color: #00a04a; color: #ffffff; font-style: initial; font-variant-ligatures: initial; font-variant-caps: initial; border: 1px solid #00a04a; width:150px; height:30px;" href="${ctx.get('url')}" data-original-title="" aria-describedby="tooltip983117">Detail Request</a><p></p><p></p></div>
+                                                <span></span>
+                                                <br/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                        </td></tr>
+                                </table>
+                            </td>
+                        </tr>
+                <!-- FOOTER -->
+                        <tr>
+                            <td align="center" style="min-width: 590px;">
+                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                    <tr><td valign="middle" align="left">
+                                        ${object.create_uid.company_id.name}
+                                        <br></br>
+                                        ${object.create_uid.company_id.phone} | ${object.create_uid.company_id.email} | ${object.create_uid.company_id.website}
+                                    </td></tr>
+                                    <tr><td valign="middle" align="left" style="opacity: 0.7;">
+                                    </td></tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </td></tr>
+        <!-- POWERED BY -->
+                    <tr><td align="center" style="min-width: 590px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;">
+                            <tr><td style="text-align: center; font-size: 13px;">
+                                Powered by <a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>
+                            </td></tr>
+                        </table>
+                    </td></tr>
+                </table>
+            </field>
+            <field name="auto_delete"/>
+        </record>
+    </data>
+</odoo>

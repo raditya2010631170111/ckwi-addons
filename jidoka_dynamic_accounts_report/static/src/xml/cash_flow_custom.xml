@@ -1,0 +1,109 @@
+<templates>
+    <t t-name="CashFlowCustomTemp">
+        <div class="">
+            <div>
+                <div class="filter_view_cash_flow_custom"></div>
+            </div>
+			<br></br>
+			<div>
+                <div class="table_view_cash_flow_custom" style="right:20px;"></div>
+            </div>
+		</div>
+    </t>
+    <t t-name="CashFlowCustomTable">
+        <div>
+            <style>
+                table.cash-flow-custom thead tr th {
+                    white-space:nowrap;
+                    padding:10px;
+                }
+                table.cash-flow-custom tbody tr td {
+                    white-space:nowrap !important;
+                    padding:0 10px;
+                }
+            </style>
+            <div class="table_main_view table-responsive">
+                <table cellspacing="0" width="100%" class="table table-sm cash-flow-custom">
+					<tbody>
+						<t t-set="none_value" t-value="_"/>
+						<t t-foreach="report_lines" t-as="a">
+                            <t t-set="style" t-value="'padding: 5px;padding-left: 25px;'"/>
+                            <t t-set="fr_head" t-value="'border-bottom: double;'"/>
+                            <t t-set="fr_padding" t-value="'padding-top: 5px; text-align: right; padding-right: 50px; vertical-align: bottom;'"/>
+                            <t t-if="a['level'] == 1">
+                                <t t-set="style" t-value="'padding: 5px;padding-left: 15px; padding-top: 15px; font-weight: bold;'"/>
+                                <t t-set="fr_padding" t-value="'padding-top: 5px; text-align: right; padding-right: 50px; vertical-align: bottom;font-weight: bold;'"/>
+                            </t>
+                            <t t-if="a['level'] == 2">
+                                <t t-set="style" t-value="'padding: 5px;padding-left: 15px; padding-top: 15px; font-weight: bold;'"/>
+                                <t t-set="fr_padding" t-value="'padding-top: 5px; text-align: right; padding-right: 50px; vertical-align: bottom;font-weight: bold;'"/>
+                            </t>
+                            <t t-if="a['level'] == 3">
+                                <t t-set="style" t-value="'padding: 5px;padding-left: 50px;'"/>
+                                <t t-set="fr_head" t-value="'border-bottom: 1px solid black;'"/>
+                            </t>
+                            <t t-if="a['level'] &gt; 3">
+                                <t t-set="style" t-value="'padding: 5px;padding-left: 50px;'"/>
+                                <t t-set="fr_head" t-value="'border-bottom: 1px solid black;'"/>
+                            </t>
+                            <tr t-att-style="fr_head">
+                                <td t-att-style="style">
+                                    <t t-esc="a['name']"/>
+                                </td>
+                                <td t-att-style="fr_padding"><t t-esc="a['f_amount']"/></td>
+                            </tr>
+                        </t>
+					</tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+
+
+    <t t-name="CashFlowCustomFilterView">
+        <div class="">
+            <h1 style="padding:10px">
+                <t t-esc="title" />
+            </h1>
+        </div>
+        <div class="" style="position: relative;">
+            <div class="sub_container_left">
+                <div class="report_print">
+                    <button type="button" class="btn btn-primary" id="xlsx"
+                            style="left:10px; height:30px;position: relative;color:white;background-color: #00A0AD;border-color: #00A0AD; padding:3px;">
+                        Export (XLSX)
+                    </button>
+                </div>
+            </div>
+            <br></br>
+            <div class="sub_container_right" style="width:50%;height:3%;right:0px;top:0px;position: absolute;">
+                <div class="" style="right:80x;">
+
+                    <br></br>
+                    <div class="row" style="right:110px;top:0px;position: absolute;width:50;">
+                        <div class="comparation_filter" style="">
+                            <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="fa fa-book"></span>
+                                Periode:
+                            </a>
+                            <div class="dropdown-menu periode">
+                                <label for="periode">Periode</label>
+                                <input type="text" id="periode" name="periode" placeholder="2022-01"/>
+                            </div>
+                            <span id="periode_res"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div style="">
+                    <button type="button" id="apply_filter" class="btn btn-primary"
+                            style="top:0px;height:30px;right:20px;position: absolute;color:white;background-color: #00A0AD;border-color: #00A0AD;">
+                        Apply
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

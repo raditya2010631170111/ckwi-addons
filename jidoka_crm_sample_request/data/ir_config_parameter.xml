@@ -1,0 +1,17 @@
+<odoo>
+    <data noupdate="1">
+        <!--sample request-->
+        <record model="ir.config_parameter" id="validate_sample_request_template">
+        	<field name="key">crm_sample.validate_sample_request_template</field>
+        	<field name="value">jidoka_crm_sample_request.mail_sample_request_validate</field>
+        </record>
+        <record model="ir.config_parameter" id="sample_request_approve_manager_email_template">
+        	<field name="key">crm_sample.sample_request_manager_approve_template</field>
+        	<field name="value">jidoka_crm_sample_request.mail_sample_request_manager_approve</field>
+        </record>
+        <record model="ir.config_parameter" id="sample_request_reject_manager_email_template">
+        	<field name="key">crm_sample.sample_request_manager_reject_template</field>
+        	<field name="value">jidoka_crm_sample_request.mail_sample_request_manager_reject</field>
+        </record>
+    </data>
+</odoo>

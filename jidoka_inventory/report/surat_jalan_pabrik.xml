@@ -1,0 +1,87 @@
+<odoo>
+    <data>
+        <template id="report_stock_picking">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+					<div style="border:1px solid black;padding:10px;">		
+						<table width="100%" style="color:black;border-collapse:collapse;">
+							<thead> 
+								<t t-set="tagih" t-value="dict([('ya','YA'),('tidak','TIDAK'), (False, '')])"/>
+								<tr style="border:none;font-weight:bold;text-align:center;">
+									<td colspan="5" style="font-size:16px">SURAT JALAN (PABRIK)</td>
+								</tr>
+								<tr>
+									<td width="25%" colspan="2" style="padding:5px;font-weight:bold;border: 1px solid black;">NO</td>
+									<td width="25%" style="padding:5px;border-left: 1px solid black;"><t t-esc="o.name"/></td>
+									<td width="25%" style="padding:5px;font-weight:bold;">TANGGAL</td>
+									<td width="25%" style="border: 1px solid black"><t t-if="o.scheduled_date"><t t-esc="o.scheduled_date.strftime('%d-%B-%Y %H:%M:%S')"/></t></td>
+								</tr>
+								<tr> 
+									<td style="padding:5px;font-weight:bold;border: 1px solid black;" colspan="2">KEPADA</td>
+									<td style="padding:5px;;text-align:left;border: 1px solid black;" colspan="4"><t t-esc="o.partner_id.name"/></td>
+								</tr>
+								<tr style="padding-bottom:5px;">
+									<td style="padding:5px;font-weight:bold;border: 1px solid black;" colspan="2">NO. KEND</td>
+									<td style="padding:5px;border-left: 1px solid black"><t t-esc="o.plat_no"/></td>
+									<td style="padding:5px;font-weight:bold;">TAGIH</td>
+									<td style="padding:5px;border: 1px solid black"><t t-esc="tagih[o.tagih]"/></td>
+								</tr>
+								<tr style="border:none;padding-top:10x;">
+									<td colspan="5">Harap diterima dengan baik, barang-barang sebagai berikut.</td>
+								</tr>
+							</thead>
+							<thead class="thead-dark" style="font-weight:bold;text-align:center;">
+								<tr>
+									<td width="5%" style="border: 1px solid black">NO</td>
+									<td width="20%" style="border: 1px solid black">NAMA BARANG</td>
+									<td width="25%" style="border: 1px solid black">JUMLAH</td>
+									<td width="25%" style="border: 1px solid black">SATUAN</td>
+									<td width="25%" style="border: 1px solid black">KETERANGAN / UKURAN</td>
+								</tr>
+							</thead>
+							<tbody style="text-align:center;">
+								<t t-set="count" t-value="1"/>
+								<tr t-foreach="o.move_ids_without_package" t-as="move">
+									<td style="border: 1px solid black"><t t-esc="count"/></td>
+									<td style="border: 1px solid black"><t t-esc="move.product_id.name"/></td>
+									<td style="border: 1px solid black"><t t-esc="move.quantity_done"/></td>
+									<td style="border: 1px solid black"><t t-esc="move.product_uom.name"/></td>
+									<td style="border: 1px solid black"><t t-esc="o.note"/></td>
+									<t t-set="count" t-value="count+1"/>
+								</tr>
+							</tbody>
+							<tbody width="100%" style="padding:10px;">
+								<tr>
+									<td style="text-align:center;border: 1px solid black;" colspan="2">Disetujui <br></br> <br></br> <br></br> <br></br> <br></br><br></br> ( ................................. )</td>
+									<td style="text-align:center;border: 1px solid black;">Diketahui <br></br> <br></br> <br></br> <br></br> <br></br><br></br> ( ................................. )</td>
+									<td style="text-align:center;border: 1px solid black;">Dikeluarkan <br></br> <br></br> <br></br> <br></br> <br></br><br></br> ( ................................. )</td>
+									<td style="text-align:center;border: 1px solid black;">Diterima <br></br> <br></br> <br></br> <br></br> <br></br><br></br> ( ................................. )</td>
+								</tr>
+								<tr style="border:none">
+									<td style="text-align:left;" colspan="3">(*) Coret yang tidak perlu</td>
+									<td style="text-align:right;" colspan="2"> Nama Jelas, tanda tangan &#38; cap</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<table width="100%">
+						<tr>
+							<td width="75%"></td>
+							<td width="25%" style="text-align:right"><t t-esc="o.name"/></td>
+						</tr>
+					</table>
+                </t>
+            </t>
+		</template>
+        <record id="report_stock_picking_action" model="ir.actions.report">
+            <field name="name">Surat Jalan Pabrik</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">jidoka_inventory.report_stock_picking</field>
+            <field name="print_report_name">'Surat Jalan Pabrik - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_stock_picking"/>
+            <field name="paperformat_id" ref="jidoka_inventory.paperformat_a5"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

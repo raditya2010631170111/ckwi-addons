@@ -1,0 +1,65 @@
+<odoo>
+	<data>
+
+
+
+		<record id='draft_data' model='design.process.stage'>
+			<field name="sequence">1</field>
+			<field name="code">draft</field>
+			<field name="name">Draft</field>
+		</record>
+
+		<record id='draft_sket' model='design.process.stage'>
+			<field name="sequence">2</field>
+			<field name="code">sket</field>
+			<field name="name">Color Sketch</field>
+		</record>
+
+
+		<record id='draft_design' model='design.process.stage'>
+			<field name="sequence">3</field>
+			<field name="code">design</field>
+			<field name="name">Design Details</field>
+		</record>
+
+		<record id='draft_pembahanan' model='design.process.stage'>
+			<field name="sequence">4</field>
+			<field name="code">sample</field>
+			<field name="name">Sample Details</field>
+		</record>
+
+		<record id='draft_approve' model='design.process.stage'>
+			<field name="sequence">5</field>
+			<field name="code">approve</field>
+			<field name="name">Approve Manager</field>
+		</record>
+		
+		<record id='draft_asign' model='design.process.stage'>
+			<field name="sequence">6</field>
+			<field name="code">assigned</field>
+			<field name="name">Assigned</field>
+		</record>
+
+		<record id='draft_process' model='design.process.stage'>
+			<field name="sequence">7</field>
+			<field name="code">process</field>
+			<field name="name">Process</field>
+		</record>
+
+		<record id='draft_sample' model='design.process.stage'>
+			<field name="sequence">8</field>
+			<field name="code">done</field>
+			<field name="name">Done</field>
+		</record>
+
+
+		<record id='draft_revisi' model='design.process.stage'>
+			<field name="sequence">9</field>
+			<field name="code">revisi</field>
+			<field name="name">Revision</field>
+		</record>
+
+
+
+	</data>
+</odoo>

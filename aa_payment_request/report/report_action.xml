@@ -1,0 +1,13 @@
+<odoo>
+    <record id="report_bank_cash_action" model="ir.actions.report">
+        <field name="name">Download (XLSX)</field>
+        <field name="model">report.bank.cash.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">aa_payment_request.report_bank_and_cash</field>
+        <field name="report_file">aa_payment_request.report_bank_and_cash</field>
+        <field name="print_report_name">'Report Bank and Cash'</field>
+        <field name="binding_model_id" ref="model_report_bank_cash_wizard"/>
+        <field name="binding_view_types">form</field>
+    </record>
+
+</odoo>

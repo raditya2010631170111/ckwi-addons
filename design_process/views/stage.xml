@@ -1,0 +1,62 @@
+<odoo>
+
+    <record model="ir.ui.view" id="design_process_tree">
+      <field name="name">design_process_tree stage</field>
+      <field name="model">design.process.stage</field>
+      <field name="arch" type="xml">
+        <tree>
+             <field name='sequence' widget='handle'/>
+             <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+
+        <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="action_stage_config">
+      <field name="name">Stage</field>
+      <field name="res_model">design.process.stage</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record id="design_process_stage_form" model="ir.ui.view">
+        <field name="name">design.process.stage.form</field>
+        <field name="model">design.process.stage</field>
+        <field name="arch" type="xml">
+            <form string="Stage">
+                <sheet>
+                    <group>
+                        <group>
+                            <div class="oe_title">
+                                <div class="oe_edit_only">
+                                    <label for="name"/>
+                                </div>
+                                <h1>
+                                    <field name="name" required="1"/>
+                                </h1>
+                            </div>
+                            <field name="code" required='1'/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+            <record id="view_code_stage_crm" model="ir.ui.view">
+	            <field name="model">crm.stage</field>
+	            <field name="inherit_id" ref="crm.crm_stage_form"/>
+	            <field name="arch" type="xml">
+	              <xpath expr="//field[@name='is_won']" position="before">
+	                    <field name="code" required='1'/>
+	              </xpath>
+	          </field>
+	      </record>
+
+
+
+</odoo>

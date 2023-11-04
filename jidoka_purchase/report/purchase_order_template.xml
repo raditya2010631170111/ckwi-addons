@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_purchaseorder_document_ckwi">
+        <div class="header" style="border-bottom: 3px solid black;">
+            <div class="row">
+                <div class="col-12 text-center" name="company_address">
+                    <h3>
+                        <span t-field="company.partner_id" />
+                    </h3>
+                    <h5>
+                        <span t-field="company.partner_id.street" />
+                    </h5>
+                    <h5>
+                        <span t-field="company.partner_id.street2" />
+                        ,
+                        <span t-field="company.partner_id.city" />
+                        <span t-field="company.partner_id.zip" />
+                        -
+                        <span t-field="company.partner_id.state_id.name" />
+                    </h5>
+                    <h5>Telp. (62) 0267 – 434870, 435683, 436366  Fax. (62) 0267 – 436373</h5>
+                    <!-- <div t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                    /> -->
+                </div>
+            </div>
+        </div>
+        <div class="page">
+            <div class="row">
+                <div class="col-12 text-center" name="header_state">
+                    <t t-if="o.state != 'purchase'">
+                        <h3 style="text-align:center;">Request For Quotation</h3>
+                    </t>
+                    <t t-else="">
+                        <h3 style="text-align:center;">Purchase Order</h3>
+                    </t>
+                </div>
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <td width="20%">Supplier</td>
+                            <td width="1%" style="text-align:center;">:</td>
+                            <td width="29%">
+                                <t t-esc="o.partner_id.name" />
+                            </td>
+                            <td width="15%">Tanggal</td>
+                            <td width="1%" style="text-align:center;">:</td>
+                            <td width="34%">
+                                <t t-if="o.date_approve">
+									<t t-esc="o.date_approve.strftime('%d-%m-%Y')"/>
+								</t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email / Tlp</td>
+                            <td style="text-align:center;">:</td>
+                            <td>
+                                <t t-if="o.partner_id.email">
+                                    <t t-esc="o.partner_id.email" />
+                                </t>
+                                <t t-else="">
+                                    <t t-esc="o.partner_id.phone" />
+                                </t>
+                            </td>
+                            <td>No. PO</td>
+                            <td style="text-align:center;">:</td>
+                            <td>
+                                <t t-esc="o.name" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Alamat</td>
+                            <td style="text-align:center;">:</td>
+                            <td>
+								<t t-esc="o.partner_id.street"/>
+								<t t-esc="o.partner_id.street2"/>
+								<t t-esc="o.partner_id.city"/>
+								<t t-esc="o.partner_id.state_id.name"/>
+								<t t-esc="o.partner_id.zip"/>
+								<t t-esc="o.partner_id.country_id.name"/>
+                            </td>
+                            <td>Item</td>
+                            <td style="text-align:center;">:</td>
+                            <td>
+                                <span t-field="o.product_mo_id" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sy. Penyerahan</td>
+                            <td style="text-align:center;">:</td>
+                            <td>
+                                <span t-field="o.sy_penyerahan" />
+                            </td>
+                            <td colspan="3" style="text-align:center;"> <span t-field="o.susulan" /></td>
+                        </tr>
+                        <tr>
+                            <td>Pembayaran</td>
+                            <td style="text-align:center;">:</td>
+                            <td>
+                                <t t-esc="o.pembayaran_id.name" />
+                            </td>
+                            <td>
+                                <![CDATA[&nbsp;]]>
+                            </td>
+                            <td>
+                                <![CDATA[&nbsp;]]>
+                            </td>
+                            <td>
+                                <![CDATA[&nbsp;]]>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="100%"  style=" border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th width="16%" style="border: 1px solid black;">Kode Comp</th>
+                            <th width="35%" style="border: 1px solid black;">Uraian Barang / Ukuran</th>
+                            <th width="25%" style="border: 1px solid black;">Jumlah</th>
+                            <th colspan="2" width="24%" style="border: 1px solid black;">Harga</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o.order_line" t-as="line">
+                            <tr  t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="not line.display_type">
+                                    <td style="text-align:center;border-top: 1px solid black;border-bottom: 1px solid black;">
+                                        <span t-field="line.product_id.default_code" />
+                                    </td>
+                                    <td style="border-top: 1px solid black;border-bottom: 1px solid black;">
+                                        <span t-field="line.product_id.name" />
+                                    </td>
+                                    <td style="text-align:center;border-top: 1px solid black;border-bottom: 1px solid black;">
+                                        <span t-field="line.product_qty" />
+                                        <span t-field="line.product_uom.name" groups="uom.group_uom" />
+                                    </td>
+                                    <td colspan="2" style="text-align:right;border-top: 1px solid black;border-bottom: 1px solid black;">
+                                        <span t-field="line.price_unit" />
+                                    </td>
+                                </t>
+                                <t t-if="line.display_type == 'line_section'">
+                                    <td style="border-top: 1px solid black;border-bottom: 1px solid black;">
+                                        <![CDATA[&nbsp;]]>
+                                    </td>
+                                    <td colspan="99" id="section" style="border-top: 1px solid black;border-bottom: 1px solid black;">
+                                        <span t-field="line.name" />
+                                    </td>
+                                </t>
+                                <t t-if="line.display_type == 'line_note'">
+                                    <td style="border-top: 1px solid black;border-bottom: 1px solid black;">
+                                        <![CDATA[&nbsp;]]>
+                                    </td>
+                                    <td colspan="99" id="note" style="border-top: 1px solid black;border-bottom: 1px solid black;">
+                                        <span t-field="line.name" />
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                <![CDATA[&nbsp;]]>
+                            </td>
+                            <td colspan="2" style="text-align:center;border: 1px solid black;">Tgl. Penyerahan ( Tiba )</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" rowspan="9" style="line-height:20%;"><span t-field="o.information"/></td>
+                            <td style="text-align:center;height:0px"></td>
+                            <td style="text-align:center;height:0px"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                            <td style="text-align:center;border: 1px solid black;height:20px"></td>
+                        </tr>
+                        <tr>
+                            <td style="height:20px"></td>
+                            <td style="height:20px"></td>
+                        </tr>
+                        <tr>
+                            <td style="height:20px"></td>
+                            <td style="height:20px"></td>
+                        </tr>
+                        <tr>
+                            <td style="height:20px"></td>
+                            <td style="height:20px"></td>
+                        </tr>
+						<tr><td colspan="5"><![CDATA[&nbsp;]]></td></tr>
+                        <tr>
+                            <td style="text-align:center;">Direktur / Manager</td>
+                            <td style="text-align:center;">Supervisor / Kabag</td>
+                            <td style="text-align:center;">Dibuat Oleh</td>
+                            <td colspan="2" style="text-align:center;">Penjual	</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">
+								<t t-if="o.ttd_manager">
+									<img t-att-src="image_data_uri(o.ttd_manager)" style="max-height: 4cm; max-width: 4cm;"/>
+								</t>
+                            </td>
+                            <td style="text-align:center;">
+								<t t-if="o.ttd_supervisor">
+									<img t-att-src="image_data_uri(o.ttd_supervisor)" style="max-height: 4cm; max-width: 4cm;"/>
+								</t>
+                            </td>
+                            <td style="text-align:center;">
+								<t t-if="o.ttd_pembuat">
+									<img t-att-src="image_data_uri(o.ttd_pembuat)" style="max-height: 4cm; max-width: 4cm;"/>
+								</t>
+                            </td>
+                            <td colspan="2" style="text-align:center;">
+								<t t-if="o.ttd_penjual">
+									<img t-att-src="image_data_uri(o.ttd_penjual)" style="max-height: 4cm; max-width: 4cm;"/>
+								</t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">
+                                <span t-field="o.n_manager" />
+
+                            </td>
+                            <td style="text-align:center;">
+                                <span t-field="o.n_supervisor" />
+
+                            </td>
+                            <td style="text-align:center;">
+                                <span t-field="o.n_pembuat" />
+
+                            </td>
+                            <td colspan="2" style="text-align:center;">
+                                <span t-field="o.partner_id" />
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <template id="purchase.report_purchaseorder">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="not company">
+                    <!-- Multicompany -->
+                    <t t-if="company_id">
+                        <t t-set="company" t-value="company_id" />
+                    </t>
+                    <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                        <t t-set="company" t-value="o.company_id.sudo()" />
+                    </t>
+                    <t t-else="else">
+                        <t t-set="company" t-value="res_company" />
+                    </t>
+                </t>
+                <t t-call="jidoka_purchase.report_purchaseorder_document_ckwi" t-lang="o.partner_id.lang" />
+            </t>
+        </t>
+    </template>
+</odoo>

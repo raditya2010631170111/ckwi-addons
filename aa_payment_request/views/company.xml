@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_company_form_id_inherit_base" model="ir.ui.view">
+        <field name="name">res.company.form.inherit</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="phone" position="after">
+                <field name="fax"/>
+            </field>
+            <field name="favicon" position="after">
+                <field name="dirut_id" required="1"/>
+                <field name="dirkeu_id" required="1"/>
+                <field name="fin_id" required="1"/>
+                <field name="acc_id" required="1"/>
+                <field name="active"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

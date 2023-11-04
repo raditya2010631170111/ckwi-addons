@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+
+		    <record id="views_bom_request" model="ir.ui.view">
+		        <field name="name">BoM RnD</field>
+		        <field name="model">bom.rnd.wizard</field>
+		        <field name="arch" type="xml">
+		            <form string="Bill Of Material">
+		                 <group>
+	                        <group>
+	                            <field name="active" invisible="1" />
+	                            <field name="bom_id" invisible="1"/>
+	                            <field name="product_tmpl_id" context="{'default_type': 'product'}"/>
+	                            <field name="product_uom_category_id" invisible="1"/>
+	                            <field name="product_id" groups="product.group_product_variant" context="{'default_type': 'product'}"/>
+	                            <label for="product_qty" string="Quantity"/>
+	                            <div class="o_row">
+	                                <field name="product_qty"/>
+	                                <field name="product_uom_id" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
+	                            </div>
+								<field name="is_product_componen" attrs="{'invisible': 1}"/>
+								<label for="size_tebal" string="Size" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+								<div class="o_row" name="size_tebal" attrs="{'invisible': [('is_product_componen', '=', False)]}">
+									<span>Panjang</span>
+									<field name="size_panjang" nolabel="1" placeholder="Panjang"/>
+									<span>X</span>
+									<span>Lebar</span>
+									<field name="size_lebar" nolabel="1" placeholder="Lebar"/>
+									<span>X</span>
+									<span>Tebal</span>
+									<field name="size_tebal" nolabel="1" placeholder="Tebal"/>
+								</div>
+								<label for="qty_so" string="Quantity SO" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+								<div class="o_row" name="qty_so" attrs="{'invisible': [('is_product_componen', '=', False)]}">
+									<field name="qty_so"/>
+									<field name="uom_so"/>
+								</div>
+								<label for="ratio" string="Rasio" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+								<div class="o_row" name="ratio" attrs="{'invisible': [('is_product_componen', '=', False)]}">
+									<field name="ratio" />
+									<span>Catatan</span>
+									<field name="desc" />
+								</div>
+								<field name="total_meter_cubic" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+								<field name="total_meter_persegi" attrs="{'invisible': [('is_product_componen', '=', False)]}"/>
+	                        </group>
+	                        <group>
+	                            <field name="code"/>
+	                            <field name="type" widget="radio"/>
+	                            <p colspan="2" class="oe_grey oe_edit_only" attrs="{'invisible': [('type','!=','phantom')]}">
+	                            <ul>
+	                                A BoM of type kit is used to split the product into its components.
+	                                <li>
+	                                    At the creation of a Manufacturing Order.
+	                                </li>
+	                                <li>
+	                                    At the creation of a Stock Transfer.
+	                                </li>
+	                            </ul>
+	                            </p>
+	                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_open': True}"/>
+	                        </group>
+	                    </group>
+	                     <notebook>
+	                        <page string="Components" name="components">
+	                            <field name="bom_line_ids" widget="one2many" context="{'default_parent_product_tmpl_id': product_tmpl_id, 'default_product_id': False, 'default_company_id': company_id, 'default_bom_id': id}">
+	                                <tree string="Components" editable="bottom">
+	                                    <field name="company_id" invisible="1"/>
+	                                    <field name="sequence" widget="handle"/>
+	                                    <field name="product_id" context="{'default_type': 'product'}"/>
+	                                    <field name="product_tmpl_id" invisible="1"/>
+	                                    <button name="action_see_attachments" type="object" icon="fa-files-o" aria-label="Product Attachments" title="Product Attachments" class="float-right oe_read_only"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="product_uom_category_id" invisible="1"/>
+	                                    <field name="parent_product_tmpl_id" invisible="1"/>
+	                                    <field name="product_uom_id" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
+	                                    <field name="operation_id" groups="mrp.group_mrp_routings" optional="hidden" attrs="{'column_invisible': [('parent.type','not in', ('normal', 'phantom'))]}" options="{'no_quick_create':True,'no_create_edit':True}"/>
+	                                </tree>
+	                            </field>
+	                        </page>
+	                        <page string="Operations" name="operations" attrs="{'invisible': [('type', 'not in',('normal','phantom'))]}" groups="mrp.group_mrp_routings">
+	                                <field name="operation_ids" attrs="{'invisible': [('type','not in',('normal','phantom'))]}" groups="mrp.group_mrp_routings" context="{'bom_id_invisible': True, 'default_company_id': company_id, 'default_product_tmpl_ids': [product_tmpl_id]}"/>
+	                        </page>
+	                        <page string="By-products" name="by_products" attrs="{'invisible': [('type','!=','normal')]}" groups="mrp.group_mrp_byproducts">
+	                            <field name="byproduct_ids" context="{'form_view_ref' : 'mrp.mrp_bom_byproduct_form_view', 'default_company_id': company_id, 'default_bom_id': id}">
+	                                <tree string="By-products" editable="top">
+	                                    <field name="company_id" invisible="1"/>
+	                                    <field name="product_id" context="{'default_type': 'product'}"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="product_uom_id" groups="uom.group_uom"/>
+	                                    <field name="operation_id"/>
+	                                </tree>
+	                           </field>
+	                       </page>
+	                        <page string="Miscellaneous" name="miscellaneous">
+	                            <group>
+	                                <group>
+	                                    <field name="ready_to_produce" attrs="{'invisible': [('type','=','phantom')]}" string="Manufacturing Readiness" widget="radio" groups="mrp.group_mrp_routings"/>
+	                                    <field name="consumption" attrs="{'invisible': [('type','=','phantom')]}" widget="radio"/>
+	                                </group>
+	                                <group>
+	                                    <field name="picking_type_id" attrs="{'invisible': [('type','=','phantom')]}" string="Operation" groups="stock.group_adv_location"/>
+	                                </group>
+	                            </group>
+	                        </page>
+	                    </notebook>
+		                <footer>
+		                    <button
+		                        name="action_confirm"
+		                        string="Confirm"
+		                        type="object"
+		                        class="oe_highlight"
+		                    />
+		                    or
+		                    <button string="Cancel" class="oe_link" special="cancel" />
+		                </footer>
+		            </form>
+		        </field>
+		    </record>
+
+
+
+    <record id="mrp_routing_workcenter_tree_view_wizard" model="ir.ui.view">
+            <field name="name">mrp.routing.workcenter.wizard.tree</field>
+            <field name="model">mrp.routing.workcenter.wizard</field>
+            <field name="arch" type="xml">
+                <tree string="Routing Work Centers">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="workcenter_id"/>
+                    <field name="time_cycle" widget="float_time" string="Duration (minutes)" sum="Total Duration" width="1.5"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="mrp_routing_workcenter_form_view_wizard" model="ir.ui.view">
+            <field name="name">mrp.routing.workcenter.wizard.form</field>
+            <field name="model">mrp.routing.workcenter.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Routing Work Centers">
+                    <sheet>
+                        <group>
+                            <group name="description">
+                                <field name="name"/>
+                                <field name="workcenter_id" context="{'default_company_id': company_id}"/>
+                                <field name="sequence" groups="base.group_no_one"/>
+                                <field name="bom_wizard_id" invisible="context.get('bom_id_invisible', False)"/>
+                            </group><group name="workorder">
+                                <field name="workorder_count" invisible="1"/>
+                                <field name="time_mode" widget="radio"/>
+                                <label for="time_mode_batch" attrs="{'invisible': [('time_mode', '=', 'manual')]}"/>
+                                <div attrs="{'invisible': [('time_mode', '=', 'manual')]}">
+                                    last
+                                    <field name="time_mode_batch" class="oe_inline"/>
+                                    work orders
+                                </div>
+                                <label for="time_cycle_manual" attrs="{'invisible': [('time_mode', '=', 'auto'), ('workorder_count', '!=' , 0)]}" string="Default Duration"/>
+                                <div attrs="{'invisible':  [('time_mode', '=', 'auto'), ('workorder_count', '!=' , 0)]}">
+                                    <field name="time_cycle_manual" widget="float_time" class="oe_inline"/> minutes
+                                </div>
+                                <field name="time_cycle" invisible="1"/>
+                                <field name="company_id" groups="base.group_multi_company" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Work Sheet" name="worksheet">
+                                <group>
+                                    <field name="worksheet_type" widget="radio"/>
+                                    <field name="worksheet" help="Upload your PDF file." widget="pdf_viewer" attrs="{'invisible':  [('worksheet_type', '!=', 'pdf')], 'required':  [('worksheet_type', '=', 'pdf')]}"/>
+                                    <field name="worksheet_google_slide" placeholder="Google Slide Link" widget="embed_viewer" attrs="{'invisible':  [('worksheet_type', '!=', 'google_slide')], 'required': [('worksheet_type', '=', 'google_slide')]}"/>
+                                    <field name="note" attrs="{'invisible':  [('worksheet_type', '!=', 'text')]}"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    
+</odoo>
