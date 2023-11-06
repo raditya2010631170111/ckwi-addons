@@ -183,7 +183,7 @@
                     <field name="grading_summary_line_id" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_shipping_id']" position="after">
-                    <field name="no_do"/>
+                    <!-- <field name="no_do"/> -->
                     <field name="certification_id"/>
                 </xpath>
                 <!-- Fee dari Grading Summary -->

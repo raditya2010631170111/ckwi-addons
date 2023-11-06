@@ -64,7 +64,7 @@
                                                     </div>
                                                 </div>
                                                 <br/>
-                                                <div style="display: inline-block; vertical-align: top;"> <span style="font-family: Arial; font-size: 10pt;" t-esc="doc.no_do"/></div>
+                                                <!-- <div style="display: inline-block; vertical-align: top;"> <span style="font-family: Arial; font-size: 10pt;" t-esc="doc.no_do"/></div> -->
                                             </td>
                                         </tr>
                                     </table>

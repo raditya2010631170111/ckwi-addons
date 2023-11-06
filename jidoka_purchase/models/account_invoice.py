@@ -13,7 +13,7 @@ class AccountMove(models.Model):
         string='Grading Summary',
         help="Auto-complete from a past Grading Summary.")
     
-    no_do = fields.Char('NO Delivery', compute='_compute_no_do', store=True)
+    # no_do = fields.Char('NO Delivery', compute='_compute_no_do', store=True)
     stock_picking_id = fields.Many2one('stock.picking', string='stock_picking', store=True)
     certification_id = fields.Many2one('res.certification', string='Sertifikasi', compute='_compute_certification_id')
 
@@ -23,14 +23,14 @@ class AccountMove(models.Model):
             move.certification_id = sale_order.certification_id
 
 
-    @api.depends('origin')
-    def _compute_no_do(self):
-        for move in self:
-            picking = self.env['stock.picking'].search([('origin', '=', move.origin)], limit=1)
-            if picking:
-                move.no_do = picking.name
-            else:
-                move.no_do = False
+    # @api.depends('origin')
+    # def _compute_no_do(self):
+    #     for move in self:
+    #         picking = self.env['stock.picking'].search([('origin', '=', move.origin)], limit=1)
+    #         if picking:
+    #             move.no_do = picking.name
+    #         else:
+    #             move.no_do = False
 
     def _get_marks_and_numbers(self, row_idx):
         if row_idx == 1:
