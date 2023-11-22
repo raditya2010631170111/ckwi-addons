@@ -1,8 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_mrp_sawmill,mrp_sawmill,model_mrp_sawmill,base.group_user,1,1,1,1
-access_mrp_sawmill_line,mrp_sawmill_line,model_mrp_sawmill_line,base.group_user,1,1,1,1
-access_mrp_sawmill_line_detail,mrp_sawmill_line_detail,model_mrp_sawmill_line_detail,base.group_user,1,1,1,1
-access_res_material_dimention,res_material_dimention,model_res_material_dimention,base.group_user,1,1,1,1
-access_tag_card,tag_card,model_tag_card,base.group_user,1,1,1,1
-access_tag_card_line,tag_card_line,model_tag_card_line,base.group_user,1,1,1,1
-access_tag_card_wizard,tag_card_wizard,model_tag_card_wizard,base.group_user,1,1,1,1

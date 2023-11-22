@@ -1,9 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_res_fabric_colour,res_fabric_colour,model_res_fabric_colour,base.group_user,1,1,1,1
-access_res_notes_sale,res_notes_sale,model_res_notes_sale,base.group_user,1,1,1,1
-access_sc_revisi,sc_revisi,model_sc_revisi,base.group_user,1,1,1,1
-access_sc_revisi_line,sc_revisi_line,model_sc_revisi_line,base.group_user,1,1,1,1
-access_sale_advance_payment_inv_revisi,access.sale.advance.payment.inv.revisi,model_sale_advance_payment_inv_revisi,sales_team.group_sale_salesman,1,1,1,0
-
-
-

@@ -2,21 +2,41 @@
 #
 #    Copyright (c) 2017-today MuK IT GmbH.
 #
-#    This file is part of MuK Grid Snippets
+#    This file is part of MuK Backend Theme
 #    (see https://mukit.at).
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Lesser General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+#    MuK Proprietary License v1.0
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Lesser General Public License for more details.
+#    This software and associated files (the "Software") may only be used
+#    (executed, modified, executed after modifications) if you have
+#    purchased a valid license from MuK IT GmbH.
 #
-#    You should have received a copy of the GNU Lesser General Public License
-#    along with this program. If not, see <http://www.gnu.org/licenses/>.
+#    The above permissions are granted for a single database per purchased
+#    license. Furthermore, with a valid license it is permitted to use the
+#    software on other databases as long as the usage is limited to a testing
+#    or development environment.
+#
+#    You may develop modules based on the Software or that use the Software
+#    as a library (typically by depending on it, importing it and using its
+#    resources), but without copying any source code or material from the
+#    Software. You may distribute those modules under the license of your
+#    choice, provided that this license is compatible with the terms of the
+#    MuK Proprietary License (For example: LGPL, MIT, or proprietary licenses
+#    similar to this one).
+#
+#    It is forbidden to publish, distribute, sublicense, or sell copies of
+#    the Software or modified copies of the Software.
+#
+#    The above copyright notice and this permission notice must be included
+#    in all copies or substantial portions of the Software.
+#
+#    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+#    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+#    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+#    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+#    DEALINGS IN THE SOFTWARE.
 #
 ###################################################################################
 
@@ -28,19 +48,23 @@ class ResUsers(models.Model):
     _inherit = 'res.users'
     
     #----------------------------------------------------------
-    # Defaults
+    # Properties
     #----------------------------------------------------------
     
-    @api.model
-    def _default_sidebar_type(self):
-        return self.env.user.company_id.default_sidebar_preference or 'small'
-    
-    @api.model
-    def _default_chatter_position(self):
-        return self.env.user.company_id.default_chatter_preference or 'sided'
-    
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS + [
+            'sidebar_type',
+        ]
+
+    @property
+    def SELF_WRITEABLE_FIELDS(self):
+        return super().SELF_WRITEABLE_FIELDS + [
+            'sidebar_type',
+        ]
+
     #----------------------------------------------------------
-    # Database
+    # Fields
     #----------------------------------------------------------
     
     sidebar_type = fields.Selection(
@@ -49,32 +73,7 @@ class ResUsers(models.Model):
             ('small', 'Small'),
             ('large', 'Large')
         ], 
-        required=True,
         string="Sidebar Type",
-        default=lambda self: self._default_sidebar_type()
-    )
-    
-    chatter_position = fields.Selection(
-        selection=[
-            ('normal', 'Normal'),
-            ('sided', 'Sided'),
-        ], 
+        default='large',
         required=True,
-        string="Chatter Position", 
-        default=lambda self: self._default_chatter_position()
     )
-    
-    #----------------------------------------------------------
-    # Setup
-    #----------------------------------------------------------
-
-    def __init__(self, pool, cr):
-        init_res = super(ResUsers, self).__init__(pool, cr)
-        theme_fields = ['sidebar_type', 'chatter_position']
-        readable_fields = list(self.SELF_READABLE_FIELDS)
-        writeable_fields = list(self.SELF_WRITEABLE_FIELDS)
-        readable_fields.extend(theme_fields)
-        writeable_fields.extend(theme_fields)
-        type(self).SELF_READABLE_FIELDS = readable_fields
-        type(self).SELF_WRITEABLE_FIELDS = writeable_fields
-        return init_res
